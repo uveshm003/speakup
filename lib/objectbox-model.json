@@ -1,0 +1,184 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "2:2975515762120396459",
+      "lastPropertyId": "5:5363078101718647647",
+      "name": "CustomCategoryEntity",
+      "properties": [
+        {
+          "id": "1:2766497964249915091",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2669151000379710813",
+          "name": "categoryId",
+          "indexId": "1:9222948346877948181",
+          "type": 9,
+          "flags": 2080
+        },
+        {
+          "id": "3:3941976873558355656",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "4:6700977375201004493",
+          "name": "iconEmoji",
+          "type": 9
+        },
+        {
+          "id": "5:5363078101718647647",
+          "name": "createdAt",
+          "type": 10
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:974969171287862965",
+      "lastPropertyId": "8:8072886828325200849",
+      "name": "PracticeSessionEntity",
+      "properties": [
+        {
+          "id": "1:377476718960749455",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7435866734338730424",
+          "name": "sessionId",
+          "indexId": "2:7377871823936964227",
+          "type": 9,
+          "flags": 2080
+        },
+        {
+          "id": "3:6940626790623733040",
+          "name": "cardId",
+          "type": 9
+        },
+        {
+          "id": "4:7218148758608428894",
+          "name": "cardTitle",
+          "type": 9
+        },
+        {
+          "id": "5:6818238693194862684",
+          "name": "category",
+          "indexId": "5:33781707284594946",
+          "type": 9,
+          "flags": 2048
+        },
+        {
+          "id": "6:3551168850071315000",
+          "name": "durationSeconds",
+          "type": 6
+        },
+        {
+          "id": "7:2848190549496386803",
+          "name": "wasCompleted",
+          "type": 1
+        },
+        {
+          "id": "8:8072886828325200849",
+          "name": "completedAt",
+          "indexId": "6:387520588437224330",
+          "type": 10,
+          "flags": 8
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:5722966125934581911",
+      "lastPropertyId": "11:507744649082267577",
+      "name": "TopicCardEntity",
+      "properties": [
+        {
+          "id": "1:6813211587976227466",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:935253998529132188",
+          "name": "cardId",
+          "indexId": "3:2765883135833707808",
+          "type": 9,
+          "flags": 2080
+        },
+        {
+          "id": "3:1119146294334806083",
+          "name": "title",
+          "type": 9
+        },
+        {
+          "id": "4:2874398136570892190",
+          "name": "category",
+          "indexId": "7:350953893598916744",
+          "type": 9,
+          "flags": 2048
+        },
+        {
+          "id": "5:6147200757941060950",
+          "name": "difficultyRaw",
+          "type": 9
+        },
+        {
+          "id": "6:5661433891812073573",
+          "name": "guideJson",
+          "type": 9
+        },
+        {
+          "id": "7:7337413104489274019",
+          "name": "vocabJson",
+          "type": 9
+        },
+        {
+          "id": "8:8631359680137731513",
+          "name": "isCustom",
+          "type": 1
+        },
+        {
+          "id": "9:6556868853110766774",
+          "name": "isFavorite",
+          "type": 1
+        },
+        {
+          "id": "10:2241820544297207504",
+          "name": "createdAt",
+          "type": 10
+        },
+        {
+          "id": "11:507744649082267577",
+          "name": "customCategoryId",
+          "indexId": "4:1305742701537502733",
+          "type": 11,
+          "flags": 520,
+          "relationTarget": "CustomCategoryEntity"
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "4:5722966125934581911",
+  "lastIndexId": "7:350953893598916744",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [
+    4032303328837315379
+  ],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [
+    8957645094241474468
+  ],
+  "retiredRelationUids": [],
+  "version": 1
+}

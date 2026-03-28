@@ -1,0 +1,49 @@
+name: speakup
+description: >-
+  SpeakUp — communication skills and English practice (offline).
+  Supports Android, iOS, Web, Windows, macOS, and Linux.
+publish_to: "none"
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.11.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  cupertino_icons: ^1.0.8
+  flutter_bloc: ^9.1.1
+  bloc: ^9.1.0
+  go_router: ^16.2.1
+  objectbox: ^5.3.0
+  objectbox_flutter_libs: ^5.3.0
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  equatable: ^2.0.7
+  freezed_annotation: ^3.1.0
+  json_annotation: ^4.9.0
+  intl: ^0.20.2
+  shared_preferences: ^2.5.3
+  path_provider: ^2.1.5
+  google_fonts: ^6.3.0
+  fpdart: ^1.1.1
+  package_info_plus: ^8.1.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  build_runner: ^2.5.4
+  freezed: ^3.2.3
+  json_serializable: ^6.9.5
+  objectbox_generator: ^5.3.0
+  # Replaces hive_generator: classic hive_generator conflicts with objectbox_generator (source_gen).
+  hive_generator_io: ^3.2.2
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/data/cards.json
