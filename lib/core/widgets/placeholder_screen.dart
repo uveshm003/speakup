@@ -19,11 +19,7 @@ class PlaceholderScreen extends StatelessWidget {
             children: <Widget>[
               Text('SpeakUp', style: theme.textTheme.displayMedium),
               SizedBox(height: AppSpacing.md),
-              Text(
-                'Design system is active — replace this screen with feature UI.',
-                style: theme.textTheme.bodyMedium,
-                textAlign: TextAlign.center,
-              ),
+              Text('Design system is active — replace this screen with feature UI.', style: theme.textTheme.bodyMedium, textAlign: TextAlign.center),
             ],
           ),
         ),

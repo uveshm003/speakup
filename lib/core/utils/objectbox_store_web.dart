@@ -5,8 +5,7 @@ class ObjectBoxStore {
 
   static Future<void> init() async {}
 
-  static Never get store =>
-      throw UnsupportedError('ObjectBox is not available on web.');
+  static Never get store => throw UnsupportedError('ObjectBox is not available on web.');
 
   static bool get isInitialized => false;
 

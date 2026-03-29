@@ -18,13 +18,7 @@ class HomeRecentSession extends Equatable {
   final int durationSeconds;
 
   @override
-  List<Object?> get props => <Object?>[
-        sessionId,
-        cardId,
-        cardTitle,
-        completedAt,
-        durationSeconds,
-      ];
+  List<Object?> get props => <Object?>[sessionId, cardId, cardTitle, completedAt, durationSeconds];
 }
 
 class HomeState extends Equatable {
@@ -74,24 +68,22 @@ class HomeState extends Equatable {
       categoryCardCounts: categoryCardCounts ?? this.categoryCardCounts,
       customCardsCount: customCardsCount ?? this.customCardsCount,
       recentSessions: recentSessions ?? this.recentSessions,
-      errorMessage:
-          clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
-      pendingQuickDrawNavigation:
-          pendingQuickDrawNavigation ?? this.pendingQuickDrawNavigation,
+      errorMessage: clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
+      pendingQuickDrawNavigation: pendingQuickDrawNavigation ?? this.pendingQuickDrawNavigation,
     );
   }
 
   @override
   List<Object?> get props => <Object?>[
-        status,
-        streak,
-        lastSessionDate,
-        recentCategories,
-        todaySessionCount,
-        categoryCardCounts,
-        customCardsCount,
-        recentSessions,
-        errorMessage,
-        pendingQuickDrawNavigation,
-      ];
+    status,
+    streak,
+    lastSessionDate,
+    recentCategories,
+    todaySessionCount,
+    categoryCardCounts,
+    customCardsCount,
+    recentSessions,
+    errorMessage,
+    pendingQuickDrawNavigation,
+  ];
 }

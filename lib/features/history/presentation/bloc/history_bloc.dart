@@ -10,12 +10,10 @@ import 'history_event.dart';
 import 'history_state.dart';
 
 class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
-  HistoryBloc({
-    required SessionRepository sessionRepository,
-    required SettingsRepository settingsRepository,
-  })  : _sessionRepository = sessionRepository,
-        _settingsRepository = settingsRepository,
-        super(const HistoryState()) {
+  HistoryBloc({required SessionRepository sessionRepository, required SettingsRepository settingsRepository})
+    : _sessionRepository = sessionRepository,
+      _settingsRepository = settingsRepository,
+      super(const HistoryState()) {
     on<HistoryLoadRequested>(_onLoad);
     on<HistoryFilterChanged>(_onFilter);
     on<SessionDeleted>(_onSessionDelete);
@@ -28,27 +26,16 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
   final SettingsRepository _settingsRepository;
   Timer? _deleteTimer;
 
-  Future<void> _onLoad(
-    HistoryLoadRequested event,
-    Emitter<HistoryState> emit,
-  ) async {
+  Future<void> _onLoad(HistoryLoadRequested event, Emitter<HistoryState> emit) async {
     emit(state.copyWith(status: HistoryStatus.loading, clearErrorMessage: true));
     final sessionsResult = await _sessionRepository.getAllSessions();
     final settingsResult = await _settingsRepository.getSettings();
     await sessionsResult.fold(
       (failure) async {
-        emit(
-          state.copyWith(
-            status: HistoryStatus.failure,
-            errorMessage: failure.message ?? 'Could not load history',
-          ),
-        );
+        emit(state.copyWith(status: HistoryStatus.failure, errorMessage: failure.message ?? 'Could not load history'));
       },
       (List<PracticeSession> sessions) async {
-        final int streak = settingsResult.fold(
-          (_) => 0,
-          (s) => s.currentStreak,
-        );
+        final int streak = settingsResult.fold((_) => 0, (s) => s.currentStreak);
         final int totalMin = _totalMinutes(sessions);
         emit(
           HistoryState(
@@ -64,10 +51,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     );
   }
 
-  void _onFilter(
-    HistoryFilterChanged event,
-    Emitter<HistoryState> emit,
-  ) {
+  void _onFilter(HistoryFilterChanged event, Emitter<HistoryState> emit) {
     if (event.range == null) {
       emit(state.copyWith(clearFilterRange: true));
     } else {
@@ -75,19 +59,14 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     }
   }
 
-  Future<void> _onSessionDelete(
-    SessionDeleted event,
-    Emitter<HistoryState> emit,
-  ) async {
-    final int idx =
-        state.allSessions.indexWhere((PracticeSession s) => s.sessionId == event.sessionId);
+  Future<void> _onSessionDelete(SessionDeleted event, Emitter<HistoryState> emit) async {
+    final int idx = state.allSessions.indexWhere((PracticeSession s) => s.sessionId == event.sessionId);
     if (idx < 0) {
       return;
     }
     final PracticeSession removed = state.allSessions[idx];
     _deleteTimer?.cancel();
-    final List<PracticeSession> next = List<PracticeSession>.from(state.allSessions)
-      ..removeAt(idx);
+    final List<PracticeSession> next = List<PracticeSession>.from(state.allSessions)..removeAt(idx);
     emit(
       state.copyWith(
         allSessions: next,
@@ -102,10 +81,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     });
   }
 
-  void _onDeleteUndo(
-    SessionDeleteUndoRequested event,
-    Emitter<HistoryState> emit,
-  ) {
+  void _onDeleteUndo(SessionDeleteUndoRequested event, Emitter<HistoryState> emit) {
     _deleteTimer?.cancel();
     _deleteTimer = null;
     final PracticeSession? s = state.pendingDeletion;
@@ -113,24 +89,11 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
       return;
     }
     final List<PracticeSession> next = List<PracticeSession>.from(state.allSessions)..add(s);
-    next.sort(
-      (PracticeSession a, PracticeSession b) =>
-          b.completedAt.compareTo(a.completedAt),
-    );
-    emit(
-      state.copyWith(
-        allSessions: next,
-        totalSessions: next.length,
-        totalPracticeMinutes: _totalMinutes(next),
-        clearPendingDeletion: true,
-      ),
-    );
+    next.sort((PracticeSession a, PracticeSession b) => b.completedAt.compareTo(a.completedAt));
+    emit(state.copyWith(allSessions: next, totalSessions: next.length, totalPracticeMinutes: _totalMinutes(next), clearPendingDeletion: true));
   }
 
-  Future<void> _onDeleteCommitted(
-    SessionDeleteCommitted event,
-    Emitter<HistoryState> emit,
-  ) async {
+  Future<void> _onDeleteCommitted(SessionDeleteCommitted event, Emitter<HistoryState> emit) async {
     _deleteTimer?.cancel();
     _deleteTimer = null;
     final PracticeSession? s = state.pendingDeletion;
@@ -140,12 +103,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
     final result = await _sessionRepository.deleteSession(s.sessionId);
     await result.fold(
       (failure) async {
-        emit(
-          state.copyWith(
-            errorMessage: failure.message ?? 'Could not delete session',
-            clearPendingDeletion: true,
-          ),
-        );
+        emit(state.copyWith(errorMessage: failure.message ?? 'Could not delete session', clearPendingDeletion: true));
         add(const HistoryLoadRequested());
       },
       (_) async {
@@ -157,10 +115,7 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
   }
 
   static int _totalMinutes(List<PracticeSession> sessions) {
-    final int sec = sessions.fold<int>(
-      0,
-      (int a, PracticeSession s) => a + s.durationSeconds,
-    );
+    final int sec = sessions.fold<int>(0, (int a, PracticeSession s) => a + s.durationSeconds);
     return (sec / 60).round();
   }
 

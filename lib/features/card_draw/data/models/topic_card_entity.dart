@@ -36,13 +36,7 @@ class TopicCardEntity {
 
 @Entity()
 class CustomCategoryEntity {
-  CustomCategoryEntity({
-    this.id = 0,
-    required this.categoryId,
-    required this.name,
-    required this.iconEmoji,
-    required this.createdAt,
-  });
+  CustomCategoryEntity({this.id = 0, required this.categoryId, required this.name, required this.iconEmoji, required this.createdAt});
 
   @Id()
   int id;

@@ -19,11 +19,11 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     required SessionRepository sessionRepository,
     required ThemeBloc themeBloc,
     required HistoryBloc historyBloc,
-  })  : _settingsRepository = settingsRepository,
-        _sessionRepository = sessionRepository,
-        _themeBloc = themeBloc,
-        _historyBloc = historyBloc,
-        super(const SettingsState()) {
+  }) : _settingsRepository = settingsRepository,
+       _sessionRepository = sessionRepository,
+       _themeBloc = themeBloc,
+       _historyBloc = historyBloc,
+       super(const SettingsState()) {
     on<SettingsLoadRequested>(_onLoad);
     on<AppearanceThemeModeChanged>(_onThemeMode);
     on<DefaultTimerChanged>(_onDefaultTimer);
@@ -38,20 +38,12 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
   final ThemeBloc _themeBloc;
   final HistoryBloc _historyBloc;
 
-  Future<void> _onLoad(
-    SettingsLoadRequested event,
-    Emitter<SettingsState> emit,
-  ) async {
+  Future<void> _onLoad(SettingsLoadRequested event, Emitter<SettingsState> emit) async {
     emit(state.copyWith(status: SettingsStatus.loading, clearErrorMessage: true));
     final result = await _settingsRepository.getSettings();
     await result.fold(
       (failure) async {
-        emit(
-          state.copyWith(
-            status: SettingsStatus.failure,
-            errorMessage: failure.message ?? 'Could not load settings',
-          ),
-        );
+        emit(state.copyWith(status: SettingsStatus.failure, errorMessage: failure.message ?? 'Could not load settings'));
       },
       (UserSettings s) async {
         emit(state.copyWith(status: SettingsStatus.success, settings: s));
@@ -59,19 +51,11 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     );
   }
 
-  Future<void> _save(
-    UserSettings next,
-    Emitter<SettingsState> emit, {
-    VoidCallback? afterSuccess,
-  }) async {
+  Future<void> _save(UserSettings next, Emitter<SettingsState> emit, {VoidCallback? afterSuccess}) async {
     final result = await _settingsRepository.saveSettings(next);
     await result.fold(
       (failure) async {
-        emit(
-          state.copyWith(
-            errorMessage: failure.message ?? 'Could not save',
-          ),
-        );
+        emit(state.copyWith(errorMessage: failure.message ?? 'Could not save'));
       },
       (_) async {
         emit(state.copyWith(settings: next, clearErrorMessage: true));
@@ -80,10 +64,7 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     );
   }
 
-  Future<void> _onThemeMode(
-    AppearanceThemeModeChanged event,
-    Emitter<SettingsState> emit,
-  ) async {
+  Future<void> _onThemeMode(AppearanceThemeModeChanged event, Emitter<SettingsState> emit) async {
     final String raw = switch (event.mode) {
       ThemeMode.light => 'light',
       ThemeMode.dark => 'dark',
@@ -93,46 +74,23 @@ class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
     await _save(state.settings.copyWith(themeModeRaw: raw), emit);
   }
 
-  Future<void> _onDefaultTimer(
-    DefaultTimerChanged event,
-    Emitter<SettingsState> emit,
-  ) async {
-    await _save(
-      state.settings.copyWith(defaultTimerSeconds: event.seconds),
-      emit,
-    );
+  Future<void> _onDefaultTimer(DefaultTimerChanged event, Emitter<SettingsState> emit) async {
+    await _save(state.settings.copyWith(defaultTimerSeconds: event.seconds), emit);
   }
 
-  Future<void> _onTextScale(
-    TextScaleChanged event,
-    Emitter<SettingsState> emit,
-  ) async {
+  Future<void> _onTextScale(TextScaleChanged event, Emitter<SettingsState> emit) async {
     await _save(state.settings.copyWith(textSizeScale: event.scale), emit);
   }
 
-  Future<void> _onOnboardingReset(
-    OnboardingResetRequested event,
-    Emitter<SettingsState> emit,
-  ) async {
-    await _save(
-      state.settings.copyWith(hasSeenOnboarding: false),
-      emit,
-      afterSuccess: notifyAppRouterRefresh,
-    );
+  Future<void> _onOnboardingReset(OnboardingResetRequested event, Emitter<SettingsState> emit) async {
+    await _save(state.settings.copyWith(hasSeenOnboarding: false), emit, afterSuccess: notifyAppRouterRefresh);
   }
 
-  Future<void> _onClearHistory(
-    SessionHistoryClearRequested event,
-    Emitter<SettingsState> emit,
-  ) async {
+  Future<void> _onClearHistory(SessionHistoryClearRequested event, Emitter<SettingsState> emit) async {
     final result = await _sessionRepository.clearAllSessions();
     await result.fold(
       (failure) async {
-        emit(
-          state.copyWith(
-            errorMessage: failure.message ?? 'Could not clear history',
-          ),
-        );
+        emit(state.copyWith(errorMessage: failure.message ?? 'Could not clear history'));
       },
       (_) async {
         await _settingsRepository.updateStreak();

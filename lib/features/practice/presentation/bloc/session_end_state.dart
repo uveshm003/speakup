@@ -49,14 +49,5 @@ class SessionEndState extends Equatable {
   }
 
   @override
-  List<Object?> get props => <Object?>[
-        status,
-        card,
-        elapsedSeconds,
-        wasCompleted,
-        streak,
-        streakIncreased,
-        weekSessionsCount,
-        errorMessage,
-      ];
+  List<Object?> get props => <Object?>[status, card, elapsedSeconds, wasCompleted, streak, streakIncreased, weekSessionsCount, errorMessage];
 }

@@ -19,8 +19,7 @@ class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<HistoryBloc, HistoryState>(
-      listenWhen: (HistoryState p, HistoryState c) =>
-          c.pendingDeletion != null && c.pendingDeletion != p.pendingDeletion,
+      listenWhen: (HistoryState p, HistoryState c) => c.pendingDeletion != null && c.pendingDeletion != p.pendingDeletion,
       listener: (BuildContext context, HistoryState state) {
         final PracticeSession? s = state.pendingDeletion;
         if (s == null) {
@@ -46,11 +45,7 @@ class HistoryScreen extends StatelessWidget {
             BlocBuilder<HistoryBloc, HistoryState>(
               builder: (BuildContext context, HistoryState state) {
                 return IconButton(
-                  icon: Icon(
-                    state.filterRange != null
-                        ? Icons.filter_alt_rounded
-                        : Icons.filter_alt_outlined,
-                  ),
+                  icon: Icon(state.filterRange != null ? Icons.filter_alt_rounded : Icons.filter_alt_outlined),
                   tooltip: 'Filter by date',
                   onPressed: () async {
                     final DateTimeRange? r = await showDateRangePicker(
@@ -97,12 +92,7 @@ class HistoryScreen extends StatelessWidget {
               slivers: <Widget>[
                 SliverToBoxAdapter(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                      AppSpacing.lg,
-                      AppSpacing.md,
-                      AppSpacing.lg,
-                      AppSpacing.md,
-                    ),
+                    padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.md),
                     child: _StatsRow(state: state),
                   ),
                 ),
@@ -113,10 +103,7 @@ class HistoryScreen extends StatelessWidget {
                   ),
                 ),
                 if (state.logSessions.isEmpty)
-                  const SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: _EmptyHistory(),
-                  )
+                  const SliverFillRemaining(hasScrollBody: false, child: _EmptyHistory())
                 else
                   ..._buildGroupedSlivers(context, state),
               ],
@@ -131,52 +118,32 @@ class HistoryScreen extends StatelessWidget {
 List<Widget> _buildGroupedSlivers(BuildContext context, HistoryState state) {
   final Map<DateTime, List<PracticeSession>> byDay = <DateTime, List<PracticeSession>>{};
   for (final PracticeSession s in state.logSessions) {
-    final DateTime d = DateTime(
-      s.completedAt.year,
-      s.completedAt.month,
-      s.completedAt.day,
-    );
+    final DateTime d = DateTime(s.completedAt.year, s.completedAt.month, s.completedAt.day);
     byDay.putIfAbsent(d, () => <PracticeSession>[]).add(s);
   }
-  final List<DateTime> days = byDay.keys.toList()
-    ..sort((DateTime a, DateTime b) => b.compareTo(a));
+  final List<DateTime> days = byDay.keys.toList()..sort((DateTime a, DateTime b) => b.compareTo(a));
 
   final List<Widget> out = <Widget>[];
   final DateTime now = DateTime.now();
   final DateTime today = DateTime(now.year, now.month, now.day);
 
   for (final DateTime day in days) {
-    out.add(
-      SliverPersistentHeader(
-        pinned: true,
-        delegate: _DateHeaderDelegate(
-          label: _dayHeaderLabel(day, today),
-        ),
-      ),
-    );
+    out.add(SliverPersistentHeader(pinned: true, delegate: _DateHeaderDelegate(label: _dayHeaderLabel(day, today))));
     final List<PracticeSession> list = byDay[day]!;
     out.add(
       SliverList(
-        delegate: SliverChildBuilderDelegate(
-          (BuildContext context, int i) {
-            final PracticeSession s = list[i];
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpacing.lg,
-                0,
-                AppSpacing.lg,
-                AppSpacing.sm,
-              ),
-              child: _SessionRow(
-                session: s,
-                onDelete: () {
-                  context.read<HistoryBloc>().add(SessionDeleted(s.sessionId));
-                },
-              ),
-            );
-          },
-          childCount: list.length,
-        ),
+        delegate: SliverChildBuilderDelegate((BuildContext context, int i) {
+          final PracticeSession s = list[i];
+          return Padding(
+            padding: const EdgeInsets.fromLTRB(AppSpacing.lg, 0, AppSpacing.lg, AppSpacing.sm),
+            child: _SessionRow(
+              session: s,
+              onDelete: () {
+                context.read<HistoryBloc>().add(SessionDeleted(s.sessionId));
+              },
+            ),
+          );
+        }, childCount: list.length),
       ),
     );
   }
@@ -209,31 +176,20 @@ class _StatsRow extends StatelessWidget {
     Widget metric(String emoji, String label, String value) {
       return Expanded(
         child: Container(
-          padding: const EdgeInsets.symmetric(
-            vertical: AppSpacing.md,
-            horizontal: AppSpacing.sm,
-          ),
-          decoration: BoxDecoration(
-            color: bg,
-            borderRadius: BorderRadius.circular(AppRadius.md),
-          ),
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.md, horizontal: AppSpacing.sm),
+          decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(AppRadius.md)),
           child: Column(
             children: <Widget>[
               Text(emoji, style: const TextStyle(fontSize: 26)),
               const SizedBox(height: AppSpacing.xs),
               Text(
                 value,
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w800,
-                  color: fg,
-                ),
+                style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800, color: fg),
               ),
               Text(
                 label,
                 textAlign: TextAlign.center,
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: fg.withValues(alpha: 0.8),
-                ),
+                style: theme.textTheme.labelSmall?.copyWith(color: fg.withValues(alpha: 0.8)),
               ),
             ],
           ),
@@ -264,18 +220,11 @@ class _HeatmapSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          'Activity',
-          style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-        ),
+        Text('Activity', style: Theme.of(context).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
         const SizedBox(height: AppSpacing.xs),
         Text(
           'Swipe for previous months',
-          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                color: Theme.of(context).colorScheme.onSurfaceVariant,
-              ),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
         ),
         const SizedBox(height: AppSpacing.md),
         SizedBox(
@@ -299,27 +248,20 @@ class _HeatmapSection extends StatelessWidget {
 }
 
 class _MonthHeatmap extends StatelessWidget {
-  const _MonthHeatmap({
-    required this.month,
-    required this.counts,
-  });
+  const _MonthHeatmap({required this.month, required this.counts});
 
   final DateTime month;
   final Map<String, int> counts;
 
-  static String _key(DateTime d) =>
-      '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+  static String _key(DateTime d) => '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final Color primary = theme.colorScheme.primary;
-    final Color brandLight =
-        theme.brightness == Brightness.dark ? AppColorsDark.primaryLight : AppColors.primaryLight;
+    final Color brandLight = theme.brightness == Brightness.dark ? AppColorsDark.primaryLight : AppColors.primaryLight;
     const Color emptyLight = Color(0xFFF3F4F6);
-    final Color empty = theme.brightness == Brightness.dark
-        ? AppColorsDark.border
-        : emptyLight;
+    final Color empty = theme.brightness == Brightness.dark ? AppColorsDark.border : emptyLight;
 
     final DateTime first = DateTime(month.year, month.month, 1);
     final int fromMonday = first.weekday - 1;
@@ -332,22 +274,14 @@ class _MonthHeatmap extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          DateFormat('MMMM yyyy').format(month),
-          style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
-        ),
+        Text(DateFormat('MMMM yyyy').format(month), style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
         const SizedBox(height: AppSpacing.sm),
         Row(
           children: dow
               .map(
                 (String d) => Expanded(
                   child: Center(
-                    child: Text(
-                      d,
-                      style: theme.textTheme.labelSmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
+                    child: Text(d, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
                   ),
                 ),
               )
@@ -389,17 +323,8 @@ class _MonthHeatmap extends StatelessWidget {
                         context: context,
                         builder: (BuildContext context) => AlertDialog(
                           title: Text(DateFormat.yMMMd().format(cell)),
-                          content: Text(
-                            n == 0
-                                ? 'No sessions'
-                                : '$n session${n == 1 ? '' : 's'}',
-                          ),
-                          actions: <Widget>[
-                            TextButton(
-                              onPressed: () => Navigator.pop(context),
-                              child: const Text('OK'),
-                            ),
-                          ],
+                          content: Text(n == 0 ? 'No sessions' : '$n session${n == 1 ? '' : 's'}'),
+                          actions: <Widget>[TextButton(onPressed: () => Navigator.pop(context), child: const Text('OK'))],
                         ),
                       );
                     }
@@ -408,29 +333,17 @@ class _MonthHeatmap extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: inMonth ? fill : Colors.transparent,
                   borderRadius: BorderRadius.circular(6),
-                  border: isToday && inMonth
-                      ? Border.all(color: primary, width: 2)
-                      : null,
+                  border: isToday && inMonth ? Border.all(color: primary, width: 2) : null,
                 ),
                 child: inMonth && n > 0
                     ? Center(
-                        child: Text(
-                          '${cell.day}',
-                          style: theme.textTheme.labelSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
+                        child: Text('${cell.day}', style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700)),
                       )
                     : inMonth
-                        ? Center(
-                            child: Text(
-                              '${cell.day}',
-                              style: theme.textTheme.labelSmall?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                              ),
-                            ),
-                          )
-                        : null,
+                    ? Center(
+                        child: Text('${cell.day}', style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+                      )
+                    : null,
               ),
             );
           },
@@ -452,21 +365,14 @@ class _DateHeaderDelegate extends SliverPersistentHeaderDelegate {
   double get maxExtent => 40;
 
   @override
-  Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
+  Widget build(BuildContext context, double shrinkOffset, bool overlapsContent) {
     return Container(
       color: Theme.of(context).colorScheme.surface,
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
       child: Text(
         label,
-        style: Theme.of(context).textTheme.labelLarge?.copyWith(
-              fontWeight: FontWeight.w700,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
+        style: Theme.of(context).textTheme.labelLarge?.copyWith(fontWeight: FontWeight.w700, color: Theme.of(context).colorScheme.onSurfaceVariant),
       ),
     );
   }
@@ -478,10 +384,7 @@ class _DateHeaderDelegate extends SliverPersistentHeaderDelegate {
 }
 
 class _SessionRow extends StatelessWidget {
-  const _SessionRow({
-    required this.session,
-    required this.onDelete,
-  });
+  const _SessionRow({required this.session, required this.onDelete});
 
   final PracticeSession session;
   final VoidCallback onDelete;
@@ -499,10 +402,7 @@ class _SessionRow extends StatelessWidget {
       background: Container(
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: AppSpacing.xxl),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.error,
-          borderRadius: BorderRadius.circular(AppRadius.lg),
-        ),
+        decoration: BoxDecoration(color: theme.colorScheme.error, borderRadius: BorderRadius.circular(AppRadius.lg)),
         child: const Icon(Icons.delete_outline, color: Colors.white),
       ),
       onDismissed: (_) => onDelete(),
@@ -510,16 +410,10 @@ class _SessionRow extends StatelessWidget {
         color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.35),
         borderRadius: BorderRadius.circular(AppRadius.lg),
         child: ListTile(
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md,
-            vertical: AppSpacing.xs,
-          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
           leading: CircleAvatar(
             backgroundColor: accent.withValues(alpha: 0.2),
-            child: Text(
-              emoji,
-              style: const TextStyle(fontSize: 20),
-            ),
+            child: Text(emoji, style: const TextStyle(fontSize: 20)),
           ),
           title: Text(
             session.cardTitle,
@@ -531,39 +425,24 @@ class _SessionRow extends StatelessWidget {
             '$time · ${session.category}',
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
+            style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
           ),
           trailing: Row(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.sm,
-                  vertical: 2,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 2),
                 decoration: BoxDecoration(
                   color: theme.colorScheme.primaryContainer.withValues(alpha: 0.5),
                   borderRadius: BorderRadius.circular(AppRadius.sm),
                 ),
-                child: Text(
-                  formatPracticeMmSs(session.durationSeconds),
-                  style: theme.textTheme.labelMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
+                child: Text(formatPracticeMmSs(session.durationSeconds), style: theme.textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w700)),
               ),
               const SizedBox(width: AppSpacing.sm),
               Container(
                 width: 10,
                 height: 10,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: session.wasCompleted
-                      ? const Color(0xFF22C55E)
-                      : const Color(0xFFF59E0B),
-                ),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: session.wasCompleted ? const Color(0xFF22C55E) : const Color(0xFFF59E0B)),
               ),
             ],
           ),
@@ -585,25 +464,14 @@ class _EmptyHistory extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(
-              Icons.history_rounded,
-              size: 72,
-              color: theme.colorScheme.primary.withValues(alpha: 0.45),
-            ),
+            Icon(Icons.history_rounded, size: 72, color: theme.colorScheme.primary.withValues(alpha: 0.45)),
             const SizedBox(height: AppSpacing.lg),
-            Text(
-              'No sessions yet',
-              style: theme.textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+            Text('No sessions yet', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
             const SizedBox(height: AppSpacing.sm),
             Text(
               'Complete a practice session to see it here.',
               textAlign: TextAlign.center,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
+              style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
             ),
           ],
         ),

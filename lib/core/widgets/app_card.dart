@@ -8,13 +8,7 @@ import 'package:speakup/config/theme/speakup_theme_extension.dart';
 
 /// Elevated surface with SpeakUp shadow, radius, and responsive padding.
 class AppCard extends StatelessWidget {
-  const AppCard({
-    required this.child,
-    super.key,
-    this.onTap,
-    this.padding,
-    this.margin,
-  });
+  const AppCard({required this.child, super.key, this.onTap, this.padding, this.margin});
 
   final Widget child;
   final VoidCallback? onTap;
@@ -28,10 +22,7 @@ class AppCard extends StatelessWidget {
     final Color borderColor = tokens?.border ?? Theme.of(context).colorScheme.outline;
     final double pad = AppLayout.isWide(context) ? AppSpacing.xl : AppSpacing.lg;
 
-    final Widget inner = Padding(
-      padding: padding ?? EdgeInsets.all(pad),
-      child: child,
-    );
+    final Widget inner = Padding(padding: padding ?? EdgeInsets.all(pad), child: child);
 
     final Widget decorated = DecoratedBox(
       decoration: BoxDecoration(
@@ -40,28 +31,18 @@ class AppCard extends StatelessWidget {
         border: Border.all(color: borderColor.withValues(alpha: 0.85)),
         boxShadow: AppShadows.card(context),
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        child: inner,
-      ),
+      child: ClipRRect(borderRadius: BorderRadius.circular(AppRadius.lg), child: inner),
     );
 
     if (onTap == null) {
-      return Padding(
-        padding: margin ?? EdgeInsets.zero,
-        child: decorated,
-      );
+      return Padding(padding: margin ?? EdgeInsets.zero, child: decorated);
     }
 
     return Padding(
       padding: margin ?? EdgeInsets.zero,
       child: Material(
         color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(AppRadius.lg),
-          child: decorated,
-        ),
+        child: InkWell(onTap: onTap, borderRadius: BorderRadius.circular(AppRadius.lg), child: decorated),
       ),
     );
   }

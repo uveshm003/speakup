@@ -10,9 +10,7 @@ import 'theme_state.dart';
 /// [ThemeBrightnessObserver] (WidgetsBinding), which dispatches
 /// [ThemePlatformBrightnessChanged] while [ThemeMode.system] is active.
 class ThemeBloc extends Bloc<ThemeBlocEvent, ThemeBlocState> {
-  ThemeBloc({required SettingsRepository settingsRepository})
-      : _settingsRepository = settingsRepository,
-        super(const ThemeBlocState()) {
+  ThemeBloc({required SettingsRepository settingsRepository}) : _settingsRepository = settingsRepository, super(const ThemeBlocState()) {
     on<ThemeLoadRequested>(_onLoad);
     on<ThemeModeChanged>(_onModeChanged);
     on<ThemePlatformBrightnessChanged>(_onPlatformBrightness);
@@ -21,30 +19,18 @@ class ThemeBloc extends Bloc<ThemeBlocEvent, ThemeBlocState> {
 
   final SettingsRepository _settingsRepository;
 
-  Future<void> _onLoad(
-    ThemeLoadRequested event,
-    Emitter<ThemeBlocState> emit,
-  ) async {
+  Future<void> _onLoad(ThemeLoadRequested event, Emitter<ThemeBlocState> emit) async {
     final result = await _settingsRepository.getSettings();
-    result.fold(
-      (_) {},
-      (settings) {
-        emit(state.copyWith(mode: _modeFromRaw(settings.themeModeRaw)));
-      },
-    );
+    result.fold((_) {}, (settings) {
+      emit(state.copyWith(mode: _modeFromRaw(settings.themeModeRaw)));
+    });
   }
 
-  void _onModeChanged(
-    ThemeModeChanged event,
-    Emitter<ThemeBlocState> emit,
-  ) {
+  void _onModeChanged(ThemeModeChanged event, Emitter<ThemeBlocState> emit) {
     emit(state.copyWith(mode: event.mode));
   }
 
-  void _onPlatformBrightness(
-    ThemePlatformBrightnessChanged event,
-    Emitter<ThemeBlocState> emit,
-  ) {
+  void _onPlatformBrightness(ThemePlatformBrightnessChanged event, Emitter<ThemeBlocState> emit) {
     emit(state.copyWith(brightnessEpoch: state.brightnessEpoch + 1));
   }
 

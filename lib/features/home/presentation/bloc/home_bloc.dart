@@ -11,14 +11,11 @@ import 'home_event.dart';
 import 'home_state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc({
-    required CardRepository cardRepository,
-    required SessionRepository sessionRepository,
-    required SettingsRepository settingsRepository,
-  })  : _cardRepository = cardRepository,
-        _sessionRepository = sessionRepository,
-        _settingsRepository = settingsRepository,
-        super(const HomeState()) {
+  HomeBloc({required CardRepository cardRepository, required SessionRepository sessionRepository, required SettingsRepository settingsRepository})
+    : _cardRepository = cardRepository,
+      _sessionRepository = sessionRepository,
+      _settingsRepository = settingsRepository,
+      super(const HomeState()) {
     on<HomeLoadRequested>(_onLoadRequested);
     on<HomeQuickDrawRequested>(_onQuickDrawRequested);
     on<HomeQuickDrawNavigationConsumed>(_onQuickDrawConsumed);
@@ -28,16 +25,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final SessionRepository _sessionRepository;
   final SettingsRepository _settingsRepository;
 
-  Future<void> _onLoadRequested(
-    HomeLoadRequested event,
-    Emitter<HomeState> emit,
-  ) async {
-    emit(
-      state.copyWith(
-        status: HomeLoadStatus.loading,
-        clearErrorMessage: true,
-      ),
-    );
+  Future<void> _onLoadRequested(HomeLoadRequested event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(status: HomeLoadStatus.loading, clearErrorMessage: true));
 
     await _settingsRepository.updateStreak();
 
@@ -51,36 +40,19 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     settingsEither.fold((l) => failureMessage ??= l.message, (_) {});
 
     if (failureMessage != null) {
-      emit(
-        state.copyWith(
-          status: HomeLoadStatus.failure,
-          errorMessage: failureMessage,
-        ),
-      );
+      emit(state.copyWith(status: HomeLoadStatus.failure, errorMessage: failureMessage));
       return;
     }
 
-    final List<PracticeSession> sessions =
-        sessionsEither.fold((l) => throw StateError(''), (r) => r);
-    final List<TopicCard> cards =
-        cardsEither.fold((l) => throw StateError(''), (r) => r);
-    final settings =
-        settingsEither.fold((l) => throw StateError(''), (r) => r);
-    sessions.sort(
-      (PracticeSession a, PracticeSession b) =>
-          b.completedAt.compareTo(a.completedAt),
-    );
+    final List<PracticeSession> sessions = sessionsEither.fold((l) => throw StateError(''), (r) => r);
+    final List<TopicCard> cards = cardsEither.fold((l) => throw StateError(''), (r) => r);
+    final settings = settingsEither.fold((l) => throw StateError(''), (r) => r);
+    sessions.sort((PracticeSession a, PracticeSession b) => b.completedAt.compareTo(a.completedAt));
 
     final DateTime now = DateTime.now();
     final DateTime startOfDay = DateTime(now.year, now.month, now.day);
     final DateTime endOfDay = startOfDay.add(const Duration(days: 1));
-    final int todayCount = sessions
-        .where(
-          (PracticeSession s) =>
-              !s.completedAt.isBefore(startOfDay) &&
-              s.completedAt.isBefore(endOfDay),
-        )
-        .length;
+    final int todayCount = sessions.where((PracticeSession s) => !s.completedAt.isBefore(startOfDay) && s.completedAt.isBefore(endOfDay)).length;
 
     final Set<String> seen = <String>{};
     final List<String> recentCategories = <String>[];
@@ -95,11 +67,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     final Map<String, int> counts = <String, int>{};
     for (final BuiltInCategoryDef def in kBuiltInBrowseCategories) {
-      counts[def.name] = cards
-          .where(
-            (TopicCard c) => !c.isCustom && c.category == def.name,
-          )
-          .length;
+      counts[def.name] = cards.where((TopicCard c) => !c.isCustom && c.category == def.name).length;
     }
 
     final int customCount = cards.where((TopicCard c) => c.isCustom).length;
@@ -132,20 +100,14 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     );
   }
 
-  void _onQuickDrawRequested(
-    HomeQuickDrawRequested event,
-    Emitter<HomeState> emit,
-  ) {
+  void _onQuickDrawRequested(HomeQuickDrawRequested event, Emitter<HomeState> emit) {
     if (state.status != HomeLoadStatus.success) {
       return;
     }
     emit(state.copyWith(pendingQuickDrawNavigation: true));
   }
 
-  void _onQuickDrawConsumed(
-    HomeQuickDrawNavigationConsumed event,
-    Emitter<HomeState> emit,
-  ) {
+  void _onQuickDrawConsumed(HomeQuickDrawNavigationConsumed event, Emitter<HomeState> emit) {
     emit(state.copyWith(pendingQuickDrawNavigation: false));
   }
 }

@@ -13,9 +13,7 @@ class ObjectBoxStore {
   static Store get store {
     final s = _store;
     if (s == null) {
-      throw StateError(
-        'ObjectBoxStore not initialized. Call ObjectBoxStore.init() in main.',
-      );
+      throw StateError('ObjectBoxStore not initialized. Call ObjectBoxStore.init() in main.');
     }
     return s;
   }

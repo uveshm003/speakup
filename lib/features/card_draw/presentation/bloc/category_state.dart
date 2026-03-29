@@ -9,18 +9,18 @@ enum DifficultyFilter { all, beginner, intermediate, advanced }
 
 extension DifficultyFilterX on DifficultyFilter {
   String get label => switch (this) {
-        DifficultyFilter.all => 'All',
-        DifficultyFilter.beginner => 'Beginner',
-        DifficultyFilter.intermediate => 'Intermediate',
-        DifficultyFilter.advanced => 'Advanced',
-      };
+    DifficultyFilter.all => 'All',
+    DifficultyFilter.beginner => 'Beginner',
+    DifficultyFilter.intermediate => 'Intermediate',
+    DifficultyFilter.advanced => 'Advanced',
+  };
 
   Difficulty? get asDifficulty => switch (this) {
-        DifficultyFilter.all => null,
-        DifficultyFilter.beginner => Difficulty.beginner,
-        DifficultyFilter.intermediate => Difficulty.intermediate,
-        DifficultyFilter.advanced => Difficulty.advanced,
-      };
+    DifficultyFilter.all => null,
+    DifficultyFilter.beginner => Difficulty.beginner,
+    DifficultyFilter.intermediate => Difficulty.intermediate,
+    DifficultyFilter.advanced => Difficulty.advanced,
+  };
 }
 
 class CategoryListItem extends Equatable {
@@ -48,16 +48,16 @@ class CategoryListItem extends Equatable {
 
   @override
   List<Object?> get props => <Object?>[
-        key,
-        displayName,
-        emoji,
-        accentColor,
-        isCustom,
-        filteredCount,
-        beginnerCount,
-        intermediateCount,
-        advancedCount,
-      ];
+    key,
+    displayName,
+    emoji,
+    accentColor,
+    isCustom,
+    filteredCount,
+    beginnerCount,
+    intermediateCount,
+    advancedCount,
+  ];
 }
 
 class CategoryState extends Equatable {
@@ -89,8 +89,7 @@ class CategoryState extends Equatable {
     return 0;
   }
 
-  bool get canDraw =>
-      status == CategoryLoadStatus.success && selectedFilteredCount > 0;
+  bool get canDraw => status == CategoryLoadStatus.success && selectedFilteredCount > 0;
 
   CategoryState copyWith({
     CategoryLoadStatus? status,
@@ -107,18 +106,10 @@ class CategoryState extends Equatable {
       allFilteredCount: allFilteredCount ?? this.allFilteredCount,
       selectedCategoryKey: selectedCategoryKey ?? this.selectedCategoryKey,
       difficultyFilter: difficultyFilter ?? this.difficultyFilter,
-      errorMessage:
-          clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
+      errorMessage: clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
     );
   }
 
   @override
-  List<Object?> get props => <Object?>[
-        status,
-        items,
-        allFilteredCount,
-        selectedCategoryKey,
-        difficultyFilter,
-        errorMessage,
-      ];
+  List<Object?> get props => <Object?>[status, items, allFilteredCount, selectedCategoryKey, difficultyFilter, errorMessage];
 }

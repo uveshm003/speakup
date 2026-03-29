@@ -31,10 +31,7 @@ const List<String> kCategoryPresetEmojis = <String>[
   '🔥',
 ];
 
-Future<void> showCategoryEditorSheet({
-  required BuildContext context,
-  CustomCategory? editing,
-}) async {
+Future<void> showCategoryEditorSheet({required BuildContext context, CustomCategory? editing}) async {
   final int opBefore = context.read<CustomCategoryBloc>().state.opSeq;
   await showModalBottomSheet<void>(
     context: context,
@@ -43,13 +40,10 @@ Future<void> showCategoryEditorSheet({
     showDragHandle: true,
     builder: (BuildContext context) {
       return BlocListener<CustomCategoryBloc, CustomCategoryState>(
-        listenWhen: (CustomCategoryState p, CustomCategoryState c) =>
-            c.opSeq != p.opSeq || c.errorMessage != p.errorMessage,
+        listenWhen: (CustomCategoryState p, CustomCategoryState c) => c.opSeq != p.opSeq || c.errorMessage != p.errorMessage,
         listener: (BuildContext context, CustomCategoryState state) {
           if (state.errorMessage != null) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(state.errorMessage!)),
-            );
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.errorMessage!)));
             return;
           }
           if (state.opSeq > opBefore) {
@@ -63,10 +57,7 @@ Future<void> showCategoryEditorSheet({
 }
 
 class _CategoryEditorBody extends StatefulWidget {
-  const _CategoryEditorBody({
-    required this.opBefore,
-    this.editing,
-  });
+  const _CategoryEditorBody({required this.opBefore, this.editing});
 
   final CustomCategory? editing;
   final int opBefore;
@@ -122,21 +113,14 @@ class _CategoryEditorBodyState extends State<_CategoryEditorBody> {
       padding: EdgeInsets.only(bottom: pad.bottom),
       child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(
-            AppSpacing.xxl,
-            AppSpacing.sm,
-            AppSpacing.xxl,
-            AppSpacing.xxl,
-          ),
+          padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.sm, AppSpacing.xxl, AppSpacing.xxl),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
               Text(
                 widget.editing != null ? 'Edit Category' : 'New Category',
-                style: theme.textTheme.titleLarge?.copyWith(
-                  fontWeight: FontWeight.w700,
-                ),
+                style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
               ),
               const SizedBox(height: AppSpacing.lg),
               SizedBox(
@@ -149,16 +133,12 @@ class _CategoryEditorBodyState extends State<_CategoryEditorBody> {
                     final String e = kCategoryPresetEmojis[i];
                     final bool sel = e == _emoji;
                     return Material(
-                      color: sel
-                          ? theme.colorScheme.primaryContainer
-                          : theme.colorScheme.surfaceContainerHighest,
+                      color: sel ? theme.colorScheme.primaryContainer : theme.colorScheme.surfaceContainerHighest,
                       borderRadius: BorderRadius.circular(12),
                       child: InkWell(
                         onTap: () => setState(() => _emoji = e),
                         borderRadius: BorderRadius.circular(12),
-                        child: Center(
-                          child: Text(e, style: const TextStyle(fontSize: 26)),
-                        ),
+                        child: Center(child: Text(e, style: const TextStyle(fontSize: 26))),
                       ),
                     );
                   },
@@ -168,19 +148,11 @@ class _CategoryEditorBodyState extends State<_CategoryEditorBody> {
               TextField(
                 controller: _nameController,
                 maxLength: 30,
-                decoration: const InputDecoration(
-                  labelText: 'Category name',
-                ),
+                decoration: const InputDecoration(labelText: 'Category name'),
               ),
               const SizedBox(height: AppSpacing.xl),
-              FilledButton(
-                onPressed: _save,
-                child: const Text('Save'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(),
-                child: const Text('Cancel'),
-              ),
+              FilledButton(onPressed: _save, child: const Text('Save')),
+              TextButton(onPressed: () => Navigator.of(context).pop(), child: const Text('Cancel')),
             ],
           ),
         ),

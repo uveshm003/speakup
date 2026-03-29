@@ -31,16 +31,5 @@ class TopicCard extends Equatable {
   final String? customCategoryId;
 
   @override
-  List<Object?> get props => <Object?>[
-        cardId,
-        title,
-        category,
-        difficulty,
-        guide,
-        vocabBoost,
-        isCustom,
-        isFavorite,
-        createdAt,
-        customCategoryId,
-      ];
+  List<Object?> get props => <Object?>[cardId, title, category, difficulty, guide, vocabBoost, isCustom, isFavorite, createdAt, customCategoryId];
 }

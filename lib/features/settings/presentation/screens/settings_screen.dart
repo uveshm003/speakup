@@ -20,12 +20,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   PackageInfo? _packageInfo;
 
   static const List<double> _textScales = <double>[0.85, 1.0, 1.15, 1.3];
-  static const List<String> _textScaleLabels = <String>[
-    'Small',
-    'Normal',
-    'Large',
-    'Extra Large',
-  ];
+  static const List<String> _textScaleLabels = <String>['Small', 'Normal', 'Large', 'Extra Large'];
 
   @override
   void initState() {
@@ -51,8 +46,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SettingsBloc, SettingsState>(
-      listenWhen: (SettingsState p, SettingsState c) =>
-          c.errorMessage != null && c.errorMessage != p.errorMessage,
+      listenWhen: (SettingsState p, SettingsState c) => c.errorMessage != null && c.errorMessage != p.errorMessage,
       listener: (BuildContext context, SettingsState state) {
         final String? m = state.errorMessage;
         if (m != null) {
@@ -60,11 +54,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
         }
       },
       builder: (BuildContext context, SettingsState state) {
-        if (state.status == SettingsStatus.initial ||
-            state.status == SettingsStatus.loading) {
-          return const Scaffold(
-            body: ShimmerListPlaceholder(itemCount: 6, itemHeight: 56),
-          );
+        if (state.status == SettingsStatus.initial || state.status == SettingsStatus.loading) {
+          return const Scaffold(body: ShimmerListPlaceholder(itemCount: 6, itemHeight: 56));
         }
 
         final ThemeData theme = Theme.of(context);
@@ -79,42 +70,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
               _card(
                 context,
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(
-                    AppSpacing.md,
-                    AppSpacing.sm,
-                    AppSpacing.md,
-                    AppSpacing.md,
-                  ),
+                  padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.sm, AppSpacing.md, AppSpacing.md),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: <Widget>[
-                      Text(
-                        'Theme',
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
+                      Text('Theme', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
                       const SizedBox(height: AppSpacing.sm),
                       SegmentedButton<ThemeMode>(
                         segments: const <ButtonSegment<ThemeMode>>[
-                          ButtonSegment<ThemeMode>(
-                            value: ThemeMode.light,
-                            label: Text('Light'),
-                          ),
-                          ButtonSegment<ThemeMode>(
-                            value: ThemeMode.dark,
-                            label: Text('Dark'),
-                          ),
-                          ButtonSegment<ThemeMode>(
-                            value: ThemeMode.system,
-                            label: Text('System'),
-                          ),
+                          ButtonSegment<ThemeMode>(value: ThemeMode.light, label: Text('Light')),
+                          ButtonSegment<ThemeMode>(value: ThemeMode.dark, label: Text('Dark')),
+                          ButtonSegment<ThemeMode>(value: ThemeMode.system, label: Text('System')),
                         ],
                         selected: <ThemeMode>{themeMode},
                         onSelectionChanged: (Set<ThemeMode> next) {
-                          context.read<SettingsBloc>().add(
-                                AppearanceThemeModeChanged(next.first),
-                              );
+                          context.read<SettingsBloc>().add(AppearanceThemeModeChanged(next.first));
                         },
                       ),
                     ],
@@ -134,30 +104,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                     const Divider(height: 1),
                     Padding(
-                      padding: const EdgeInsets.fromLTRB(
-                        AppSpacing.lg,
-                        AppSpacing.md,
-                        AppSpacing.lg,
-                        AppSpacing.sm,
-                      ),
+                      padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.sm),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: <Widget>[
-                              Text(
-                                'Text size',
-                                style: theme.textTheme.titleSmall?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
+                              Text('Text size', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
                               Text(
                                 _textScaleLabels[_scaleIndex(state.settings.textSizeScale)],
-                                style: theme.textTheme.labelLarge?.copyWith(
-                                  color: theme.colorScheme.primary,
-                                  fontWeight: FontWeight.w700,
-                                ),
+                                style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
                               ),
                             ],
                           ),
@@ -168,16 +125,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             divisions: 3,
                             label: _textScaleLabels[_scaleIndex(state.settings.textSizeScale)],
                             onChanged: (double v) {
-                              context.read<SettingsBloc>().add(
-                                    TextScaleChanged(_textScales[v.round()]),
-                                  );
+                              context.read<SettingsBloc>().add(TextScaleChanged(_textScales[v.round()]));
                             },
                           ),
                           Text(
                             'The quick brown fox jumps over the lazy dog.',
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              fontSize: (theme.textTheme.bodyMedium?.fontSize ?? 14) *
-                                  state.settings.textSizeScale,
+                              fontSize: (theme.textTheme.bodyMedium?.fontSize ?? 14) * state.settings.textSizeScale,
                             ),
                           ),
                         ],
@@ -201,22 +155,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ListTile(
                       title: const Text('Clear session history'),
                       subtitle: const Text('Removes all practice sessions from this device'),
-                      trailing: Icon(
-                        Icons.delete_outline_rounded,
-                        color: theme.colorScheme.error,
-                      ),
+                      trailing: Icon(Icons.delete_outline_rounded, color: theme.colorScheme.error),
                       onTap: () => _confirmClearHistory(context),
                     ),
                     const Divider(height: 1),
                     ListTile(
                       title: const Text('App version'),
                       trailing: Text(
-                        _packageInfo == null
-                            ? '…'
-                            : '${_packageInfo!.version} (${_packageInfo!.buildNumber})',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
+                        _packageInfo == null ? '…' : '${_packageInfo!.version} (${_packageInfo!.buildNumber})',
+                        style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                       ),
                     ),
                   ],
@@ -231,11 +178,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       title: const Text('Privacy policy'),
                       trailing: const Icon(Icons.open_in_new_rounded, size: 20),
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Privacy policy link coming soon.'),
-                          ),
-                        );
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Privacy policy link coming soon.')));
                       },
                     ),
                     const Divider(height: 1),
@@ -243,11 +186,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       title: const Text('Rate the app'),
                       trailing: const Icon(Icons.star_outline_rounded),
                       onTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Thanks! App store rating coming soon.'),
-                          ),
-                        );
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Thanks! App store rating coming soon.')));
                       },
                     ),
                   ],
@@ -258,9 +197,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 child: Center(
                   child: Text(
                     'Built with Flutter 💙',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
-                    ),
+                    style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7)),
                   ),
                 ),
               ),
@@ -286,19 +223,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget _sectionLabel(BuildContext context, String title) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(
-        AppSpacing.lg,
-        AppSpacing.lg,
-        AppSpacing.lg,
-        AppSpacing.sm,
-      ),
+      padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.lg, AppSpacing.lg, AppSpacing.sm),
       child: Text(
         title.toUpperCase(),
-        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.6,
-              color: Theme.of(context).colorScheme.onSurfaceVariant,
-            ),
+        style: Theme.of(
+          context,
+        ).textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700, letterSpacing: 0.6, color: Theme.of(context).colorScheme.onSurfaceVariant),
       ),
     );
   }
@@ -320,18 +250,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (BuildContext ctx) => AlertDialog(
         title: const Text('Replay onboarding?'),
-        content: const Text(
-          'You will see the welcome screens again. You can finish or skip to return to the app.',
-        ),
+        content: const Text('You will see the welcome screens again. You can finish or skip to return to the app.'),
         actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(ctx, true),
-            child: const Text('Continue'),
-          ),
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
+          FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Continue')),
         ],
       ),
     );
@@ -345,19 +267,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (BuildContext ctx) => AlertDialog(
         title: const Text('Clear all session history?'),
-        content: const Text(
-          'This removes every saved practice session. Your streak will be recalculated. This cannot be undone.',
-        ),
+        content: const Text('This removes every saved practice session. Your streak will be recalculated. This cannot be undone.'),
         actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: const Text('Cancel'),
-          ),
+          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
           FilledButton(
-            style: FilledButton.styleFrom(
-              backgroundColor: Theme.of(ctx).colorScheme.error,
-              foregroundColor: Theme.of(ctx).colorScheme.onError,
-            ),
+            style: FilledButton.styleFrom(backgroundColor: Theme.of(ctx).colorScheme.error, foregroundColor: Theme.of(ctx).colorScheme.onError),
             onPressed: () => Navigator.pop(ctx, true),
             child: const Text('Clear all'),
           ),
@@ -401,10 +315,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 }
 
 class _DefaultTimerSheet extends StatefulWidget {
-  const _DefaultTimerSheet({
-    required this.initialSeconds,
-    required this.onPick,
-  });
+  const _DefaultTimerSheet({required this.initialSeconds, required this.onPick});
 
   final int initialSeconds;
   final ValueChanged<int> onPick;
@@ -415,13 +326,7 @@ class _DefaultTimerSheet extends StatefulWidget {
 
 class _DefaultTimerSheetState extends State<_DefaultTimerSheet> {
   static const List<int> _presets = <int>[30, 60, 120, 180, 300];
-  static const List<String> _labels = <String>[
-    '30s',
-    '1m',
-    '2m',
-    '3m',
-    '5m',
-  ];
+  static const List<String> _labels = <String>['30s', '1m', '2m', '3m', '5m'];
 
   late int _selected;
   bool _custom = false;
@@ -468,10 +373,7 @@ class _DefaultTimerSheetState extends State<_DefaultTimerSheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          Text(
-            'Default practice timer',
-            style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
-          ),
+          Text('Default practice timer', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
           const SizedBox(height: AppSpacing.md),
           Wrap(
             spacing: AppSpacing.sm,
@@ -509,10 +411,7 @@ class _DefaultTimerSheetState extends State<_DefaultTimerSheet> {
             TextField(
               controller: _customField,
               keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                labelText: _customMinutes ? 'Minutes' : 'Seconds',
-                border: const OutlineInputBorder(),
-              ),
+              decoration: InputDecoration(labelText: _customMinutes ? 'Minutes' : 'Seconds', border: const OutlineInputBorder()),
             ),
             Align(
               alignment: Alignment.centerRight,

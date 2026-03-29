@@ -20,31 +20,25 @@ class CardAssetDataSource {
   Box<TopicCardEntity> get _box => _store.box<TopicCardEntity>();
 
   Future<Either<Failure, void>> seedBuiltInDeckIfNeeded() async {
-    final Either<Failure, UserSettings> settingsResult =
-        await _settingsRepository.getSettings();
-    return await settingsResult.fold<Future<Either<Failure, void>>>(
-      (Failure l) async => Left<Failure, void>(l),
-      (UserSettings settings) async {
-        if (settings.cardsSeeded) {
-          return const Right<Failure, void>(null);
+    final Either<Failure, UserSettings> settingsResult = await _settingsRepository.getSettings();
+    return await settingsResult.fold<Future<Either<Failure, void>>>((Failure l) async => Left<Failure, void>(l), (UserSettings settings) async {
+      if (settings.cardsSeeded) {
+        return const Right<Failure, void>(null);
+      }
+      try {
+        final String raw = await rootBundle.loadString(AppAssets.cardsJson);
+        final List<dynamic> list = jsonDecode(raw) as List<dynamic>;
+        for (final dynamic item in list) {
+          final Map<String, dynamic> m = item as Map<String, dynamic>;
+          final TopicCardEntity e = _entityFromJson(m);
+          _box.put(e);
         }
-        try {
-          final String raw = await rootBundle.loadString(AppAssets.cardsJson);
-          final List<dynamic> list = jsonDecode(raw) as List<dynamic>;
-          for (final dynamic item in list) {
-            final Map<String, dynamic> m = item as Map<String, dynamic>;
-            final TopicCardEntity e = _entityFromJson(m);
-            _box.put(e);
-          }
-          await _settingsRepository.saveSettings(
-            settings.copyWith(cardsSeeded: true),
-          );
-          return const Right<Failure, void>(null);
-        } catch (e, _) {
-          return Left<Failure, void>(FormatFailure(e.toString()));
-        }
-      },
-    );
+        await _settingsRepository.saveSettings(settings.copyWith(cardsSeeded: true));
+        return const Right<Failure, void>(null);
+      } catch (e, _) {
+        return Left<Failure, void>(FormatFailure(e.toString()));
+      }
+    });
   }
 
   TopicCardEntity _entityFromJson(Map<String, dynamic> m) {

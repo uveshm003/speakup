@@ -25,17 +25,11 @@ List<VocabWord> _parseVocab(String vocabJson) {
   final List<dynamic> list = jsonDecode(vocabJson) as List<dynamic>;
   return list.map((dynamic e) {
     final Map<String, dynamic> m = e as Map<String, dynamic>;
-    return VocabWord(
-      word: m['word']! as String,
-      meaning: m['meaning']! as String,
-    );
+    return VocabWord(word: m['word']! as String, meaning: m['meaning']! as String);
   }).toList();
 }
 
-TopicCardEntity topicCardToEntity(
-  TopicCard card, {
-  int id = 0,
-}) {
+TopicCardEntity topicCardToEntity(TopicCard card, {int id = 0}) {
   final TopicCardEntity e = TopicCardEntity(
     id: id,
     cardId: card.cardId,
@@ -43,11 +37,7 @@ TopicCardEntity topicCardToEntity(
     category: card.category,
     difficultyRaw: card.difficulty.raw,
     guideJson: jsonEncode(card.guide),
-    vocabJson: jsonEncode(
-      card.vocabBoost
-          .map((VocabWord v) => <String, String>{'word': v.word, 'meaning': v.meaning})
-          .toList(),
-    ),
+    vocabJson: jsonEncode(card.vocabBoost.map((VocabWord v) => <String, String>{'word': v.word, 'meaning': v.meaning}).toList()),
     isCustom: card.isCustom,
     isFavorite: card.isFavorite,
     createdAt: card.createdAt,

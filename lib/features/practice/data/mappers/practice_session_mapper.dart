@@ -13,10 +13,7 @@ PracticeSession practiceSessionFromEntity(PracticeSessionEntity e) {
   );
 }
 
-PracticeSessionEntity practiceSessionToEntity(
-  PracticeSession s, {
-  int id = 0,
-}) {
+PracticeSessionEntity practiceSessionToEntity(PracticeSession s, {int id = 0}) {
   return PracticeSessionEntity(
     id: id,
     sessionId: s.sessionId,

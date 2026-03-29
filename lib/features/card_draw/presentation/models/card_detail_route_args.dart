@@ -3,10 +3,7 @@ import 'package:speakup/features/card_draw/presentation/bloc/card_draw_bloc.dart
 
 /// Route [extra] for [CardDetailScreen]: supports legacy [TopicCard] only or [card] + optional [drawBloc].
 class CardDetailRouteArgs {
-  const CardDetailRouteArgs({
-    required this.card,
-    this.drawBloc,
-  });
+  const CardDetailRouteArgs({required this.card, this.drawBloc});
 
   final TopicCard card;
   final CardDrawBloc? drawBloc;

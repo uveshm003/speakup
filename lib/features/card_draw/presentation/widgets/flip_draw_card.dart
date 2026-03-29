@@ -34,8 +34,7 @@ class FlipDrawCard extends StatefulWidget {
   State<FlipDrawCard> createState() => _FlipDrawCardState();
 }
 
-class _FlipDrawCardState extends State<FlipDrawCard>
-    with TickerProviderStateMixin {
+class _FlipDrawCardState extends State<FlipDrawCard> with TickerProviderStateMixin {
   late final AnimationController _entranceController;
   late final Animation<double> _entranceScale;
   late final AnimationController _flipController;
@@ -48,26 +47,12 @@ class _FlipDrawCardState extends State<FlipDrawCard>
   @override
   void initState() {
     super.initState();
-    _entranceController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 420),
-    );
-    _entranceScale = Tween<double>(begin: 0.8, end: 1).animate(
-      CurvedAnimation(parent: _entranceController, curve: Curves.easeOutCubic),
-    );
-    _flipController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 600),
-    );
-    _flipTurns = TweenSequence<double>(
-      <TweenSequenceItem<double>>[
-        TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0, end: 1)
-              .chain(CurveTween(curve: Curves.easeInOutCubic)),
-          weight: 1,
-        ),
-      ],
-    ).animate(_flipController);
+    _entranceController = AnimationController(vsync: this, duration: const Duration(milliseconds: 420));
+    _entranceScale = Tween<double>(begin: 0.8, end: 1).animate(CurvedAnimation(parent: _entranceController, curve: Curves.easeOutCubic));
+    _flipController = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+    _flipTurns = TweenSequence<double>(<TweenSequenceItem<double>>[
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 0, end: 1).chain(CurveTween(curve: Curves.easeInOutCubic)), weight: 1),
+    ]).animate(_flipController);
     _flipController.addStatusListener(_onFlipStatus);
     _runEntranceThenFlip();
   }
@@ -152,10 +137,7 @@ class _FlipDrawCardState extends State<FlipDrawCard>
       child: Material(
         color: Colors.transparent,
         child: AnimatedBuilder(
-          animation: Listenable.merge(<Listenable>[
-            _entranceController,
-            _flipController,
-          ]),
+          animation: Listenable.merge(<Listenable>[_entranceController, _flipController]),
           builder: (BuildContext context, Widget? child) {
             final double scale = _entranceScale.value;
             final double t = _flipTurns.value;
@@ -188,8 +170,7 @@ class _FlipDrawCardState extends State<FlipDrawCard>
                               card: widget.card,
                               accent: accent,
                               theme: theme,
-                              difficultyLabel:
-                                  _difficultyLabel(widget.card.difficulty),
+                              difficultyLabel: _difficultyLabel(widget.card.difficulty),
                               titleOpacity: _titleOpacity,
                               badgesOpacity: _badgesOpacity,
                               actionsOpacity: _actionsOpacity,
@@ -227,18 +208,8 @@ class _CardFront extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(24),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: theme.shadowColor.withValues(alpha: 0.18),
-              blurRadius: 28,
-              offset: const Offset(0, 14),
-            ),
-          ],
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: <Color>[start, end],
-          ),
+          boxShadow: <BoxShadow>[BoxShadow(color: theme.shadowColor.withValues(alpha: 0.18), blurRadius: 28, offset: const Offset(0, 14))],
+          gradient: LinearGradient(begin: Alignment.topLeft, end: Alignment.bottomRight, colors: <Color>[start, end]),
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(24),
@@ -246,19 +217,13 @@ class _CardFront extends StatelessWidget {
             fit: StackFit.expand,
             children: <Widget>[
               CustomPaint(
-                painter: _DotPatternPainter(
-                  color: Colors.white.withValues(alpha: dark ? 0.06 : 0.12),
-                ),
+                painter: _DotPatternPainter(color: Colors.white.withValues(alpha: dark ? 0.06 : 0.12)),
               ),
               Center(
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Icon(
-                      Icons.record_voice_over_rounded,
-                      size: 56,
-                      color: theme.colorScheme.onPrimary.withValues(alpha: 0.95),
-                    ),
+                    Icon(Icons.record_voice_over_rounded, size: 56, color: theme.colorScheme.onPrimary.withValues(alpha: 0.95)),
                     const SizedBox(height: AppSpacing.md),
                     Text(
                       'SpeakUp',
@@ -280,10 +245,7 @@ class _CardFront extends StatelessWidget {
                   width: 4,
                   decoration: BoxDecoration(
                     color: accent,
-                    borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      bottomLeft: Radius.circular(24),
-                    ),
+                    borderRadius: const BorderRadius.only(topLeft: Radius.circular(24), bottomLeft: Radius.circular(24)),
                   ),
                 ),
               ),
@@ -344,8 +306,7 @@ class _CardBackPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color bg =
-        theme.brightness == Brightness.dark ? AppColorsDark.surface : Colors.white;
+    final Color bg = theme.brightness == Brightness.dark ? AppColorsDark.surface : Colors.white;
 
     return Material(
       color: Colors.transparent,
@@ -353,25 +314,14 @@ class _CardBackPreview extends StatelessWidget {
         decoration: BoxDecoration(
           color: bg,
           borderRadius: BorderRadius.circular(24),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: theme.shadowColor.withValues(alpha: 0.16),
-              blurRadius: 28,
-              offset: const Offset(0, 14),
-            ),
-          ],
+          boxShadow: <BoxShadow>[BoxShadow(color: theme.shadowColor.withValues(alpha: 0.16), blurRadius: 28, offset: const Offset(0, 14))],
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(24),
           child: Stack(
             fit: StackFit.expand,
             children: <Widget>[
-              Positioned(
-                left: 0,
-                top: 0,
-                bottom: 0,
-                child: Container(width: 4, color: accent),
-              ),
+              Positioned(left: 0, top: 0, bottom: 0, child: Container(width: 4, color: accent)),
               Padding(
                 padding: const EdgeInsets.fromLTRB(20, 18, 18, 14),
                 child: Column(
@@ -382,19 +332,9 @@ class _CardBackPreview extends StatelessWidget {
                       duration: const Duration(milliseconds: 280),
                       child: Row(
                         children: <Widget>[
-                          _pill(
-                            context,
-                            card.category,
-                            theme.colorScheme.primaryContainer,
-                            theme.colorScheme.onPrimaryContainer,
-                          ),
+                          _pill(context, card.category, theme.colorScheme.primaryContainer, theme.colorScheme.onPrimaryContainer),
                           const Spacer(),
-                          _pill(
-                            context,
-                            difficultyLabel,
-                            theme.colorScheme.secondaryContainer,
-                            theme.colorScheme.onSecondaryContainer,
-                          ),
+                          _pill(context, difficultyLabel, theme.colorScheme.secondaryContainer, theme.colorScheme.onSecondaryContainer),
                         ],
                       ),
                     ),
@@ -421,21 +361,13 @@ class _CardBackPreview extends StatelessWidget {
                     AnimatedOpacity(
                       opacity: badgesOpacity,
                       duration: const Duration(milliseconds: 280),
-                      child: _teaserRow(
-                        context,
-                        icon: Icons.explore_rounded,
-                        label: 'Mini Guide',
-                      ),
+                      child: _teaserRow(context, icon: Icons.explore_rounded, label: 'Mini Guide'),
                     ),
                     const SizedBox(height: AppSpacing.sm),
                     AnimatedOpacity(
                       opacity: badgesOpacity,
                       duration: const Duration(milliseconds: 280),
-                      child: _teaserRow(
-                        context,
-                        icon: Icons.menu_book_rounded,
-                        label: 'Vocabulary Boost',
-                      ),
+                      child: _teaserRow(context, icon: Icons.menu_book_rounded, label: 'Vocabulary Boost'),
                     ),
                     const SizedBox(height: AppSpacing.md),
                     AnimatedOpacity(
@@ -469,10 +401,7 @@ class _CardBackPreview extends StatelessWidget {
                 right: 8,
                 child: IconButton.filledTonal(
                   onPressed: onToggleFavorite,
-                  icon: Icon(
-                    isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded,
-                    color: isFavorite ? Colors.redAccent : null,
-                  ),
+                  icon: Icon(isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded, color: isFavorite ? Colors.redAccent : null),
                 ),
               ),
             ],
@@ -482,54 +411,28 @@ class _CardBackPreview extends StatelessWidget {
     );
   }
 
-  Widget _pill(
-    BuildContext context,
-    String text,
-    Color bg,
-    Color fg,
-  ) {
+  Widget _pill(BuildContext context, String text, Color bg, Color fg) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.sm,
-        vertical: 4,
-      ),
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(AppRadius.full),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 4),
+      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(AppRadius.full)),
       child: Text(
         text,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: theme.textTheme.labelMedium?.copyWith(
-          color: fg,
-          fontWeight: FontWeight.w600,
-        ),
+        style: theme.textTheme.labelMedium?.copyWith(color: fg, fontWeight: FontWeight.w600),
       ),
     );
   }
 
-  Widget _teaserRow(
-    BuildContext context, {
-    required IconData icon,
-    required String label,
-  }) {
+  Widget _teaserRow(BuildContext context, {required IconData icon, required String label}) {
     return Row(
       children: <Widget>[
         Icon(icon, size: 20, color: theme.colorScheme.primary),
         const SizedBox(width: AppSpacing.sm),
         Expanded(
-          child: Text(
-            label,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
-          ),
+          child: Text(label, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
         ),
-        Icon(
-          Icons.chevron_right_rounded,
-          color: theme.colorScheme.onSurfaceVariant,
-        ),
+        Icon(Icons.chevron_right_rounded, color: theme.colorScheme.onSurfaceVariant),
       ],
     );
   }

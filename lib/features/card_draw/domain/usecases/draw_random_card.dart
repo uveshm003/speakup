@@ -16,9 +16,7 @@ class DrawRandomCard {
     final Either<Failure, List<TopicCard>> result = await _repository.getAll();
     return result.flatMap((List<TopicCard> cards) {
       if (cards.isEmpty) {
-        return Left<Failure, TopicCard>(
-          const FormatFailure('No cards available'),
-        );
+        return Left<Failure, TopicCard>(const FormatFailure('No cards available'));
       }
       return Right<Failure, TopicCard>(cards[_random.nextInt(cards.length)]);
     });

@@ -3,13 +3,7 @@ import 'package:equatable/equatable.dart';
 import 'package:speakup/features/card_draw/domain/entities/difficulty.dart';
 import 'package:speakup/features/card_draw/domain/entities/topic_card.dart';
 
-enum CardDrawStatus {
-  initial,
-  loading,
-  success,
-  failure,
-  empty,
-}
+enum CardDrawStatus { initial, loading, success, failure, empty }
 
 class CardDrawState extends Equatable {
   const CardDrawState({
@@ -50,22 +44,12 @@ class CardDrawState extends Equatable {
       isAnimating: isAnimating ?? this.isAnimating,
       isFavorite: isFavorite ?? this.isFavorite,
       drawCount: drawCount ?? this.drawCount,
-      errorMessage:
-          clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
+      errorMessage: clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
       filterCategory: filterCategory ?? this.filterCategory,
       filterDifficulty: filterDifficulty ?? this.filterDifficulty,
     );
   }
 
   @override
-  List<Object?> get props => <Object?>[
-        status,
-        currentCard,
-        isAnimating,
-        isFavorite,
-        drawCount,
-        errorMessage,
-        filterCategory,
-        filterDifficulty,
-      ];
+  List<Object?> get props => <Object?>[status, currentCard, isAnimating, isFavorite, drawCount, errorMessage, filterCategory, filterDifficulty];
 }

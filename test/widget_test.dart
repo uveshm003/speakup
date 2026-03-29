@@ -10,8 +10,7 @@ import 'package:speakup/core/bootstrap/data_bootstrap.dart';
 void main() {
   setUpAll(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
-    final Directory temp =
-        Directory.systemTemp.createTempSync('speakup_widget_test_hive');
+    final Directory temp = Directory.systemTemp.createTempSync('speakup_widget_test_hive');
     Hive.init(temp.path);
     await bootstrapDataLayer(enableObjectBox: false);
   });

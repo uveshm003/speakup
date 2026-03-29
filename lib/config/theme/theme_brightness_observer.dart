@@ -12,12 +12,10 @@ class ThemeBrightnessObserver extends StatefulWidget {
   final Widget child;
 
   @override
-  State<ThemeBrightnessObserver> createState() =>
-      _ThemeBrightnessObserverState();
+  State<ThemeBrightnessObserver> createState() => _ThemeBrightnessObserverState();
 }
 
-class _ThemeBrightnessObserverState extends State<ThemeBrightnessObserver>
-    with WidgetsBindingObserver {
+class _ThemeBrightnessObserverState extends State<ThemeBrightnessObserver> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();

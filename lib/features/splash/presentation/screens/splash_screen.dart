@@ -18,8 +18,7 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen>
-    with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _logoOpacity;
   late final Animation<Offset> _logoSlide;
@@ -29,18 +28,12 @@ class _SplashScreenState extends State<SplashScreen>
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 900),
-    );
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 900));
     _logoOpacity = CurvedAnimation(
       parent: _controller,
       curve: const Interval(0, 0.55, curve: Curves.easeOut),
     );
-    _logoSlide = Tween<Offset>(
-      begin: const Offset(0, 0.12),
-      end: Offset.zero,
-    ).animate(
+    _logoSlide = Tween<Offset>(begin: const Offset(0, 0.12), end: Offset.zero).animate(
       CurvedAnimation(
         parent: _controller,
         curve: const Interval(0, 0.6, curve: Curves.easeOutCubic),
@@ -59,10 +52,8 @@ class _SplashScreenState extends State<SplashScreen>
     if (!mounted) {
       return;
     }
-    final Box<UserSettingsHive> box =
-        Hive.box<UserSettingsHive>(AppConstants.hiveSettingsBoxName);
-    final UserSettingsHive? hive =
-        box.get(AppConstants.hiveUserSettingsKey);
+    final Box<UserSettingsHive> box = Hive.box<UserSettingsHive>(AppConstants.hiveSettingsBoxName);
+    final UserSettingsHive? hive = box.get(AppConstants.hiveUserSettingsKey);
     final bool seen = hive?.hasSeenOnboarding ?? false;
     if (!mounted) {
       return;
@@ -92,12 +83,7 @@ class _SplashScreenState extends State<SplashScreen>
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: <Color>[
-              theme.brightness == Brightness.dark
-                  ? AppColorsDark.background
-                  : AppColors.background,
-              theme.colorScheme.surface,
-            ],
+            colors: <Color>[theme.brightness == Brightness.dark ? AppColorsDark.background : AppColors.background, theme.colorScheme.surface],
           ),
         ),
         child: Center(
@@ -110,12 +96,7 @@ class _SplashScreenState extends State<SplashScreen>
                   position: _logoSlide,
                   child: Text(
                     'SpeakUp',
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 40,
-                      fontWeight: FontWeight.w800,
-                      color: primary,
-                      letterSpacing: -0.5,
-                    ),
+                    style: GoogleFonts.plusJakartaSans(fontSize: 40, fontWeight: FontWeight.w800, color: primary, letterSpacing: -0.5),
                   ),
                 ),
               ),
@@ -124,11 +105,7 @@ class _SplashScreenState extends State<SplashScreen>
                 opacity: _tagOpacity,
                 child: Text(
                   'Speak with confidence. Every day.',
-                  style: GoogleFonts.inter(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
+                  style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w500, color: theme.colorScheme.onSurfaceVariant),
                   textAlign: TextAlign.center,
                 ),
               ),

@@ -19,17 +19,9 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   StreamSubscription<void>? _tickSub;
   int _tickingRemaining = 0;
 
-  void _onDurationSelected(
-    TimerDurationSelected event,
-    Emitter<TimerState> emit,
-  ) {
+  void _onDurationSelected(TimerDurationSelected event, Emitter<TimerState> emit) {
     if (state.status == TimerStatus.initial || state.status == TimerStatus.stopped) {
-      emit(
-        state.copyWith(
-          duration: event.seconds,
-          remaining: event.seconds,
-        ),
-      );
+      emit(state.copyWith(duration: event.seconds, remaining: event.seconds));
     }
   }
 
@@ -40,12 +32,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
       return;
     }
     _tickingRemaining = total;
-    emit(
-      state.copyWith(
-        status: TimerStatus.running,
-        remaining: total,
-      ),
-    );
+    emit(state.copyWith(status: TimerStatus.running, remaining: total));
     _tickSub = Stream.periodic(const Duration(seconds: 1)).listen((_) {
       _tickingRemaining--;
       if (_tickingRemaining <= 0) {
@@ -57,12 +44,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   }
 
   void _onTicked(TimerTicked event, Emitter<TimerState> emit) {
-    emit(
-      state.copyWith(
-        remaining: event.remaining,
-        status: TimerStatus.running,
-      ),
-    );
+    emit(state.copyWith(remaining: event.remaining, status: TimerStatus.running));
   }
 
   Future<void> _onPaused(TimerPaused event, Emitter<TimerState> emit) async {
@@ -98,12 +80,7 @@ class TimerBloc extends Bloc<TimerEvent, TimerState> {
   Future<void> _onCompleted(TimerCompleted event, Emitter<TimerState> emit) async {
     await _tickSub?.cancel();
     _tickSub = null;
-    emit(
-      state.copyWith(
-        status: TimerStatus.completed,
-        remaining: 0,
-      ),
-    );
+    emit(state.copyWith(status: TimerStatus.completed, remaining: 0));
   }
 
   @override

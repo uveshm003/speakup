@@ -48,18 +48,11 @@ class FavoritesScreen extends StatelessWidget {
             return Center(child: Text(state.errorMessage ?? 'Error'));
           }
           if (state.cards.isEmpty) {
-            return _EmptyFavorites(
-              onBrowse: () => context.go(AppRoutes.home),
-            );
+            return _EmptyFavorites(onBrowse: () => context.go(AppRoutes.home));
           }
           final int cross = MediaQuery.sizeOf(context).width >= 600 ? 3 : 2;
           return GridView.builder(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.lg,
-              AppSpacing.md,
-              AppSpacing.lg,
-              88,
-            ),
+            padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.md, AppSpacing.lg, 88),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: cross,
               mainAxisSpacing: AppSpacing.md,
@@ -92,32 +85,17 @@ class _EmptyFavorites extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(
-              Icons.favorite_border_rounded,
-              size: 80,
-              color: theme.colorScheme.primary.withValues(alpha: 0.45),
-            ),
+            Icon(Icons.favorite_border_rounded, size: 80, color: theme.colorScheme.primary.withValues(alpha: 0.45)),
             const SizedBox(height: AppSpacing.lg),
-            Text(
-              'No favorites yet',
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 22,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
+            Text('No favorites yet', style: GoogleFonts.plusJakartaSans(fontSize: 22, fontWeight: FontWeight.w700)),
             const SizedBox(height: AppSpacing.sm),
             Text(
               'Tap the heart on any card to save it here',
               textAlign: TextAlign.center,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
+              style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
             ),
             const SizedBox(height: AppSpacing.xxl),
-            FilledButton(
-              onPressed: onBrowse,
-              child: const Text('Browse Cards'),
-            ),
+            FilledButton(onPressed: onBrowse, child: const Text('Browse Cards')),
           ],
         ),
       ),
@@ -163,22 +141,13 @@ class _FavoriteTile extends StatelessWidget {
                           child: Align(
                             alignment: Alignment.centerRight,
                             child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: AppSpacing.sm,
-                                vertical: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: accent.withValues(alpha: 0.18),
-                                borderRadius: BorderRadius.circular(AppRadius.full),
-                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 2),
+                              decoration: BoxDecoration(color: accent.withValues(alpha: 0.18), borderRadius: BorderRadius.circular(AppRadius.full)),
                               child: Text(
                                 card.category,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: theme.textTheme.labelSmall?.copyWith(
-                                  color: accent,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                                style: theme.textTheme.labelSmall?.copyWith(color: accent, fontWeight: FontWeight.w600),
                               ),
                             ),
                           ),
@@ -187,20 +156,12 @@ class _FavoriteTile extends StatelessWidget {
                     ),
                     const SizedBox(height: AppSpacing.xs),
                     Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.sm,
-                        vertical: 2,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 2),
                       decoration: BoxDecoration(
                         color: theme.colorScheme.secondaryContainer.withValues(alpha: 0.35),
                         borderRadius: BorderRadius.circular(AppRadius.sm),
                       ),
-                      child: Text(
-                        _difficultyLabel(card.difficulty),
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
+                      child: Text(_difficultyLabel(card.difficulty), style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700)),
                     ),
                     const SizedBox(height: AppSpacing.sm),
                     Expanded(
@@ -208,11 +169,7 @@ class _FavoriteTile extends StatelessWidget {
                         card.title,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w700,
-                          height: 1.25,
-                        ),
+                        style: GoogleFonts.plusJakartaSans(fontSize: 15, fontWeight: FontWeight.w700, height: 1.25),
                       ),
                     ),
                     Row(
@@ -222,9 +179,7 @@ class _FavoriteTile extends StatelessWidget {
                           icon: const Icon(Icons.favorite_rounded),
                           color: theme.colorScheme.error,
                           onPressed: () {
-                            context
-                                .read<FavoritesBloc>()
-                                .add(FavoriteRemoved(card.cardId));
+                            context.read<FavoritesBloc>().add(FavoriteRemoved(card.cardId));
                           },
                         ),
                         IconButton(

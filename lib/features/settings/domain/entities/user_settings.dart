@@ -44,12 +44,12 @@ class UserSettings extends Equatable {
 
   @override
   List<Object?> get props => <Object?>[
-        defaultTimerSeconds,
-        textSizeScale,
-        hasSeenOnboarding,
-        themeModeRaw,
-        lastSessionDate,
-        currentStreak,
-        cardsSeeded,
-      ];
+    defaultTimerSeconds,
+    textSizeScale,
+    hasSeenOnboarding,
+    themeModeRaw,
+    lastSessionDate,
+    currentStreak,
+    cardsSeeded,
+  ];
 }

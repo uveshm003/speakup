@@ -20,13 +20,5 @@ class PracticeSession extends Equatable {
   final DateTime completedAt;
 
   @override
-  List<Object?> get props => <Object?>[
-        sessionId,
-        cardId,
-        cardTitle,
-        category,
-        durationSeconds,
-        wasCompleted,
-        completedAt,
-      ];
+  List<Object?> get props => <Object?>[sessionId, cardId, cardTitle, category, durationSeconds, wasCompleted, completedAt];
 }

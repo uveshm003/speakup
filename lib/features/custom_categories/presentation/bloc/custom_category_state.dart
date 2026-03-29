@@ -42,16 +42,12 @@ class CustomCategoryState extends Equatable {
       categories: categories ?? this.categories,
       cardCounts: cardCounts ?? this.cardCounts,
       status: status ?? this.status,
-      errorMessage:
-          clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
-      pendingDeletion: clearPendingDeletion
-          ? null
-          : (pendingDeletion ?? this.pendingDeletion),
+      errorMessage: clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
+      pendingDeletion: clearPendingDeletion ? null : (pendingDeletion ?? this.pendingDeletion),
       opSeq: opSeq ?? this.opSeq,
     );
   }
 
   @override
-  List<Object?> get props =>
-      <Object?>[categories, cardCounts, status, errorMessage, pendingDeletion, opSeq];
+  List<Object?> get props => <Object?>[categories, cardCounts, status, errorMessage, pendingDeletion, opSeq];
 }

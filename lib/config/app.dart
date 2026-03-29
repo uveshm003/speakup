@@ -39,22 +39,12 @@ class SpeakUpApp extends StatelessWidget {
     return _RepositoryProviders(
       child: MultiBlocProvider(
         providers: <BlocProvider<dynamic>>[
-          BlocProvider<ThemeBloc>(
-            create: (BuildContext context) => ThemeBloc(
-              settingsRepository: context.read<SettingsRepository>(),
-            ),
-          ),
+          BlocProvider<ThemeBloc>(create: (BuildContext context) => ThemeBloc(settingsRepository: context.read<SettingsRepository>())),
           BlocProvider<HistoryBloc>(
-            create: (BuildContext context) => HistoryBloc(
-              sessionRepository: context.read<SessionRepository>(),
-              settingsRepository: context.read<SettingsRepository>(),
-            ),
+            create: (BuildContext context) =>
+                HistoryBloc(sessionRepository: context.read<SessionRepository>(), settingsRepository: context.read<SettingsRepository>()),
           ),
-          BlocProvider<FavoritesBloc>(
-            create: (BuildContext context) => FavoritesBloc(
-              cardRepository: context.read<CardRepository>(),
-            ),
-          ),
+          BlocProvider<FavoritesBloc>(create: (BuildContext context) => FavoritesBloc(cardRepository: context.read<CardRepository>())),
           BlocProvider<SettingsBloc>(
             create: (BuildContext context) => SettingsBloc(
               settingsRepository: context.read<SettingsRepository>(),
@@ -73,12 +63,10 @@ class SpeakUpApp extends StatelessWidget {
           BlocProvider<NavigationBloc>(create: (_) => NavigationBloc()),
         ],
         child: BlocBuilder<ThemeBloc, ThemeBlocState>(
-          buildWhen: (ThemeBlocState p, ThemeBlocState c) =>
-              p.mode != c.mode || p.brightnessEpoch != c.brightnessEpoch,
+          buildWhen: (ThemeBlocState p, ThemeBlocState c) => p.mode != c.mode || p.brightnessEpoch != c.brightnessEpoch,
           builder: (BuildContext context, ThemeBlocState themeState) {
             return BlocBuilder<SettingsBloc, SettingsState>(
-              buildWhen: (SettingsState p, SettingsState c) =>
-                  p.settings.textSizeScale != c.settings.textSizeScale,
+              buildWhen: (SettingsState p, SettingsState c) => p.settings.textSizeScale != c.settings.textSizeScale,
               builder: (BuildContext context, SettingsState settingsState) {
                 return ThemeBrightnessObserver(
                   child: MaterialApp.router(
@@ -90,11 +78,7 @@ class SpeakUpApp extends StatelessWidget {
                     builder: (BuildContext context, Widget? child) {
                       final MediaQueryData mq = MediaQuery.of(context);
                       return MediaQuery(
-                        data: mq.copyWith(
-                          textScaler: TextScaler.linear(
-                            settingsState.settings.textSizeScale,
-                          ),
-                        ),
+                        data: mq.copyWith(textScaler: TextScaler.linear(settingsState.settings.textSizeScale)),
                         child: child ?? const SizedBox.shrink(),
                       );
                     },
@@ -126,17 +110,10 @@ class _RepositoryProviders extends StatelessWidget {
         providers: <RepositoryProvider<dynamic>>[
           RepositoryProvider<SessionRepository>.value(value: sessionRepo),
           RepositoryProvider<SettingsRepository>(
-            create: (_) => SettingsRepositoryImpl(
-              Hive.box<UserSettingsHive>(AppConstants.hiveSettingsBoxName),
-              sessionRepo,
-            ),
+            create: (_) => SettingsRepositoryImpl(Hive.box<UserSettingsHive>(AppConstants.hiveSettingsBoxName), sessionRepo),
           ),
-          RepositoryProvider<CardRepository>(
-            create: (_) => CardRepositoryImpl(store),
-          ),
-          RepositoryProvider<CategoryRepository>(
-            create: (_) => CategoryRepositoryImpl(store),
-          ),
+          RepositoryProvider<CardRepository>(create: (_) => CardRepositoryImpl(store)),
+          RepositoryProvider<CategoryRepository>(create: (_) => CategoryRepositoryImpl(store)),
         ],
         child: child,
       );
@@ -151,17 +128,10 @@ class _RepositoryProviders extends StatelessWidget {
       providers: <RepositoryProvider<dynamic>>[
         RepositoryProvider<SessionRepository>.value(value: sessionRepo),
         RepositoryProvider<SettingsRepository>(
-          create: (_) => SettingsRepositoryImpl(
-            Hive.box<UserSettingsHive>(AppConstants.hiveSettingsBoxName),
-            sessionRepo,
-          ),
+          create: (_) => SettingsRepositoryImpl(Hive.box<UserSettingsHive>(AppConstants.hiveSettingsBoxName), sessionRepo),
         ),
-        RepositoryProvider<CardRepository>(
-          create: (_) => const StubCardRepository(),
-        ),
-        RepositoryProvider<CategoryRepository>(
-          create: (_) => const StubCategoryRepository(),
-        ),
+        RepositoryProvider<CardRepository>(create: (_) => const StubCardRepository()),
+        RepositoryProvider<CategoryRepository>(create: (_) => const StubCategoryRepository()),
       ],
       child: child,
     );

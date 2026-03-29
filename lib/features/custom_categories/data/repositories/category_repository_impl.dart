@@ -19,11 +19,8 @@ class CategoryRepositoryImpl implements CategoryRepository {
   Future<Either<Failure, List<CustomCategory>>> getAll() async {
     try {
       final List<CustomCategoryEntity> list = _catBox.getAll();
-      list.sort((CustomCategoryEntity a, CustomCategoryEntity b) =>
-          b.createdAt.compareTo(a.createdAt));
-      return Right<Failure, List<CustomCategory>>(
-        list.map(customCategoryFromEntity).toList(),
-      );
+      list.sort((CustomCategoryEntity a, CustomCategoryEntity b) => b.createdAt.compareTo(a.createdAt));
+      return Right<Failure, List<CustomCategory>>(list.map(customCategoryFromEntity).toList());
     } catch (e, _) {
       return Left<Failure, List<CustomCategory>>(CacheFailure(e.toString()));
     }
@@ -43,15 +40,11 @@ class CategoryRepositoryImpl implements CategoryRepository {
   @override
   Future<Either<Failure, CustomCategory>> update(CustomCategory category) async {
     try {
-      final Query<CustomCategoryEntity> q = _catBox
-          .query(CustomCategoryEntity_.categoryId.equals(category.categoryId))
-          .build();
+      final Query<CustomCategoryEntity> q = _catBox.query(CustomCategoryEntity_.categoryId.equals(category.categoryId)).build();
       try {
         final CustomCategoryEntity? existing = q.findFirst();
         if (existing == null) {
-          return Left<Failure, CustomCategory>(
-            CacheFailure('Category not found: ${category.categoryId}'),
-          );
+          return Left<Failure, CustomCategory>(CacheFailure('Category not found: ${category.categoryId}'));
         }
         existing.name = category.name;
         existing.iconEmoji = category.iconEmoji;
@@ -68,9 +61,7 @@ class CategoryRepositoryImpl implements CategoryRepository {
   @override
   Future<Either<Failure, void>> delete(String categoryId) async {
     try {
-      final Query<CustomCategoryEntity> q = _catBox
-          .query(CustomCategoryEntity_.categoryId.equals(categoryId))
-          .build();
+      final Query<CustomCategoryEntity> q = _catBox.query(CustomCategoryEntity_.categoryId.equals(categoryId)).build();
       try {
         final CustomCategoryEntity? cat = q.findFirst();
         if (cat == null) {

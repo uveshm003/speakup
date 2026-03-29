@@ -25,7 +25,5 @@ abstract class CardRepository {
   Future<Either<Failure, void>> deleteCustomCard(String cardId);
 
   /// All custom cards linked to the given custom category id.
-  Future<Either<Failure, List<TopicCard>>> getByCustomCategoryId(
-    String categoryId,
-  );
+  Future<Either<Failure, List<TopicCard>>> getByCustomCategoryId(String categoryId);
 }

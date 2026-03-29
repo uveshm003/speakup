@@ -24,9 +24,7 @@ abstract final class StreakCalculator {
     if (completedAts.isEmpty) {
       return null;
     }
-    return completedAts.reduce(
-      (DateTime a, DateTime b) => a.isAfter(b) ? a : b,
-    );
+    return completedAts.reduce((DateTime a, DateTime b) => a.isAfter(b) ? a : b);
   }
 
   static DateTime _dateOnly(DateTime d) {

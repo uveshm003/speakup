@@ -70,12 +70,9 @@ class SpeakUpThemeTokens extends ThemeExtension<SpeakUpThemeTokens> {
       return this;
     }
     return SpeakUpThemeTokens(
-      difficultyBeginner:
-          Color.lerp(difficultyBeginner, other.difficultyBeginner, t)!,
-      difficultyIntermediate:
-          Color.lerp(difficultyIntermediate, other.difficultyIntermediate, t)!,
-      difficultyAdvanced:
-          Color.lerp(difficultyAdvanced, other.difficultyAdvanced, t)!,
+      difficultyBeginner: Color.lerp(difficultyBeginner, other.difficultyBeginner, t)!,
+      difficultyIntermediate: Color.lerp(difficultyIntermediate, other.difficultyIntermediate, t)!,
+      difficultyAdvanced: Color.lerp(difficultyAdvanced, other.difficultyAdvanced, t)!,
       cardBackground: Color.lerp(cardBackground, other.cardBackground, t)!,
       pageBackground: Color.lerp(pageBackground, other.pageBackground, t)!,
       border: Color.lerp(border, other.border, t)!,

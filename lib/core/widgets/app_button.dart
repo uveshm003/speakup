@@ -31,8 +31,7 @@ class AppButton extends StatelessWidget {
     final bool wide = AppLayout.isWide(context);
     final double hPad = wide ? AppSpacing.xl : AppSpacing.lg;
 
-    final VoidCallback? effectiveOnPressed =
-        isLoading ? null : onPressed;
+    final VoidCallback? effectiveOnPressed = isLoading ? null : onPressed;
 
     final Widget content = Row(
       mainAxisSize: fullWidth ? MainAxisSize.max : MainAxisSize.min,
@@ -44,77 +43,57 @@ class AppButton extends StatelessWidget {
             height: 20,
             child: CircularProgressIndicator(
               strokeWidth: 2,
-              color: variant == AppButtonVariant.primary
-                  ? theme.colorScheme.onPrimary
-                  : theme.colorScheme.primary,
+              color: variant == AppButtonVariant.primary ? theme.colorScheme.onPrimary : theme.colorScheme.primary,
             ),
           ),
           SizedBox(width: wide ? AppSpacing.sm : AppSpacing.xs),
         ] else if (icon != null) ...<Widget>[
           IconTheme.merge(
-            data: IconThemeData(
-              size: 20,
-              color: variant == AppButtonVariant.primary
-                  ? theme.colorScheme.onPrimary
-                  : theme.colorScheme.primary,
-            ),
+            data: IconThemeData(size: 20, color: variant == AppButtonVariant.primary ? theme.colorScheme.onPrimary : theme.colorScheme.primary),
             child: icon!,
           ),
           SizedBox(width: AppSpacing.sm),
         ],
         Flexible(
-          child: Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-          ),
+          child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center),
         ),
       ],
     );
 
     final Widget button = switch (variant) {
       AppButtonVariant.primary => ElevatedButton(
-          onPressed: effectiveOnPressed,
-          style: ElevatedButton.styleFrom(
-            minimumSize: fullWidth ? const Size(double.infinity, 48) : null,
-            padding: EdgeInsets.symmetric(horizontal: hPad),
-          ),
+        onPressed: effectiveOnPressed,
+        style: ElevatedButton.styleFrom(
+          minimumSize: fullWidth ? const Size(double.infinity, 48) : null,
+          padding: EdgeInsets.symmetric(horizontal: hPad),
+        ),
+        child: content,
+      ),
+      AppButtonVariant.secondary => OutlinedButton(
+        onPressed: effectiveOnPressed,
+        style: OutlinedButton.styleFrom(
+          minimumSize: fullWidth ? const Size(double.infinity, 48) : null,
+          padding: EdgeInsets.symmetric(horizontal: hPad),
+          side: BorderSide(color: theme.colorScheme.primary, width: 1.5),
+          foregroundColor: theme.colorScheme.primary,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.full)),
+        ),
+        child: DefaultTextStyle.merge(
+          style: theme.textTheme.titleMedium?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w600),
           child: content,
         ),
-      AppButtonVariant.secondary => OutlinedButton(
-          onPressed: effectiveOnPressed,
-          style: OutlinedButton.styleFrom(
-            minimumSize: fullWidth ? const Size(double.infinity, 48) : null,
-            padding: EdgeInsets.symmetric(horizontal: hPad),
-            side: BorderSide(color: theme.colorScheme.primary, width: 1.5),
-            foregroundColor: theme.colorScheme.primary,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppRadius.full),
-            ),
-          ),
-          child: DefaultTextStyle.merge(
-            style: theme.textTheme.titleMedium?.copyWith(
-              color: theme.colorScheme.primary,
-              fontWeight: FontWeight.w600,
-            ),
-            child: content,
-          ),
-        ),
+      ),
       AppButtonVariant.ghost => TextButton(
-          onPressed: effectiveOnPressed,
-          style: TextButton.styleFrom(
-            minimumSize: fullWidth ? const Size(double.infinity, 48) : null,
-            padding: EdgeInsets.symmetric(horizontal: hPad),
-          ),
-          child: DefaultTextStyle.merge(
-            style: theme.textTheme.titleMedium?.copyWith(
-              color: theme.colorScheme.primary,
-              fontWeight: FontWeight.w600,
-            ),
-            child: content,
-          ),
+        onPressed: effectiveOnPressed,
+        style: TextButton.styleFrom(
+          minimumSize: fullWidth ? const Size(double.infinity, 48) : null,
+          padding: EdgeInsets.symmetric(horizontal: hPad),
         ),
+        child: DefaultTextStyle.merge(
+          style: theme.textTheme.titleMedium?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w600),
+          child: content,
+        ),
+      ),
     };
 
     return LayoutBuilder(

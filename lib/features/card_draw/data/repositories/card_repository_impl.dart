@@ -22,9 +22,7 @@ class CardRepositoryImpl implements CardRepository {
   Future<Either<Failure, List<TopicCard>>> getAll() async {
     try {
       final List<TopicCardEntity> list = _box.getAll();
-      return Right<Failure, List<TopicCard>>(
-        list.map(topicCardFromEntity).toList(),
-      );
+      return Right<Failure, List<TopicCard>>(list.map(topicCardFromEntity).toList());
     } catch (e, _) {
       return Left<Failure, List<TopicCard>>(CacheFailure(e.toString()));
     }
@@ -33,14 +31,11 @@ class CardRepositoryImpl implements CardRepository {
   @override
   Future<Either<Failure, TopicCard>> getByCardId(String cardId) async {
     try {
-      final Query<TopicCardEntity> q =
-          _box.query(TopicCardEntity_.cardId.equals(cardId)).build();
+      final Query<TopicCardEntity> q = _box.query(TopicCardEntity_.cardId.equals(cardId)).build();
       try {
         final TopicCardEntity? e = q.findFirst();
         if (e == null) {
-          return Left<Failure, TopicCard>(
-            CacheFailure('Card not found: $cardId'),
-          );
+          return Left<Failure, TopicCard>(CacheFailure('Card not found: $cardId'));
         }
         return Right<Failure, TopicCard>(topicCardFromEntity(e));
       } finally {
@@ -54,14 +49,10 @@ class CardRepositoryImpl implements CardRepository {
   @override
   Future<Either<Failure, List<TopicCard>>> getByCategory(String category) async {
     try {
-      final Query<TopicCardEntity> q = _box
-          .query(TopicCardEntity_.category.equals(category))
-          .build();
+      final Query<TopicCardEntity> q = _box.query(TopicCardEntity_.category.equals(category)).build();
       try {
         final List<TopicCardEntity> list = q.find();
-        return Right<Failure, List<TopicCard>>(
-          list.map(topicCardFromEntity).toList(),
-        );
+        return Right<Failure, List<TopicCard>>(list.map(topicCardFromEntity).toList());
       } finally {
         q.close();
       }
@@ -71,18 +62,12 @@ class CardRepositoryImpl implements CardRepository {
   }
 
   @override
-  Future<Either<Failure, List<TopicCard>>> getByDifficulty(
-    Difficulty difficulty,
-  ) async {
+  Future<Either<Failure, List<TopicCard>>> getByDifficulty(Difficulty difficulty) async {
     try {
-      final Query<TopicCardEntity> q = _box
-          .query(TopicCardEntity_.difficultyRaw.equals(difficulty.raw))
-          .build();
+      final Query<TopicCardEntity> q = _box.query(TopicCardEntity_.difficultyRaw.equals(difficulty.raw)).build();
       try {
         final List<TopicCardEntity> list = q.find();
-        return Right<Failure, List<TopicCard>>(
-          list.map(topicCardFromEntity).toList(),
-        );
+        return Right<Failure, List<TopicCard>>(list.map(topicCardFromEntity).toList());
       } finally {
         q.close();
       }
@@ -94,13 +79,10 @@ class CardRepositoryImpl implements CardRepository {
   @override
   Future<Either<Failure, List<TopicCard>>> getFavorites() async {
     try {
-      final Query<TopicCardEntity> q =
-          _box.query(TopicCardEntity_.isFavorite.equals(true)).build();
+      final Query<TopicCardEntity> q = _box.query(TopicCardEntity_.isFavorite.equals(true)).build();
       try {
         final List<TopicCardEntity> list = q.find();
-        return Right<Failure, List<TopicCard>>(
-          list.map(topicCardFromEntity).toList(),
-        );
+        return Right<Failure, List<TopicCard>>(list.map(topicCardFromEntity).toList());
       } finally {
         q.close();
       }
@@ -112,14 +94,11 @@ class CardRepositoryImpl implements CardRepository {
   @override
   Future<Either<Failure, TopicCard>> toggleFavorite(String cardId) async {
     try {
-      final Query<TopicCardEntity> q =
-          _box.query(TopicCardEntity_.cardId.equals(cardId)).build();
+      final Query<TopicCardEntity> q = _box.query(TopicCardEntity_.cardId.equals(cardId)).build();
       try {
         final TopicCardEntity? e = q.findFirst();
         if (e == null) {
-          return Left<Failure, TopicCard>(
-            CacheFailure('Card not found: $cardId'),
-          );
+          return Left<Failure, TopicCard>(CacheFailure('Card not found: $cardId'));
         }
         e.isFavorite = !e.isFavorite;
         _box.put(e);
@@ -133,27 +112,17 @@ class CardRepositoryImpl implements CardRepository {
   }
 
   @override
-  Future<Either<Failure, List<TopicCard>>> getByCustomCategoryId(
-    String categoryId,
-  ) async {
+  Future<Either<Failure, List<TopicCard>>> getByCustomCategoryId(String categoryId) async {
     try {
-      final Query<CustomCategoryEntity> cq = _store
-          .box<CustomCategoryEntity>()
-          .query(CustomCategoryEntity_.categoryId.equals(categoryId))
-          .build();
+      final Query<CustomCategoryEntity> cq = _store.box<CustomCategoryEntity>().query(CustomCategoryEntity_.categoryId.equals(categoryId)).build();
       try {
         final CustomCategoryEntity? cat = cq.findFirst();
         if (cat == null) {
           return const Right<Failure, List<TopicCard>>(<TopicCard>[]);
         }
         final List<TopicCardEntity> list = cat.cards.toList();
-        list.sort(
-          (TopicCardEntity a, TopicCardEntity b) =>
-              b.createdAt.compareTo(a.createdAt),
-        );
-        return Right<Failure, List<TopicCard>>(
-          list.map(topicCardFromEntity).toList(),
-        );
+        list.sort((TopicCardEntity a, TopicCardEntity b) => b.createdAt.compareTo(a.createdAt));
+        return Right<Failure, List<TopicCard>>(list.map(topicCardFromEntity).toList());
       } finally {
         cq.close();
       }
@@ -165,39 +134,25 @@ class CardRepositoryImpl implements CardRepository {
   @override
   Future<Either<Failure, TopicCard>> updateCustomCard(TopicCard card) async {
     try {
-      final Query<TopicCardEntity> q =
-          _box.query(TopicCardEntity_.cardId.equals(card.cardId)).build();
+      final Query<TopicCardEntity> q = _box.query(TopicCardEntity_.cardId.equals(card.cardId)).build();
       try {
         final TopicCardEntity? e = q.findFirst();
         if (e == null) {
-          return Left<Failure, TopicCard>(
-            CacheFailure('Card not found: ${card.cardId}'),
-          );
+          return Left<Failure, TopicCard>(CacheFailure('Card not found: ${card.cardId}'));
         }
         if (!e.isCustom) {
-          return const Left<Failure, TopicCard>(
-            CacheFailure('Cannot edit built-in card'),
-          );
+          return const Left<Failure, TopicCard>(CacheFailure('Cannot edit built-in card'));
         }
         e.title = card.title;
         e.category = card.category;
         e.difficultyRaw = card.difficulty.raw;
         e.guideJson = jsonEncode(card.guide);
-        e.vocabJson = jsonEncode(
-          card.vocabBoost
-              .map(
-                (VocabWord v) =>
-                    <String, String>{'word': v.word, 'meaning': v.meaning},
-              )
-              .toList(),
-        );
+        e.vocabJson = jsonEncode(card.vocabBoost.map((VocabWord v) => <String, String>{'word': v.word, 'meaning': v.meaning}).toList());
         e.isFavorite = card.isFavorite;
         if (card.customCategoryId != null) {
           final Query<CustomCategoryEntity> cq = _store
               .box<CustomCategoryEntity>()
-              .query(
-                CustomCategoryEntity_.categoryId.equals(card.customCategoryId!),
-              )
+              .query(CustomCategoryEntity_.categoryId.equals(card.customCategoryId!))
               .build();
           try {
             final CustomCategoryEntity? cat = cq.findFirst();
@@ -250,17 +205,14 @@ class CardRepositoryImpl implements CardRepository {
   @override
   Future<Either<Failure, void>> deleteCustomCard(String cardId) async {
     try {
-      final Query<TopicCardEntity> q =
-          _box.query(TopicCardEntity_.cardId.equals(cardId)).build();
+      final Query<TopicCardEntity> q = _box.query(TopicCardEntity_.cardId.equals(cardId)).build();
       try {
         final TopicCardEntity? e = q.findFirst();
         if (e == null) {
           return Left<Failure, void>(CacheFailure('Card not found: $cardId'));
         }
         if (!e.isCustom) {
-          return Left<Failure, void>(
-            CacheFailure('Cannot delete built-in card'),
-          );
+          return Left<Failure, void>(CacheFailure('Cannot delete built-in card'));
         }
         _box.remove(e.id);
         return const Right<Failure, void>(null);

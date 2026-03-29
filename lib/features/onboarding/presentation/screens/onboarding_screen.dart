@@ -23,17 +23,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _page = 0;
 
   Future<void> _completeOnboarding() async {
-    final Box<UserSettingsHive> box =
-        Hive.box<UserSettingsHive>(AppConstants.hiveSettingsBoxName);
-    final UserSettings current =
-        (box.get(AppConstants.hiveUserSettingsKey)?.toDomain()) ??
-            const UserSettings();
-    await box.put(
-      AppConstants.hiveUserSettingsKey,
-      userSettingsHiveFromDomain(
-        current.copyWith(hasSeenOnboarding: true),
-      ),
-    );
+    final Box<UserSettingsHive> box = Hive.box<UserSettingsHive>(AppConstants.hiveSettingsBoxName);
+    final UserSettings current = (box.get(AppConstants.hiveUserSettingsKey)?.toDomain()) ?? const UserSettings();
+    await box.put(AppConstants.hiveUserSettingsKey, userSettingsHiveFromDomain(current.copyWith(hasSeenOnboarding: true)));
     notifyAppRouterRefresh();
     if (!mounted) {
       return;
@@ -54,13 +46,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        actions: <Widget>[
-          if (_page < 2)
-            TextButton(
-              onPressed: _completeOnboarding,
-              child: const Text('Skip'),
-            ),
-        ],
+        actions: <Widget>[if (_page < 2) TextButton(onPressed: _completeOnboarding, child: const Text('Skip'))],
       ),
       body: Column(
         children: <Widget>[
@@ -72,22 +58,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 _OnboardingPage(
                   icon: Icons.mic_rounded,
                   title: 'Pick a card',
-                  body:
-                      'Browse 70+ topics across 7 categories — from opinions to storytelling.',
+                  body: 'Browse 70+ topics across 7 categories — from opinions to storytelling.',
                   color: primary,
                 ),
                 _OnboardingPage(
                   icon: Icons.menu_book_rounded,
                   title: 'Learn before you speak',
-                  body:
-                      'Every card has a Mini Guide and Vocabulary Boost to help you prepare in under 60 seconds.',
+                  body: 'Every card has a Mini Guide and Vocabulary Boost to help you prepare in under 60 seconds.',
                   color: primary,
                 ),
                 _OnboardingPage(
                   icon: Icons.timer_outlined,
                   title: 'Practice daily, build streaks',
-                  body:
-                      'Track your sessions, earn streaks, and grow one conversation at a time.',
+                  body: 'Track your sessions, earn streaks, and grow one conversation at a time.',
                   color: primary,
                 ),
               ],
@@ -118,10 +101,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   child: FilledButton(
                     onPressed: () {
                       if (_page < 2) {
-                        _pageController.nextPage(
-                          duration: const Duration(milliseconds: 350),
-                          curve: Curves.easeOutCubic,
-                        );
+                        _pageController.nextPage(duration: const Duration(milliseconds: 350), curve: Curves.easeOutCubic);
                       } else {
                         _completeOnboarding();
                       }
@@ -139,12 +119,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 }
 
 class _OnboardingPage extends StatelessWidget {
-  const _OnboardingPage({
-    required this.icon,
-    required this.title,
-    required this.body,
-    required this.color,
-  });
+  const _OnboardingPage({required this.icon, required this.title, required this.body, required this.color});
 
   final IconData icon;
   final String title;
@@ -164,28 +139,16 @@ class _OnboardingPage extends StatelessWidget {
             height: 160,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
-              gradient: RadialGradient(
-                colors: <Color>[
-                  color.withValues(alpha: 0.35),
-                  color.withValues(alpha: 0.08),
-                ],
-              ),
+              gradient: RadialGradient(colors: <Color>[color.withValues(alpha: 0.35), color.withValues(alpha: 0.08)]),
             ),
             child: Icon(icon, size: 72, color: color),
           ),
           const SizedBox(height: AppSpacing.xxl),
-          Text(
-            title,
-            style: theme.textTheme.headlineLarge,
-            textAlign: TextAlign.center,
-          ),
+          Text(title, style: theme.textTheme.headlineLarge, textAlign: TextAlign.center),
           const SizedBox(height: AppSpacing.md),
           Text(
             body,
-            style: theme.textTheme.bodyLarge?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-              height: 1.45,
-            ),
+            style: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurfaceVariant, height: 1.45),
             textAlign: TextAlign.center,
           ),
         ],

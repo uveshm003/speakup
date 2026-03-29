@@ -9,20 +9,11 @@ import 'session_end_event.dart';
 import 'session_end_state.dart';
 
 class SessionEndBloc extends Bloc<SessionEndEvent, SessionEndState> {
-  SessionEndBloc({
-    required SessionRepository sessionRepository,
-    required SettingsRepository settingsRepository,
-    required SessionEndRouteArgs args,
-  })  : _sessionRepository = sessionRepository,
-        _settingsRepository = settingsRepository,
-        _args = args,
-        super(
-          SessionEndState(
-            card: args.card,
-            elapsedSeconds: args.elapsedSeconds,
-            wasCompleted: args.wasCompleted,
-          ),
-        ) {
+  SessionEndBloc({required SessionRepository sessionRepository, required SettingsRepository settingsRepository, required SessionEndRouteArgs args})
+    : _sessionRepository = sessionRepository,
+      _settingsRepository = settingsRepository,
+      _args = args,
+      super(SessionEndState(card: args.card, elapsedSeconds: args.elapsedSeconds, wasCompleted: args.wasCompleted)) {
     on<SessionEndLoadRequested>(_onLoad);
     add(const SessionEndLoadRequested());
   }
@@ -31,10 +22,7 @@ class SessionEndBloc extends Bloc<SessionEndEvent, SessionEndState> {
   final SettingsRepository _settingsRepository;
   final SessionEndRouteArgs _args;
 
-  Future<void> _onLoad(
-    SessionEndLoadRequested event,
-    Emitter<SessionEndState> emit,
-  ) async {
+  Future<void> _onLoad(SessionEndLoadRequested event, Emitter<SessionEndState> emit) async {
     emit(state.copyWith(status: SessionEndStatus.loading));
 
     final settingsBefore = await _settingsRepository.getSettings();
@@ -53,12 +41,7 @@ class SessionEndBloc extends Bloc<SessionEndEvent, SessionEndState> {
     final saveResult = await _sessionRepository.saveSession(session);
     await saveResult.fold(
       (failure) async {
-        emit(
-          state.copyWith(
-            status: SessionEndStatus.failure,
-            errorMessage: failure.message ?? 'Could not save session',
-          ),
-        );
+        emit(state.copyWith(status: SessionEndStatus.failure, errorMessage: failure.message ?? 'Could not save session'));
       },
       (_) async {
         await _settingsRepository.updateStreak();
@@ -87,13 +70,11 @@ class SessionEndBloc extends Bloc<SessionEndEvent, SessionEndState> {
     );
   }
 
-  String _sessionId() =>
-      's_${DateTime.now().microsecondsSinceEpoch}_${_args.card.cardId}';
+  String _sessionId() => 's_${DateTime.now().microsecondsSinceEpoch}_${_args.card.cardId}';
 
   static int _sessionsThisWeekCount(List<DateTime> completedAts) {
     final DateTime now = DateTime.now();
-    final DateTime startOfWeek = DateTime(now.year, now.month, now.day)
-        .subtract(Duration(days: now.weekday - DateTime.monday));
+    final DateTime startOfWeek = DateTime(now.year, now.month, now.day).subtract(Duration(days: now.weekday - DateTime.monday));
     int n = 0;
     for (final DateTime t in completedAts) {
       if (!t.isBefore(startOfWeek)) {

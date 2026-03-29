@@ -5,15 +5,7 @@ import 'package:speakup/config/theme/app_spacing.dart';
 
 /// Empty / zero-state block: optional custom illustration, icon fallback, copy, CTA.
 class EmptyStateWidget extends StatelessWidget {
-  const EmptyStateWidget({
-    required this.title,
-    super.key,
-    this.subtitle,
-    this.illustration,
-    this.icon,
-    this.action,
-    this.iconSize = 56,
-  });
+  const EmptyStateWidget({required this.title, super.key, this.subtitle, this.illustration, this.icon, this.action, this.iconSize = 56});
 
   /// Custom artwork (e.g. [SvgPicture] from assets) — takes precedence over [icon].
   final Widget? illustration;
@@ -33,19 +25,13 @@ class EmptyStateWidget extends StatelessWidget {
     final double scale = AppLayout.textScale(context);
     final double maxW = wide ? 420 : double.infinity;
 
-    final Widget visual = illustration ??
+    final Widget visual =
+        illustration ??
         (icon != null
             ? Container(
                 padding: const EdgeInsets.all(AppSpacing.lg),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.primaryContainer.withValues(alpha: 0.5),
-                  shape: BoxShape.circle,
-                ),
-                child: Icon(
-                  icon,
-                  size: iconSize * scale,
-                  color: theme.colorScheme.primary,
-                ),
+                decoration: BoxDecoration(color: theme.colorScheme.primaryContainer.withValues(alpha: 0.5), shape: BoxShape.circle),
+                child: Icon(icon, size: iconSize * scale, color: theme.colorScheme.primary),
               )
             : const SizedBox.shrink());
 
@@ -64,10 +50,7 @@ class EmptyStateWidget extends StatelessWidget {
                   Text(
                     title,
                     textAlign: TextAlign.center,
-                    style: theme.textTheme.headlineMedium?.copyWith(
-                      fontSize:
-                          (theme.textTheme.headlineMedium?.fontSize ?? 18) * scale,
-                    ),
+                    style: theme.textTheme.headlineMedium?.copyWith(fontSize: (theme.textTheme.headlineMedium?.fontSize ?? 18) * scale),
                   ),
                   if (subtitle != null) ...<Widget>[
                     SizedBox(height: AppSpacing.sm),
@@ -76,15 +59,11 @@ class EmptyStateWidget extends StatelessWidget {
                       textAlign: TextAlign.center,
                       style: theme.textTheme.bodyMedium?.copyWith(
                         color: theme.colorScheme.onSurfaceVariant,
-                        fontSize:
-                            (theme.textTheme.bodyMedium?.fontSize ?? 14) * scale,
+                        fontSize: (theme.textTheme.bodyMedium?.fontSize ?? 14) * scale,
                       ),
                     ),
                   ],
-                  if (action != null) ...<Widget>[
-                    SizedBox(height: wide ? AppSpacing.xl : AppSpacing.lg),
-                    action!,
-                  ],
+                  if (action != null) ...<Widget>[SizedBox(height: wide ? AppSpacing.xl : AppSpacing.lg), action!],
                 ],
               ),
             ),

@@ -12,14 +12,11 @@ import 'category_event.dart';
 import 'category_state.dart';
 
 class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
-  CategoryBloc({
-    required CardRepository cardRepository,
-    required CategoryRepository categoryRepository,
-    String? initialCategoryKey,
-  })  : _cardRepository = cardRepository,
-        _categoryRepository = categoryRepository,
-        _initialCategoryKey = initialCategoryKey,
-        super(const CategoryState()) {
+  CategoryBloc({required CardRepository cardRepository, required CategoryRepository categoryRepository, String? initialCategoryKey})
+    : _cardRepository = cardRepository,
+      _categoryRepository = categoryRepository,
+      _initialCategoryKey = initialCategoryKey,
+      super(const CategoryState()) {
     on<CategoryLoadRequested>(_onLoad);
     on<CategoryFilterChanged>(_onCategoryFilter);
     on<DifficultyFilterChanged>(_onDifficultyFilter);
@@ -45,10 +42,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     return kBuiltInBrowseCategories.any((BuiltInCategoryDef d) => d.name == key);
   }
 
-  List<TopicCard> _applyDifficulty(
-    List<TopicCard> list,
-    DifficultyFilter filter,
-  ) {
+  List<TopicCard> _applyDifficulty(List<TopicCard> list, DifficultyFilter filter) {
     final Difficulty? d = filter.asDifficulty;
     if (d == null) {
       return list;
@@ -76,21 +70,14 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     return (b: b, i: i, a: a);
   }
 
-  CategoryState _computeState({
-    required String? selectedKey,
-    required DifficultyFilter difficultyFilter,
-  }) {
+  CategoryState _computeState({required String? selectedKey, required DifficultyFilter difficultyFilter}) {
     final List<TopicCard> cards = _cards;
     final List<TopicCard> allFiltered = _applyDifficulty(cards, difficultyFilter);
 
     final List<CategoryListItem> items = <CategoryListItem>[];
 
     for (final BuiltInCategoryDef def in kBuiltInBrowseCategories) {
-      final List<TopicCard> raw = cards
-          .where(
-            (TopicCard c) => !c.isCustom && c.category == def.name,
-          )
-          .toList();
+      final List<TopicCard> raw = cards.where((TopicCard c) => !c.isCustom && c.category == def.name).toList();
       final List<TopicCard> filtered = _applyDifficulty(raw, difficultyFilter);
       final ({int b, int i, int a}) br = _difficultyBreakdown(raw);
       items.add(
@@ -109,9 +96,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     }
 
     for (final CustomCategory cc in _customCats) {
-      final List<TopicCard> raw = cards
-          .where((TopicCard c) => c.customCategoryId == cc.categoryId)
-          .toList();
+      final List<TopicCard> raw = cards.where((TopicCard c) => c.customCategoryId == cc.categoryId).toList();
       final List<TopicCard> filtered = _applyDifficulty(raw, difficultyFilter);
       final ({int b, int i, int a}) br = _difficultyBreakdown(raw);
       final String key = 'custom:${cc.categoryId}';
@@ -140,16 +125,8 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     );
   }
 
-  Future<void> _onLoad(
-    CategoryLoadRequested event,
-    Emitter<CategoryState> emit,
-  ) async {
-    emit(
-      state.copyWith(
-        status: CategoryLoadStatus.loading,
-        clearErrorMessage: true,
-      ),
-    );
+  Future<void> _onLoad(CategoryLoadRequested event, Emitter<CategoryState> emit) async {
+    emit(state.copyWith(status: CategoryLoadStatus.loading, clearErrorMessage: true));
 
     final cardsEither = await _cardRepository.getAll();
     final catsEither = await _categoryRepository.getAll();
@@ -159,13 +136,7 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
     catsEither.fold((l) => failureMessage ??= l.message, (_) {});
 
     if (failureMessage != null) {
-      emit(
-        CategoryState(
-          status: CategoryLoadStatus.failure,
-          errorMessage: failureMessage,
-          difficultyFilter: state.difficultyFilter,
-        ),
-      );
+      emit(CategoryState(status: CategoryLoadStatus.failure, errorMessage: failureMessage, difficultyFilter: state.difficultyFilter));
       return;
     }
 
@@ -177,41 +148,20 @@ class CategoryBloc extends Bloc<CategoryEvent, CategoryState> {
       selected = null;
     }
 
-    emit(
-      _computeState(
-        selectedKey: selected,
-        difficultyFilter: DifficultyFilter.all,
-      ),
-    );
+    emit(_computeState(selectedKey: selected, difficultyFilter: DifficultyFilter.all));
   }
 
-  void _onCategoryFilter(
-    CategoryFilterChanged event,
-    Emitter<CategoryState> emit,
-  ) {
+  void _onCategoryFilter(CategoryFilterChanged event, Emitter<CategoryState> emit) {
     if (state.status != CategoryLoadStatus.success) {
       return;
     }
-    emit(
-      _computeState(
-        selectedKey: event.categoryKey,
-        difficultyFilter: state.difficultyFilter,
-      ),
-    );
+    emit(_computeState(selectedKey: event.categoryKey, difficultyFilter: state.difficultyFilter));
   }
 
-  void _onDifficultyFilter(
-    DifficultyFilterChanged event,
-    Emitter<CategoryState> emit,
-  ) {
+  void _onDifficultyFilter(DifficultyFilterChanged event, Emitter<CategoryState> emit) {
     if (state.status != CategoryLoadStatus.success) {
       return;
     }
-    emit(
-      _computeState(
-        selectedKey: state.selectedCategoryKey,
-        difficultyFilter: event.filter,
-      ),
-    );
+    emit(_computeState(selectedKey: state.selectedCategoryKey, difficultyFilter: event.filter));
   }
 }

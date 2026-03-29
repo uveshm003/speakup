@@ -8,10 +8,7 @@ abstract class SessionRepository {
 
   Future<Either<Failure, List<PracticeSession>>> getAllSessions();
 
-  Future<Either<Failure, List<PracticeSession>>> getSessionsByDateRange({
-    required DateTime start,
-    required DateTime end,
-  });
+  Future<Either<Failure, List<PracticeSession>>> getSessionsByDateRange({required DateTime start, required DateTime end});
 
   Future<Either<Failure, void>> deleteSession(String sessionId);
 

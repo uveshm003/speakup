@@ -19,10 +19,7 @@ Future<void> bootstrapDataLayer({required bool enableObjectBox}) async {
   if (enableObjectBox) {
     await ObjectBoxStore.init();
     final sessionRepo = SessionRepositoryImpl(ObjectBoxStore.store);
-    final settingsRepo = SettingsRepositoryImpl(
-      Hive.box<UserSettingsHive>(AppConstants.hiveSettingsBoxName),
-      sessionRepo,
-    );
+    final settingsRepo = SettingsRepositoryImpl(Hive.box<UserSettingsHive>(AppConstants.hiveSettingsBoxName), sessionRepo);
     final cardSource = CardAssetDataSource(ObjectBoxStore.store, settingsRepo);
     await cardSource.seedBuiltInDeckIfNeeded();
   }

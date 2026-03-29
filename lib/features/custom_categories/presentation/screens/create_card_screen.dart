@@ -82,9 +82,7 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
   Color _difficultyColor(Difficulty d, ThemeData theme) {
     switch (d) {
       case Difficulty.beginner:
-        return theme.brightness == Brightness.dark
-            ? const Color(0xFF34D399)
-            : const Color(0xFF22C55E);
+        return theme.brightness == Brightness.dark ? const Color(0xFF34D399) : const Color(0xFF22C55E);
       case Difficulty.intermediate:
         return const Color(0xFFF59E0B);
       case Difficulty.advanced:
@@ -98,10 +96,7 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
       return;
     }
     final String title = _titleController.text.trim();
-    final List<String> guide = _guideControllers
-        .map((TextEditingController c) => c.text.trim())
-        .where((String s) => s.isNotEmpty)
-        .toList();
+    final List<String> guide = _guideControllers.map((TextEditingController c) => c.text.trim()).where((String s) => s.isNotEmpty).toList();
     final List<VocabWord> vocab = <VocabWord>[];
     for (final _VocabControllers v in _vocabControllers) {
       final String w = v.word.text.trim();
@@ -116,8 +111,7 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
     final String categoryName = widget.args.category.name;
 
     final TopicCard card = TopicCard(
-      cardId: widget.args.existingCard?.cardId ??
-          'card_${DateTime.now().microsecondsSinceEpoch}',
+      cardId: widget.args.existingCard?.cardId ?? 'card_${DateTime.now().microsecondsSinceEpoch}',
       title: title.length > 150 ? title.substring(0, 150) : title,
       category: categoryName,
       difficulty: _difficulty,
@@ -131,9 +125,7 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
 
     setState(() => _saving = true);
     final CardRepository repo = context.read<CardRepository>();
-    final result = _isEdit
-        ? await repo.updateCustomCard(card)
-        : await repo.addCustomCard(card);
+    final result = _isEdit ? await repo.updateCustomCard(card) : await repo.addCustomCard(card);
 
     if (!mounted) {
       return;
@@ -142,14 +134,10 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
 
     result.fold(
       (failure) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(failure.message ?? 'Could not save')),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(failure.message ?? 'Could not save')));
       },
       (_) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Saved')),
-        );
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Saved')));
         context.pop(true);
       },
     );
@@ -178,12 +166,7 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
       return;
     }
     setState(() {
-      _vocabControllers.add(
-        _VocabControllers(
-          word: TextEditingController(),
-          meaning: TextEditingController(),
-        ),
-      );
+      _vocabControllers.add(_VocabControllers(word: TextEditingController(), meaning: TextEditingController()));
     });
   }
 
@@ -205,18 +188,11 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
             const Center(
               child: Padding(
                 padding: EdgeInsets.only(right: AppSpacing.lg),
-                child: SizedBox(
-                  width: 22,
-                  height: 22,
-                  child: CircularProgressIndicator(strokeWidth: 2),
-                ),
+                child: SizedBox(width: 22, height: 22, child: CircularProgressIndicator(strokeWidth: 2)),
               ),
             )
           else
-            TextButton(
-              onPressed: _save,
-              child: const Text('Save'),
-            ),
+            TextButton(onPressed: _save, child: const Text('Save')),
         ],
       ),
       body: Form(
@@ -230,25 +206,15 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      'Topic',
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
+                    Text('Topic', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
                     const SizedBox(height: AppSpacing.sm),
                     TextFormField(
                       controller: _titleController,
                       maxLines: 3,
                       maxLength: 150,
-                      decoration: const InputDecoration(
-                        hintText: 'What will you speak about?',
-                        border: InputBorder.none,
-                      ),
+                      decoration: const InputDecoration(hintText: 'What will you speak about?', border: InputBorder.none),
                       validator: _validateTitle,
-                      autovalidateMode: _attemptedSubmit
-                          ? AutovalidateMode.always
-                          : AutovalidateMode.disabled,
+                      autovalidateMode: _attemptedSubmit ? AutovalidateMode.always : AutovalidateMode.disabled,
                     ),
                   ],
                 ),
@@ -261,12 +227,7 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      'Difficulty',
-                      style: theme.textTheme.titleSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
+                    Text('Difficulty', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
                     const SizedBox(height: AppSpacing.md),
                     SegmentedButton<Difficulty>(
                       segments: <ButtonSegment<Difficulty>>[
@@ -274,33 +235,21 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                           value: Difficulty.beginner,
                           label: Text(
                             'Beginner',
-                            style: TextStyle(
-                              color: _difficulty == Difficulty.beginner
-                                  ? _difficultyColor(Difficulty.beginner, theme)
-                                  : null,
-                            ),
+                            style: TextStyle(color: _difficulty == Difficulty.beginner ? _difficultyColor(Difficulty.beginner, theme) : null),
                           ),
                         ),
                         ButtonSegment<Difficulty>(
                           value: Difficulty.intermediate,
                           label: Text(
                             'Intermediate',
-                            style: TextStyle(
-                              color: _difficulty == Difficulty.intermediate
-                                  ? _difficultyColor(Difficulty.intermediate, theme)
-                                  : null,
-                            ),
+                            style: TextStyle(color: _difficulty == Difficulty.intermediate ? _difficultyColor(Difficulty.intermediate, theme) : null),
                           ),
                         ),
                         ButtonSegment<Difficulty>(
                           value: Difficulty.advanced,
                           label: Text(
                             'Advanced',
-                            style: TextStyle(
-                              color: _difficulty == Difficulty.advanced
-                                  ? _difficultyColor(Difficulty.advanced, theme)
-                                  : null,
-                            ),
+                            style: TextStyle(color: _difficulty == Difficulty.advanced ? _difficultyColor(Difficulty.advanced, theme) : null),
                           ),
                         ),
                       ],
@@ -323,25 +272,14 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          'Mini guide',
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        TextButton(
-                          onPressed:
-                              _guideControllers.length >= 5 ? null : _addBullet,
-                          child: const Text('Add bullet'),
-                        ),
+                        Text('Mini guide', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+                        TextButton(onPressed: _guideControllers.length >= 5 ? null : _addBullet, child: const Text('Add bullet')),
                       ],
                     ),
                     const SizedBox(height: AppSpacing.sm),
                     Text(
                       'Optional tips to structure your talk (max 5).',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
+                      style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                     ),
                     const SizedBox(height: AppSpacing.md),
                     ReorderableListView.builder(
@@ -354,8 +292,7 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                           if (next > old) {
                             next -= 1;
                           }
-                          final TextEditingController c =
-                              _guideControllers.removeAt(old);
+                          final TextEditingController c = _guideControllers.removeAt(old);
                           _guideControllers.insert(next, c);
                         });
                       },
@@ -370,14 +307,8 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                               ReorderableDragStartListener(
                                 index: i,
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                    top: AppSpacing.md,
-                                    right: AppSpacing.sm,
-                                  ),
-                                  child: Icon(
-                                    Icons.drag_handle_rounded,
-                                    color: theme.colorScheme.onSurfaceVariant,
-                                  ),
+                                  padding: const EdgeInsets.only(top: AppSpacing.md, right: AppSpacing.sm),
+                                  child: Icon(Icons.drag_handle_rounded, color: theme.colorScheme.onSurfaceVariant),
                                 ),
                               ),
                               Expanded(
@@ -386,17 +317,11 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                                   maxLines: 2,
                                   decoration: InputDecoration(
                                     hintText: 'Bullet ${i + 1}',
-                                    border: OutlineInputBorder(
-                                      borderRadius:
-                                          BorderRadius.circular(AppRadius.md),
-                                    ),
+                                    border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadius.md)),
                                   ),
                                 ),
                               ),
-                              IconButton(
-                                icon: const Icon(Icons.close_rounded, size: 20),
-                                onPressed: () => _removeBullet(i),
-                              ),
+                              IconButton(icon: const Icon(Icons.close_rounded, size: 20), onPressed: () => _removeBullet(i)),
                             ],
                           ),
                         );
@@ -416,26 +341,12 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        Text(
-                          'Vocabulary boost',
-                          style: theme.textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                          ),
-                        ),
-                        TextButton(
-                          onPressed:
-                              _vocabControllers.length >= 6 ? null : _addVocab,
-                          child: const Text('Add word'),
-                        ),
+                        Text('Vocabulary boost', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+                        TextButton(onPressed: _vocabControllers.length >= 6 ? null : _addVocab, child: const Text('Add word')),
                       ],
                     ),
                     const SizedBox(height: AppSpacing.sm),
-                    Text(
-                      'Optional word pairs (max 6).',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
+                    Text('Optional word pairs (max 6).', style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
                     const SizedBox(height: AppSpacing.md),
                     ...List<Widget>.generate(_vocabControllers.length, (int i) {
                       final _VocabControllers v = _vocabControllers[i];
@@ -447,24 +358,17 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                             Expanded(
                               child: TextField(
                                 controller: v.word,
-                                decoration: const InputDecoration(
-                                  labelText: 'Word',
-                                ),
+                                decoration: const InputDecoration(labelText: 'Word'),
                               ),
                             ),
                             const SizedBox(width: AppSpacing.md),
                             Expanded(
                               child: TextField(
                                 controller: v.meaning,
-                                decoration: const InputDecoration(
-                                  labelText: 'Meaning',
-                                ),
+                                decoration: const InputDecoration(labelText: 'Meaning'),
                               ),
                             ),
-                            IconButton(
-                              icon: const Icon(Icons.close_rounded, size: 20),
-                              onPressed: () => _removeVocab(i),
-                            ),
+                            IconButton(icon: const Icon(Icons.close_rounded, size: 20), onPressed: () => _removeVocab(i)),
                           ],
                         ),
                       );
@@ -482,10 +386,7 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
 }
 
 class _VocabControllers {
-  _VocabControllers({
-    required this.word,
-    required this.meaning,
-  });
+  _VocabControllers({required this.word, required this.meaning});
 
   final TextEditingController word;
   final TextEditingController meaning;

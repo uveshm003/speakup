@@ -43,8 +43,7 @@ class _ActivePracticeBody extends StatefulWidget {
   State<_ActivePracticeBody> createState() => _ActivePracticeBodyState();
 }
 
-class _ActivePracticeBodyState extends State<_ActivePracticeBody>
-    with TickerProviderStateMixin, WidgetsBindingObserver {
+class _ActivePracticeBodyState extends State<_ActivePracticeBody> with TickerProviderStateMixin, WidgetsBindingObserver {
   late final TabController _tabController;
   late final DraggableScrollableController _sheetController;
 
@@ -65,19 +64,15 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
     if (!mounted) return;
     final timerBloc = context.read<TimerBloc>();
     final timerState = timerBloc.state;
-    if (state == AppLifecycleState.paused ||
-        state == AppLifecycleState.hidden) {
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.hidden) {
       if (timerState.status == TimerStatus.running) {
         timerBloc.add(const TimerPaused());
       }
     } else if (state == AppLifecycleState.resumed) {
       if (timerState.status == TimerStatus.paused) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Timer paused while you were away. Tap Resume when ready.'),
-            duration: Duration(seconds: 4),
-          ),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Timer paused while you were away. Tap Resume when ready.'), duration: Duration(seconds: 4)));
       }
     }
   }
@@ -106,8 +101,7 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
   }
 
   Color _ringColor(int remaining, Brightness brightness) {
-    final Color primary =
-        brightness == Brightness.dark ? AppColorsDark.primary : AppColors.primary;
+    final Color primary = brightness == Brightness.dark ? AppColorsDark.primary : AppColors.primary;
     const Color amber = AppColors.warning;
     const Color red = AppColors.error;
     if (remaining <= 10) {
@@ -127,19 +121,12 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('End practice?'),
-          content: const Text(
-            'Your session will be saved as incomplete.',
-          ),
+          content: const Text('Your session will be saved as incomplete.'),
           actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Cancel'),
-            ),
+            TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancel')),
             FilledButton.tonal(
               onPressed: () => Navigator.of(context).pop(true),
-              style: FilledButton.styleFrom(
-                foregroundColor: Theme.of(context).colorScheme.error,
-              ),
+              style: FilledButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.error),
               child: const Text('Stop'),
             ),
           ],
@@ -158,17 +145,12 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
     }
     context.pushReplacement(
       AppRoutes.sessionEnd,
-      extra: SessionEndRouteArgs(
-        card: widget.args.card,
-        elapsedSeconds: elapsed,
-        wasCompleted: false,
-      ),
+      extra: SessionEndRouteArgs(card: widget.args.card, elapsedSeconds: elapsed, wasCompleted: false),
     );
   }
 
   Future<void> _maybePop(BuildContext context, TimerState state) async {
-    if (state.status == TimerStatus.completed ||
-        state.status == TimerStatus.stopped) {
+    if (state.status == TimerStatus.completed || state.status == TimerStatus.stopped) {
       if (context.mounted) {
         context.pop();
       }
@@ -181,14 +163,8 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
           title: const Text('Leave practice?'),
           content: const Text('Your progress will not be saved.'),
           actions: <Widget>[
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: const Text('Stay'),
-            ),
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: const Text('Leave'),
-            ),
+            TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Stay')),
+            TextButton(onPressed: () => Navigator.of(context).pop(true), child: const Text('Leave')),
           ],
         );
       },
@@ -216,16 +192,11 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
         await _maybePop(context, s);
       },
       child: BlocListener<TimerBloc, TimerState>(
-        listenWhen: (TimerState p, TimerState c) =>
-            c.status == TimerStatus.completed,
+        listenWhen: (TimerState p, TimerState c) => c.status == TimerStatus.completed,
         listener: (BuildContext context, TimerState state) {
           context.pushReplacement(
             AppRoutes.sessionEnd,
-            extra: SessionEndRouteArgs(
-              card: widget.args.card,
-              elapsedSeconds: state.duration,
-              wasCompleted: true,
-            ),
+            extra: SessionEndRouteArgs(card: widget.args.card, elapsedSeconds: state.duration, wasCompleted: true),
           );
         },
         child: BlocBuilder<TimerBloc, TimerState>(
@@ -236,8 +207,7 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
             final bool paused = state.status == TimerStatus.paused;
             final bool pulse = running && remaining < 10;
 
-            final double progress =
-                total <= 0 ? 0 : remaining / total.clamp(1, 999999);
+            final double progress = total <= 0 ? 0 : remaining / total.clamp(1, 999999);
             final Color ringColor = _ringColor(remaining, theme.brightness);
 
             final double scrimT = ((_sheetExtent - 0.1) / 0.5).clamp(0.0, 1.0);
@@ -251,9 +221,7 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
                     child: Column(
                       children: <Widget>[
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.lg,
-                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
                           child: Row(
                             children: <Widget>[
                               IconButton(
@@ -268,20 +236,13 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: AppSpacing.xxl,
-                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                           child: Text(
                             card.title,
                             textAlign: TextAlign.center,
                             maxLines: 3,
                             overflow: TextOverflow.ellipsis,
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 26,
-                              fontWeight: FontWeight.w700,
-                              height: 1.2,
-                              color: onBg,
-                            ),
+                            style: GoogleFonts.plusJakartaSans(fontSize: 26, fontWeight: FontWeight.w700, height: 1.2, color: onBg),
                           ),
                         ),
                         const Spacer(),
@@ -295,19 +256,14 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
                                 painter: _CountdownRingPainter(
                                   progress: progress,
                                   color: ringColor,
-                                  trackColor: theme.colorScheme.outlineVariant
-                                      .withValues(alpha: 0.45),
+                                  trackColor: theme.colorScheme.outlineVariant.withValues(alpha: 0.45),
                                 ),
                               ),
                             ),
                             _PulsingTimerLabel(
                               pulse: pulse,
                               text: formatPracticeMmSs(remaining),
-                              style: GoogleFonts.plusJakartaSans(
-                                fontSize: 42,
-                                fontWeight: FontWeight.w700,
-                                color: onBg,
-                              ),
+                              style: GoogleFonts.plusJakartaSans(fontSize: 42, fontWeight: FontWeight.w700, color: onBg),
                             ),
                             if (paused)
                               ClipOval(
@@ -321,18 +277,12 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
                                     children: <Widget>[
                                       Text(
                                         'Paused',
-                                        style: GoogleFonts.plusJakartaSans(
-                                          fontSize: 22,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.white,
-                                        ),
+                                        style: GoogleFonts.plusJakartaSans(fontSize: 22, fontWeight: FontWeight.w700, color: Colors.white),
                                       ),
                                       const SizedBox(height: AppSpacing.md),
                                       FilledButton(
                                         onPressed: () {
-                                          context
-                                              .read<TimerBloc>()
-                                              .add(const TimerResumed());
+                                          context.read<TimerBloc>().add(const TimerResumed());
                                         },
                                         child: const Text('Resume'),
                                       ),
@@ -344,22 +294,15 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
                         ),
                         const Spacer(),
                         Padding(
-                          padding: const EdgeInsets.fromLTRB(
-                            AppSpacing.xxl,
-                            0,
-                            AppSpacing.xxl,
-                            AppSpacing.lg,
-                          ),
+                          padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.lg),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               IconButton(
                                 iconSize: 32,
                                 style: IconButton.styleFrom(
-                                  backgroundColor:
-                                      theme.colorScheme.primaryContainer,
-                                  foregroundColor:
-                                      theme.colorScheme.onPrimaryContainer,
+                                  backgroundColor: theme.colorScheme.primaryContainer,
+                                  foregroundColor: theme.colorScheme.onPrimaryContainer,
                                 ),
                                 onPressed: () {
                                   final TimerBloc b = context.read<TimerBloc>();
@@ -369,21 +312,14 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
                                     b.add(const TimerPaused());
                                   }
                                 },
-                                icon: Icon(
-                                  paused
-                                      ? Icons.play_arrow_rounded
-                                      : Icons.pause_rounded,
-                                ),
+                                icon: Icon(paused ? Icons.play_arrow_rounded : Icons.pause_rounded),
                               ),
                               const SizedBox(width: AppSpacing.xxl),
                               OutlinedButton(
                                 onPressed: () => _confirmStop(context),
                                 style: OutlinedButton.styleFrom(
                                   foregroundColor: theme.colorScheme.error,
-                                  side: BorderSide(
-                                    color: theme.colorScheme.error
-                                        .withValues(alpha: 0.65),
-                                  ),
+                                  side: BorderSide(color: theme.colorScheme.error.withValues(alpha: 0.65)),
                                 ),
                                 child: const Text('Stop'),
                               ),
@@ -396,9 +332,7 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
                   ),
                   Positioned.fill(
                     child: IgnorePointer(
-                      child: ColoredBox(
-                        color: Colors.black.withValues(alpha: 0.38 * scrimT),
-                      ),
+                      child: ColoredBox(color: Colors.black.withValues(alpha: 0.38 * scrimT)),
                     ),
                   ),
                   DraggableScrollableSheet(
@@ -406,31 +340,16 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
                     initialChildSize: 0.1,
                     minChildSize: 0.1,
                     maxChildSize: 0.6,
-                    builder: (
-                      BuildContext context,
-                      ScrollController scrollController,
-                    ) {
+                    builder: (BuildContext context, ScrollController scrollController) {
                       return Material(
-                        color: theme.colorScheme.surface.withValues(
-                          alpha: 0.94,
-                        ),
-                        borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(AppRadius.lg),
-                        ),
+                        color: theme.colorScheme.surface.withValues(alpha: 0.94),
+                        borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
                         clipBehavior: Clip.antiAlias,
                         child: Column(
                           children: <Widget>[
                             const SizedBox(height: AppSpacing.sm),
-                            Icon(
-                              Icons.horizontal_rule_rounded,
-                              color: theme.colorScheme.onSurfaceVariant,
-                            ),
-                            Text(
-                              'Tap to peek',
-                              style: theme.textTheme.labelMedium?.copyWith(
-                                color: theme.colorScheme.onSurfaceVariant,
-                              ),
-                            ),
+                            Icon(Icons.horizontal_rule_rounded, color: theme.colorScheme.onSurfaceVariant),
+                            Text('Tap to peek', style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
                             const Icon(Icons.keyboard_arrow_up_rounded),
                             TabBar(
                               controller: _tabController,
@@ -442,15 +361,8 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
                             Expanded(
                               child: ListView(
                                 controller: scrollController,
-                                padding: const EdgeInsets.fromLTRB(
-                                  AppSpacing.xxl,
-                                  AppSpacing.sm,
-                                  AppSpacing.xxl,
-                                  AppSpacing.xxl,
-                                ),
-                                children: _tabController.index == 0
-                                    ? _guideChildren(card, theme)
-                                    : _vocabChildren(card, theme),
+                                padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.sm, AppSpacing.xxl, AppSpacing.xxl),
+                                children: _tabController.index == 0 ? _guideChildren(card, theme) : _vocabChildren(card, theme),
                               ),
                             ),
                           ],
@@ -470,14 +382,7 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
 
 List<Widget> _guideChildren(TopicCard card, ThemeData theme) {
   if (card.guide.isEmpty) {
-    return <Widget>[
-      Text(
-        'No guide for this topic.',
-        style: theme.textTheme.bodyMedium?.copyWith(
-          color: theme.colorScheme.onSurfaceVariant,
-        ),
-      ),
-    ];
+    return <Widget>[Text('No guide for this topic.', style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant))];
   }
   return card.guide
       .map(
@@ -486,16 +391,8 @@ List<Widget> _guideChildren(TopicCard card, ThemeData theme) {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                '• ',
-                style: theme.textTheme.bodyLarge,
-              ),
-              Expanded(
-                child: Text(
-                  line,
-                  style: theme.textTheme.bodyLarge,
-                ),
-              ),
+              Text('• ', style: theme.textTheme.bodyLarge),
+              Expanded(child: Text(line, style: theme.textTheme.bodyLarge)),
             ],
           ),
         ),
@@ -505,14 +402,7 @@ List<Widget> _guideChildren(TopicCard card, ThemeData theme) {
 
 List<Widget> _vocabChildren(TopicCard card, ThemeData theme) {
   if (card.vocabBoost.isEmpty) {
-    return <Widget>[
-      Text(
-        'No vocabulary listed.',
-        style: theme.textTheme.bodyMedium?.copyWith(
-          color: theme.colorScheme.onSurfaceVariant,
-        ),
-      ),
-    ];
+    return <Widget>[Text('No vocabulary listed.', style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant))];
   }
   return card.vocabBoost.map((VocabWord w) {
     return Padding(
@@ -520,19 +410,9 @@ List<Widget> _vocabChildren(TopicCard card, ThemeData theme) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            w.word,
-            style: theme.textTheme.titleSmall?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
-          ),
+          Text(w.word, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
           const SizedBox(height: AppSpacing.xs),
-          Text(
-            w.meaning,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
+          Text(w.meaning, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
         ],
       ),
     );
@@ -540,11 +420,7 @@ List<Widget> _vocabChildren(TopicCard card, ThemeData theme) {
 }
 
 class _PulsingTimerLabel extends StatefulWidget {
-  const _PulsingTimerLabel({
-    required this.pulse,
-    required this.text,
-    required this.style,
-  });
+  const _PulsingTimerLabel({required this.pulse, required this.text, required this.style});
 
   final bool pulse;
   final String text;
@@ -554,17 +430,13 @@ class _PulsingTimerLabel extends StatefulWidget {
   State<_PulsingTimerLabel> createState() => _PulsingTimerLabelState();
 }
 
-class _PulsingTimerLabelState extends State<_PulsingTimerLabel>
-    with SingleTickerProviderStateMixin {
+class _PulsingTimerLabelState extends State<_PulsingTimerLabel> with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 650),
-    );
+    _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 650));
     if (widget.pulse) {
       _controller.repeat(reverse: true);
     }
@@ -606,11 +478,7 @@ class _PulsingTimerLabelState extends State<_PulsingTimerLabel>
 }
 
 class _CountdownRingPainter extends CustomPainter {
-  _CountdownRingPainter({
-    required this.progress,
-    required this.color,
-    required this.trackColor,
-  });
+  _CountdownRingPainter({required this.progress, required this.color, required this.trackColor});
 
   final double progress;
   final Color color;
@@ -631,19 +499,11 @@ class _CountdownRingPainter extends CustomPainter {
       ..strokeWidth = 10
       ..strokeCap = StrokeCap.round;
     final double sweep = progress * 6.283185307179586;
-    canvas.drawArc(
-      Rect.fromCircle(center: c, radius: r),
-      -1.5707963267948966,
-      sweep,
-      false,
-      fill,
-    );
+    canvas.drawArc(Rect.fromCircle(center: c, radius: r), -1.5707963267948966, sweep, false, fill);
   }
 
   @override
   bool shouldRepaint(covariant _CountdownRingPainter oldDelegate) {
-    return oldDelegate.progress != progress ||
-        oldDelegate.color != color ||
-        oldDelegate.trackColor != trackColor;
+    return oldDelegate.progress != progress || oldDelegate.color != color || oldDelegate.trackColor != trackColor;
   }
 }

@@ -10,12 +10,8 @@ class ConfettiBurst extends StatefulWidget {
   State<ConfettiBurst> createState() => _ConfettiBurstState();
 }
 
-class _ConfettiBurstState extends State<ConfettiBurst>
-    with SingleTickerProviderStateMixin {
-  late final AnimationController _controller = AnimationController(
-    vsync: this,
-    duration: const Duration(milliseconds: 1500),
-  )..forward();
+class _ConfettiBurstState extends State<ConfettiBurst> with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500))..forward();
 
   @override
   void dispose() {
@@ -33,9 +29,7 @@ class _ConfettiBurstState extends State<ConfettiBurst>
           child: AnimatedBuilder(
             animation: _controller,
             builder: (BuildContext context, Widget? child) {
-              return CustomPaint(
-                painter: _ConfettiPainter(progress: _controller.value),
-              );
+              return CustomPaint(painter: _ConfettiPainter(progress: _controller.value));
             },
           ),
         );
@@ -77,14 +71,7 @@ class _ConfettiPainter extends CustomPainter {
         canvas.drawCircle(p, 4 + progress * 2, paint);
       } else {
         final double w = 8 + progress * 2;
-        canvas.drawRRect(
-          RRect.fromRectXY(
-            Rect.fromCenter(center: p, width: w, height: w * 0.5),
-            2,
-            2,
-          ),
-          paint,
-        );
+        canvas.drawRRect(RRect.fromRectXY(Rect.fromCenter(center: p, width: w, height: w * 0.5), 2, 2), paint);
       }
     }
   }

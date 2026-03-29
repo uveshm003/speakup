@@ -38,18 +38,11 @@ class HistoryState extends Equatable {
       final DateTime start = DateTime(r.start.year, r.start.month, r.start.day);
       final DateTime end = DateTime(r.end.year, r.end.month, r.end.day);
       list = list.where((PracticeSession s) {
-        final DateTime d = DateTime(
-          s.completedAt.year,
-          s.completedAt.month,
-          s.completedAt.day,
-        );
+        final DateTime d = DateTime(s.completedAt.year, s.completedAt.month, s.completedAt.day);
         return !d.isBefore(start) && !d.isAfter(end);
       }).toList();
     }
-    list.sort(
-      (PracticeSession a, PracticeSession b) =>
-          b.completedAt.compareTo(a.completedAt),
-    );
+    list.sort((PracticeSession a, PracticeSession b) => b.completedAt.compareTo(a.completedAt));
     return list;
   }
 
@@ -57,8 +50,7 @@ class HistoryState extends Equatable {
   Map<String, int> get sessionsPerDayKey {
     final Map<String, int> m = <String, int>{};
     for (final PracticeSession s in allSessions) {
-      final String k =
-          '${s.completedAt.year}-${s.completedAt.month.toString().padLeft(2, '0')}-${s.completedAt.day.toString().padLeft(2, '0')}';
+      final String k = '${s.completedAt.year}-${s.completedAt.month.toString().padLeft(2, '0')}-${s.completedAt.day.toString().padLeft(2, '0')}';
       m[k] = (m[k] ?? 0) + 1;
     }
     return m;
@@ -83,24 +75,21 @@ class HistoryState extends Equatable {
       filterRange: clearFilterRange ? null : (filterRange ?? this.filterRange),
       currentStreak: currentStreak ?? this.currentStreak,
       totalSessions: totalSessions ?? this.totalSessions,
-      totalPracticeMinutes:
-          totalPracticeMinutes ?? this.totalPracticeMinutes,
-      pendingDeletion: clearPendingDeletion
-          ? null
-          : (pendingDeletion ?? this.pendingDeletion),
+      totalPracticeMinutes: totalPracticeMinutes ?? this.totalPracticeMinutes,
+      pendingDeletion: clearPendingDeletion ? null : (pendingDeletion ?? this.pendingDeletion),
       errorMessage: clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
     );
   }
 
   @override
   List<Object?> get props => <Object?>[
-        status,
-        allSessions,
-        filterRange,
-        currentStreak,
-        totalSessions,
-        totalPracticeMinutes,
-        pendingDeletion,
-        errorMessage,
-      ];
+    status,
+    allSessions,
+    filterRange,
+    currentStreak,
+    totalSessions,
+    totalPracticeMinutes,
+    pendingDeletion,
+    errorMessage,
+  ];
 }

@@ -32,10 +32,7 @@ class CardDrawScreen extends StatelessWidget {
                     final CardDrawBloc bloc = context.read<CardDrawBloc>();
                     context.push(
                       AppRoutes.cardDetail,
-                      extra: CardDetailRouteArgs(
-                        card: state.currentCard!,
-                        drawBloc: bloc,
-                      ),
+                      extra: CardDetailRouteArgs(card: state.currentCard!, drawBloc: bloc),
                     );
                   },
                 ),
@@ -53,15 +50,10 @@ class CardDrawScreen extends StatelessWidget {
                       child: Text(
                         'Draw #${state.drawCount}',
                         textAlign: TextAlign.center,
-                        style: theme.textTheme.titleSmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: theme.colorScheme.onSurfaceVariant,
-                        ),
+                        style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700, color: theme.colorScheme.onSurfaceVariant),
                       ),
                     ),
-                  Expanded(
-                    child: _Body(state: state),
-                  ),
+                  Expanded(child: _Body(state: state)),
                 ],
               ),
             ),
@@ -90,12 +82,8 @@ class _Body extends StatelessWidget {
             Text(state.errorMessage ?? 'Something went wrong'),
             const SizedBox(height: 16),
             FilledButton(
-              onPressed: () => context.read<CardDrawBloc>().add(
-                    CardDrawRequested(
-                      category: state.filterCategory,
-                      difficulty: state.filterDifficulty,
-                    ),
-                  ),
+              onPressed: () =>
+                  context.read<CardDrawBloc>().add(CardDrawRequested(category: state.filterCategory, difficulty: state.filterDifficulty)),
               child: const Text('Retry'),
             ),
           ],
@@ -109,15 +97,9 @@ class _Body extends StatelessWidget {
           children: <Widget>[
             const Icon(Icons.search_off_rounded, size: 48),
             const SizedBox(height: 12),
-            Text(
-              state.errorMessage ?? 'No cards match',
-              textAlign: TextAlign.center,
-            ),
+            Text(state.errorMessage ?? 'No cards match', textAlign: TextAlign.center),
             const SizedBox(height: 16),
-            OutlinedButton(
-              onPressed: () => context.pop(),
-              child: const Text('Go back'),
-            ),
+            OutlinedButton(onPressed: () => context.pop(), child: const Text('Go back')),
           ],
         ),
       );
@@ -134,23 +116,16 @@ class _Body extends StatelessWidget {
           card: card,
           isFavorite: state.isFavorite,
           onFlipPhaseChanged: (bool animating) {
-            context.read<CardDrawBloc>().add(
-                  CardDrawFlipPhaseChanged(animating),
-                );
+            context.read<CardDrawBloc>().add(CardDrawFlipPhaseChanged(animating));
           },
           onToggleFavorite: () {
-            context.read<CardDrawBloc>().add(
-                  CardFavoriteToggled(card.cardId),
-                );
+            context.read<CardDrawBloc>().add(CardFavoriteToggled(card.cardId));
           },
           onRedraw: () {
             context.read<CardDrawBloc>().add(const CardRedrawRequested());
           },
           onPractice: () {
-            context.push(
-              AppRoutes.timerSetup,
-              extra: card,
-            );
+            context.push(AppRoutes.timerSetup, extra: card);
           },
         ),
       ),

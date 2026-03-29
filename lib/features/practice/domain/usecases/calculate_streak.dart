@@ -11,12 +11,7 @@ class CalculateStreak {
   final SessionRepository _repository;
 
   Future<Either<Failure, int>> call() async {
-    final Either<Failure, List<PracticeSession>> sessions =
-        await _repository.getAllSessions();
-    return sessions.map(
-      (List<PracticeSession> list) => StreakCalculator.fromSessionTimes(
-        list.map((PracticeSession s) => s.completedAt).toList(),
-      ),
-    );
+    final Either<Failure, List<PracticeSession>> sessions = await _repository.getAllSessions();
+    return sessions.map((List<PracticeSession> list) => StreakCalculator.fromSessionTimes(list.map((PracticeSession s) => s.completedAt).toList()));
   }
 }

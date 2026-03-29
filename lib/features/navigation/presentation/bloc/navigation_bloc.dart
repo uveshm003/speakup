@@ -10,20 +10,14 @@ class NavigationBloc extends Bloc<NavigationEvent, NavigationState> {
     on<NavigationRouteSynced>(_onRouteSynced);
   }
 
-  void _onTabSelected(
-    NavigationTabSelected event,
-    Emitter<NavigationState> emit,
-  ) {
+  void _onTabSelected(NavigationTabSelected event, Emitter<NavigationState> emit) {
     if (event.index < 0 || event.index > 3) {
       return;
     }
     emit(NavigationState(selectedIndex: event.index));
   }
 
-  void _onRouteSynced(
-    NavigationRouteSynced event,
-    Emitter<NavigationState> emit,
-  ) {
+  void _onRouteSynced(NavigationRouteSynced event, Emitter<NavigationState> emit) {
     if (event.index < 0 || event.index > 3) {
       return;
     }

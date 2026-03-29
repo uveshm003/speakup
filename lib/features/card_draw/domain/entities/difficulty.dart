@@ -1,15 +1,11 @@
-enum Difficulty {
-  beginner,
-  intermediate,
-  advanced,
-}
+enum Difficulty { beginner, intermediate, advanced }
 
 extension DifficultySerialization on Difficulty {
   String get raw => switch (this) {
-        Difficulty.beginner => 'beginner',
-        Difficulty.intermediate => 'intermediate',
-        Difficulty.advanced => 'advanced',
-      };
+    Difficulty.beginner => 'beginner',
+    Difficulty.intermediate => 'intermediate',
+    Difficulty.advanced => 'advanced',
+  };
 }
 
 Difficulty difficultyFromRaw(String raw) {

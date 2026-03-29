@@ -13,10 +13,7 @@ import 'package:speakup/features/card_draw/presentation/bloc/category_event.dart
 import 'package:speakup/features/card_draw/presentation/bloc/category_state.dart';
 
 class CategorySelectScreen extends StatefulWidget {
-  const CategorySelectScreen({
-    super.key,
-    this.quickDraw = false,
-  });
+  const CategorySelectScreen({super.key, this.quickDraw = false});
 
   final bool quickDraw;
 
@@ -24,17 +21,13 @@ class CategorySelectScreen extends StatefulWidget {
   State<CategorySelectScreen> createState() => _CategorySelectScreenState();
 }
 
-class _CategorySelectScreenState extends State<CategorySelectScreen>
-    with SingleTickerProviderStateMixin {
+class _CategorySelectScreenState extends State<CategorySelectScreen> with SingleTickerProviderStateMixin {
   late final AnimationController _quickPulse;
 
   @override
   void initState() {
     super.initState();
-    _quickPulse = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 900),
-    );
+    _quickPulse = AnimationController(vsync: this, duration: const Duration(milliseconds: 900));
     if (widget.quickDraw) {
       _quickPulse.repeat(reverse: true);
     }
@@ -49,12 +42,9 @@ class _CategorySelectScreenState extends State<CategorySelectScreen>
   Color _chipBg(DifficultyFilter f, ThemeData theme) {
     return switch (f) {
       DifficultyFilter.all => theme.colorScheme.surfaceContainerHighest,
-      DifficultyFilter.beginner =>
-        AppColors.success.withValues(alpha: theme.brightness == Brightness.dark ? 0.22 : 0.18),
-      DifficultyFilter.intermediate =>
-        AppColors.warning.withValues(alpha: theme.brightness == Brightness.dark ? 0.22 : 0.18),
-      DifficultyFilter.advanced =>
-        AppColors.error.withValues(alpha: theme.brightness == Brightness.dark ? 0.22 : 0.18),
+      DifficultyFilter.beginner => AppColors.success.withValues(alpha: theme.brightness == Brightness.dark ? 0.22 : 0.18),
+      DifficultyFilter.intermediate => AppColors.warning.withValues(alpha: theme.brightness == Brightness.dark ? 0.22 : 0.18),
+      DifficultyFilter.advanced => AppColors.error.withValues(alpha: theme.brightness == Brightness.dark ? 0.22 : 0.18),
     };
   }
 
@@ -75,115 +65,88 @@ class _CategorySelectScreenState extends State<CategorySelectScreen>
     return BlocBuilder<CategoryBloc, CategoryState>(
       builder: (BuildContext context, CategoryState state) {
         Widget body;
-        if (state.status == CategoryLoadStatus.initial ||
-            state.status == CategoryLoadStatus.loading) {
+        if (state.status == CategoryLoadStatus.initial || state.status == CategoryLoadStatus.loading) {
           body = const Center(child: CircularProgressIndicator.adaptive());
         } else if (state.status == CategoryLoadStatus.failure) {
           body = Center(
-            child: Padding(
-              padding: pad,
-              child: Text(state.errorMessage ?? 'Could not load categories'),
-            ),
+            child: Padding(padding: pad, child: Text(state.errorMessage ?? 'Could not load categories')),
           );
         } else {
           body = Column(
-                children: <Widget>[
-                  Padding(
-                    padding: EdgeInsets.fromLTRB(
-                      pad.left,
-                      AppSpacing.md,
-                      pad.right,
-                      AppSpacing.sm,
-                    ),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
-                          children: <Widget>[
-                            for (final DifficultyFilter f in DifficultyFilter.values)
-                              Padding(
-                                padding: const EdgeInsets.only(right: AppSpacing.sm),
-                                child: ChoiceChip(
-                                  label: Text(f.label),
-                                  selected: state.difficultyFilter == f,
-                                  onSelected: (_) {
-                                    context.read<CategoryBloc>().add(
-                                          DifficultyFilterChanged(f),
-                                        );
-                                  },
-                                  selectedColor: _chipBg(f, theme),
-                                  labelStyle: TextStyle(
-                                    color: state.difficultyFilter == f
-                                        ? _chipFg(f, theme)
-                                        : theme.colorScheme.onSurfaceVariant,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                  side: BorderSide(
-                                    color: theme.colorScheme.outline.withValues(
-                                      alpha: 0.25,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: ListView(
-                      padding: pad.copyWith(top: 0, bottom: AppSpacing.huge),
+            children: <Widget>[
+              Padding(
+                padding: EdgeInsets.fromLTRB(pad.left, AppSpacing.md, pad.right, AppSpacing.sm),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
                       children: <Widget>[
-                        _AllCategoriesTile(
-                          count: state.allFilteredCount,
-                          selected: state.selectedCategoryKey == null,
-                          onTap: () => context.read<CategoryBloc>().add(
-                                const CategoryFilterChanged(null),
+                        for (final DifficultyFilter f in DifficultyFilter.values)
+                          Padding(
+                            padding: const EdgeInsets.only(right: AppSpacing.sm),
+                            child: ChoiceChip(
+                              label: Text(f.label),
+                              selected: state.difficultyFilter == f,
+                              onSelected: (_) {
+                                context.read<CategoryBloc>().add(DifficultyFilterChanged(f));
+                              },
+                              selectedColor: _chipBg(f, theme),
+                              labelStyle: TextStyle(
+                                color: state.difficultyFilter == f ? _chipFg(f, theme) : theme.colorScheme.onSurfaceVariant,
+                                fontWeight: FontWeight.w600,
                               ),
-                        ),
-                        const SizedBox(height: AppSpacing.sm),
-                        for (final CategoryListItem item in state.items)
-                          _CategoryTile(
-                            item: item,
-                            selected: state.selectedCategoryKey == item.key,
-                            onTap: () => context.read<CategoryBloc>().add(
-                                  CategoryFilterChanged(item.key),
-                                ),
+                              side: BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.25)),
+                            ),
                           ),
                       ],
                     ),
                   ),
-                  _BottomBar(
-                    state: state,
-                    quickPulse: widget.quickDraw ? _quickPulse : null,
-                    onDraw: state.canDraw
-                        ? () {
-                            final Uri uri = Uri(
-                              path: AppRoutes.cardDraw,
-                              queryParameters: <String, String>{
-                                if (state.selectedCategoryKey != null)
-                                  'category': state.selectedCategoryKey!,
-                                if (state.difficultyFilter != DifficultyFilter.all)
-                                  'difficulty':
-                                      state.difficultyFilter.asDifficulty!.raw,
-                              },
-                            );
-                            context.push(uri.toString());
-                          }
-                        : null,
-                  ),
-                ],
-              );
+                ),
+              ),
+              Expanded(
+                child: ListView(
+                  padding: pad.copyWith(top: 0, bottom: AppSpacing.huge),
+                  children: <Widget>[
+                    _AllCategoriesTile(
+                      count: state.allFilteredCount,
+                      selected: state.selectedCategoryKey == null,
+                      onTap: () => context.read<CategoryBloc>().add(const CategoryFilterChanged(null)),
+                    ),
+                    const SizedBox(height: AppSpacing.sm),
+                    for (final CategoryListItem item in state.items)
+                      _CategoryTile(
+                        item: item,
+                        selected: state.selectedCategoryKey == item.key,
+                        onTap: () => context.read<CategoryBloc>().add(CategoryFilterChanged(item.key)),
+                      ),
+                  ],
+                ),
+              ),
+              _BottomBar(
+                state: state,
+                quickPulse: widget.quickDraw ? _quickPulse : null,
+                onDraw: state.canDraw
+                    ? () {
+                        final Uri uri = Uri(
+                          path: AppRoutes.cardDraw,
+                          queryParameters: <String, String>{
+                            if (state.selectedCategoryKey != null) 'category': state.selectedCategoryKey!,
+                            if (state.difficultyFilter != DifficultyFilter.all) 'difficulty': state.difficultyFilter.asDifficulty!.raw,
+                          },
+                        );
+                        context.push(uri.toString());
+                      }
+                    : null,
+              ),
+            ],
+          );
         }
 
         return Scaffold(
           appBar: AppBar(
             title: const Text('Choose a Topic'),
-            leading: IconButton(
-              icon: const Icon(Icons.close_rounded),
-              onPressed: () => context.pop(),
-            ),
+            leading: IconButton(icon: const Icon(Icons.close_rounded), onPressed: () => context.pop()),
           ),
           body: body,
         );
@@ -193,11 +156,7 @@ class _CategorySelectScreenState extends State<CategorySelectScreen>
 }
 
 class _AllCategoriesTile extends StatelessWidget {
-  const _AllCategoriesTile({
-    required this.count,
-    required this.selected,
-    required this.onTap,
-  });
+  const _AllCategoriesTile({required this.count, required this.selected, required this.onTap});
 
   final int count;
   final bool selected;
@@ -207,57 +166,33 @@ class _AllCategoriesTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return Material(
-      color: selected
-          ? theme.colorScheme.primaryContainer.withValues(alpha: 0.35)
-          : theme.colorScheme.surfaceContainerLow,
+      color: selected ? theme.colorScheme.primaryContainer.withValues(alpha: 0.35) : theme.colorScheme.surfaceContainerLow,
       borderRadius: BorderRadius.circular(AppRadius.lg),
       clipBehavior: Clip.antiAlias,
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.lg,
-            vertical: AppSpacing.lg + 2,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.lg + 2),
           child: Row(
             children: <Widget>[
               Container(
                 width: 48,
                 height: 48,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: theme.colorScheme.primary.withValues(alpha: 0.15),
-                ),
-                child: Icon(
-                  Icons.grid_view_rounded,
-                  color: theme.colorScheme.primary,
-                ),
+                decoration: BoxDecoration(shape: BoxShape.circle, color: theme.colorScheme.primary.withValues(alpha: 0.15)),
+                child: Icon(Icons.grid_view_rounded, color: theme.colorScheme.primary),
               ),
               const SizedBox(width: AppSpacing.md),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      'All Categories',
-                      style: theme.textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
+                    Text('All Categories', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800)),
                     const SizedBox(height: 4),
-                    Text(
-                      '$count cards available',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
+                    Text('$count cards available', style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
                   ],
                 ),
               ),
-              Icon(
-                Icons.chevron_right_rounded,
-                color: theme.colorScheme.onSurfaceVariant,
-              ),
+              Icon(Icons.chevron_right_rounded, color: theme.colorScheme.onSurfaceVariant),
             ],
           ),
         ),
@@ -267,11 +202,7 @@ class _AllCategoriesTile extends StatelessWidget {
 }
 
 class _CategoryTile extends StatelessWidget {
-  const _CategoryTile({
-    required this.item,
-    required this.selected,
-    required this.onTap,
-  });
+  const _CategoryTile({required this.item, required this.selected, required this.onTap});
 
   final CategoryListItem item;
   final bool selected;
@@ -285,18 +216,13 @@ class _CategoryTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.md),
       child: Material(
-        color: selected
-            ? theme.colorScheme.primaryContainer.withValues(alpha: 0.28)
-            : theme.colorScheme.surfaceContainerLow,
+        color: selected ? theme.colorScheme.primaryContainer.withValues(alpha: 0.28) : theme.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(AppRadius.lg),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.lg,
-              vertical: AppSpacing.lg,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.lg),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -308,17 +234,11 @@ class _CategoryTile extends StatelessWidget {
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
-                      colors: <Color>[
-                        item.accentColor.withValues(alpha: 0.35),
-                        item.accentColor.withValues(alpha: 0.12),
-                      ],
+                      colors: <Color>[item.accentColor.withValues(alpha: 0.35), item.accentColor.withValues(alpha: 0.12)],
                     ),
                   ),
                   alignment: Alignment.center,
-                  child: Text(
-                    item.emoji,
-                    style: const TextStyle(fontSize: 26),
-                  ),
+                  child: Text(item.emoji, style: const TextStyle(fontSize: 26)),
                 ),
                 const SizedBox(width: AppSpacing.md),
                 Expanded(
@@ -330,42 +250,24 @@ class _CategoryTile extends StatelessWidget {
                           Expanded(
                             child: Text(
                               item.displayName,
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w800,
-                                letterSpacing: -0.2,
-                              ),
+                              style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800, letterSpacing: -0.2),
                             ),
                           ),
                           if (item.isCustom)
                             Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: AppSpacing.sm,
-                                vertical: 2,
-                              ),
+                              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 2),
                               decoration: BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.circular(AppRadius.xs),
-                                border: Border.all(
-                                  color: theme.colorScheme.outline
-                                      .withValues(alpha: 0.4),
-                                ),
+                                borderRadius: BorderRadius.circular(AppRadius.xs),
+                                border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.4)),
                               ),
-                              child: Text(
-                                'Custom',
-                                style: theme.textTheme.labelSmall?.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
+                              child: Text('Custom', style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700)),
                             ),
                         ],
                       ),
                       const SizedBox(height: 6),
                       Text(
                         '${item.filteredCount} cards',
-                        style: theme.textTheme.bodySmall?.copyWith(
-                          color: theme.colorScheme.onSurfaceVariant,
-                          fontWeight: FontWeight.w500,
-                        ),
+                        style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant, fontWeight: FontWeight.w500),
                       ),
                       const SizedBox(height: AppSpacing.md),
                       _DifficultyBar(
@@ -379,10 +281,7 @@ class _CategoryTile extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 4),
-                  child: Icon(
-                    Icons.chevron_right_rounded,
-                    color: theme.colorScheme.onSurfaceVariant,
-                  ),
+                  child: Icon(Icons.chevron_right_rounded, color: theme.colorScheme.onSurfaceVariant),
                 ),
               ],
             ),
@@ -394,12 +293,7 @@ class _CategoryTile extends StatelessWidget {
 }
 
 class _DifficultyBar extends StatelessWidget {
-  const _DifficultyBar({
-    required this.beginner,
-    required this.intermediate,
-    required this.advanced,
-    required this.total,
-  });
+  const _DifficultyBar({required this.beginner, required this.intermediate, required this.advanced, required this.total});
 
   final int beginner;
   final int intermediate;
@@ -412,10 +306,7 @@ class _DifficultyBar extends StatelessWidget {
     if (total == 0) {
       return Container(
         height: 6,
-        decoration: BoxDecoration(
-          color: theme.colorScheme.outline.withValues(alpha: 0.15),
-          borderRadius: BorderRadius.circular(AppRadius.full),
-        ),
+        decoration: BoxDecoration(color: theme.colorScheme.outline.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(AppRadius.full)),
       );
     }
     return LayoutBuilder(
@@ -450,11 +341,7 @@ class _DifficultyBar extends StatelessWidget {
 }
 
 class _BottomBar extends StatelessWidget {
-  const _BottomBar({
-    required this.state,
-    required this.onDraw,
-    this.quickPulse,
-  });
+  const _BottomBar({required this.state, required this.onDraw, this.quickPulse});
 
   final CategoryState state;
   final VoidCallback? onDraw;
@@ -479,11 +366,7 @@ class _BottomBar extends StatelessWidget {
       height: 52,
       child: FilledButton(
         onPressed: onDraw,
-        style: FilledButton.styleFrom(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(AppRadius.xl),
-          ),
-        ),
+        style: FilledButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.xl))),
         child: const Text('Draw Card'),
       ),
     );
@@ -492,10 +375,7 @@ class _BottomBar extends StatelessWidget {
       buttonChild = AnimatedBuilder(
         animation: quickPulse!,
         builder: (BuildContext context, Widget? child) {
-          return Transform.scale(
-            scale: 1 + 0.02 * quickPulse!.value,
-            child: child,
-          );
+          return Transform.scale(scale: 1 + 0.02 * quickPulse!.value, child: child);
         },
         child: buttonChild,
       );
@@ -509,17 +389,9 @@ class _BottomBar extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Divider(
-              height: 1,
-              color: theme.colorScheme.outline.withValues(alpha: 0.2),
-            ),
+            Divider(height: 1, color: theme.colorScheme.outline.withValues(alpha: 0.2)),
             Padding(
-              padding: const EdgeInsets.fromLTRB(
-                AppSpacing.lg,
-                AppSpacing.md,
-                AppSpacing.lg,
-                AppSpacing.lg,
-              ),
+              padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.lg),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -527,16 +399,8 @@ class _BottomBar extends StatelessWidget {
                     spacing: AppSpacing.sm,
                     runSpacing: AppSpacing.sm,
                     children: <Widget>[
-                      Chip(
-                        label: Text(catLabel),
-                        visualDensity: VisualDensity.compact,
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      Chip(
-                        label: Text(diffLabel),
-                        visualDensity: VisualDensity.compact,
-                        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
+                      Chip(label: Text(catLabel), visualDensity: VisualDensity.compact, materialTapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                      Chip(label: Text(diffLabel), visualDensity: VisualDensity.compact, materialTapTargetSize: MaterialTapTargetSize.shrinkWrap),
                     ],
                   ),
                   const SizedBox(height: AppSpacing.md),

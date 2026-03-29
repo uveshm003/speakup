@@ -34,10 +34,7 @@ class _AppShellState extends State<AppShell> {
   }
 
   void _onTabSelected(int index) {
-    widget.navigationShell.goBranch(
-      index,
-      initialLocation: index == widget.navigationShell.currentIndex,
-    );
+    widget.navigationShell.goBranch(index, initialLocation: index == widget.navigationShell.currentIndex);
     context.read<NavigationBloc>().add(NavigationTabSelected(index));
   }
 
@@ -61,11 +58,7 @@ class _AppShellState extends State<AppShell> {
       return Scaffold(
         body: Row(
           children: <Widget>[
-            _Sidebar(
-              selectedIndex: shellIndex,
-              onDestinationSelected: _onTabSelected,
-              packageInfo: _packageInfo,
-            ),
+            _Sidebar(selectedIndex: shellIndex, onDestinationSelected: _onTabSelected, packageInfo: _packageInfo),
             Expanded(child: widget.navigationShell),
           ],
         ),
@@ -85,12 +78,7 @@ class _AppShellState extends State<AppShell> {
 }
 
 class _BottomNavBar extends StatelessWidget {
-  const _BottomNavBar({
-    required this.selectedIndex,
-    required this.onDestinationSelected,
-    required this.surfaceColor,
-    required this.outlineColor,
-  });
+  const _BottomNavBar({required this.selectedIndex, required this.onDestinationSelected, required this.surfaceColor, required this.outlineColor});
 
   final int selectedIndex;
   final ValueChanged<int> onDestinationSelected;
@@ -120,36 +108,16 @@ class _BottomNavBar extends StatelessWidget {
 
   static List<NavigationDestination> _destinations(BuildContext context) {
     return <NavigationDestination>[
-      NavigationDestination(
-        icon: const Icon(Icons.home_outlined),
-        selectedIcon: const Icon(Icons.home_rounded),
-        label: 'Home',
-      ),
-      NavigationDestination(
-        icon: const Icon(Icons.favorite_border_rounded),
-        selectedIcon: const Icon(Icons.favorite_rounded),
-        label: 'Favorites',
-      ),
-      NavigationDestination(
-        icon: const Icon(Icons.history_outlined),
-        selectedIcon: const Icon(Icons.history_rounded),
-        label: 'History',
-      ),
-      NavigationDestination(
-        icon: const Icon(Icons.settings_outlined),
-        selectedIcon: const Icon(Icons.settings_rounded),
-        label: 'Settings',
-      ),
+      NavigationDestination(icon: const Icon(Icons.home_outlined), selectedIcon: const Icon(Icons.home_rounded), label: 'Home'),
+      NavigationDestination(icon: const Icon(Icons.favorite_border_rounded), selectedIcon: const Icon(Icons.favorite_rounded), label: 'Favorites'),
+      NavigationDestination(icon: const Icon(Icons.history_outlined), selectedIcon: const Icon(Icons.history_rounded), label: 'History'),
+      NavigationDestination(icon: const Icon(Icons.settings_outlined), selectedIcon: const Icon(Icons.settings_rounded), label: 'Settings'),
     ];
   }
 }
 
 class _Sidebar extends StatelessWidget {
-  const _Sidebar({
-    required this.selectedIndex,
-    required this.onDestinationSelected,
-    required this.packageInfo,
-  });
+  const _Sidebar({required this.selectedIndex, required this.onDestinationSelected, required this.packageInfo});
 
   final int selectedIndex;
   final ValueChanged<int> onDestinationSelected;
@@ -164,32 +132,18 @@ class _Sidebar extends StatelessWidget {
         width: 260,
         child: DecoratedBox(
           decoration: BoxDecoration(
-            border: Border(
-              right: BorderSide(
-                color: theme.colorScheme.outline.withValues(alpha: 0.25),
-              ),
-            ),
+            border: Border(right: BorderSide(color: theme.colorScheme.outline.withValues(alpha: 0.25))),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.md,
-              vertical: AppSpacing.lg,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.lg),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.only(
-                    left: AppSpacing.sm,
-                    bottom: AppSpacing.xl,
-                  ),
+                  padding: const EdgeInsets.only(left: AppSpacing.sm, bottom: AppSpacing.xl),
                   child: Text(
                     'SpeakUp',
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
-                      color: theme.colorScheme.primary,
-                    ),
+                    style: GoogleFonts.plusJakartaSans(fontSize: 22, fontWeight: FontWeight.w800, color: theme.colorScheme.primary),
                   ),
                 ),
                 Expanded(
@@ -199,11 +153,7 @@ class _Sidebar extends StatelessWidget {
                     onDestinationSelected: onDestinationSelected,
                     labelType: NavigationRailLabelType.all,
                     destinations: const <NavigationRailDestination>[
-                      NavigationRailDestination(
-                        icon: Icon(Icons.home_outlined),
-                        selectedIcon: Icon(Icons.home_rounded),
-                        label: Text('Home'),
-                      ),
+                      NavigationRailDestination(icon: Icon(Icons.home_outlined), selectedIcon: Icon(Icons.home_rounded), label: Text('Home')),
                       NavigationRailDestination(
                         icon: Icon(Icons.favorite_border_rounded),
                         selectedIcon: Icon(Icons.favorite_rounded),
@@ -225,12 +175,8 @@ class _Sidebar extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(left: AppSpacing.sm),
                   child: Text(
-                    packageInfo == null
-                        ? '…'
-                        : 'v${packageInfo!.version} (${packageInfo!.buildNumber})',
-                    style: theme.textTheme.labelMedium?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
+                    packageInfo == null ? '…' : 'v${packageInfo!.version} (${packageInfo!.buildNumber})',
+                    style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                   ),
                 ),
               ],

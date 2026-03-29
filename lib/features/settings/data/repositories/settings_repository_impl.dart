@@ -12,17 +12,13 @@ import 'package:speakup/features/settings/domain/entities/user_settings.dart';
 import 'package:speakup/features/settings/domain/repositories/settings_repository.dart';
 
 class SettingsRepositoryImpl implements SettingsRepository {
-  SettingsRepositoryImpl(
-    this._box,
-    this._sessionRepository,
-  );
+  SettingsRepositoryImpl(this._box, this._sessionRepository);
 
   final Box<UserSettingsHive> _box;
   final SessionRepository _sessionRepository;
 
   UserSettingsHive _readOrCreateHive() {
-    final UserSettingsHive? existing =
-        _box.get(AppConstants.hiveUserSettingsKey);
+    final UserSettingsHive? existing = _box.get(AppConstants.hiveUserSettingsKey);
     if (existing != null) {
       return existing;
     }
@@ -43,10 +39,7 @@ class SettingsRepositoryImpl implements SettingsRepository {
   @override
   Future<Either<Failure, void>> saveSettings(UserSettings settings) async {
     try {
-      _box.put(
-        AppConstants.hiveUserSettingsKey,
-        userSettingsHiveFromDomain(settings),
-      );
+      _box.put(AppConstants.hiveUserSettingsKey, userSettingsHiveFromDomain(settings));
       return const Right<Failure, void>(null);
     } catch (e, _) {
       return Left<Failure, void>(CacheFailure(e.toString()));
@@ -56,23 +49,15 @@ class SettingsRepositoryImpl implements SettingsRepository {
   @override
   Future<Either<Failure, void>> updateStreak() async {
     try {
-      final Either<Failure, List<PracticeSession>> sessions =
-          await _sessionRepository.getAllSessions();
-      return await sessions.fold(
-        (Failure f) async => Left<Failure, void>(f),
-        (List<PracticeSession> list) async {
-          final List<DateTime> times =
-              list.map((PracticeSession e) => e.completedAt).toList();
-          final int streak = StreakCalculator.fromSessionTimes(times);
-          final DateTime? last = StreakCalculator.mostRecentSessionTime(times);
-          final UserSettings current = _readOrCreateHive().toDomain();
-          final UserSettings updated = current.copyWith(
-            currentStreak: streak,
-            lastSessionDate: last,
-          );
-          return saveSettings(updated);
-        },
-      );
+      final Either<Failure, List<PracticeSession>> sessions = await _sessionRepository.getAllSessions();
+      return await sessions.fold((Failure f) async => Left<Failure, void>(f), (List<PracticeSession> list) async {
+        final List<DateTime> times = list.map((PracticeSession e) => e.completedAt).toList();
+        final int streak = StreakCalculator.fromSessionTimes(times);
+        final DateTime? last = StreakCalculator.mostRecentSessionTime(times);
+        final UserSettings current = _readOrCreateHive().toDomain();
+        final UserSettings updated = current.copyWith(currentStreak: streak, lastSessionDate: last);
+        return saveSettings(updated);
+      });
     } catch (e, _) {
       return Left<Failure, void>(CacheFailure(e.toString()));
     }

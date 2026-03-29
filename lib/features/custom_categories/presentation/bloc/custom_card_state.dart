@@ -31,16 +31,12 @@ class CustomCardState extends Equatable {
     return CustomCardState(
       cards: cards ?? this.cards,
       status: status ?? this.status,
-      errorMessage:
-          clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
-      pendingDeletion: clearPendingDeletion
-          ? null
-          : (pendingDeletion ?? this.pendingDeletion),
+      errorMessage: clearErrorMessage ? null : (errorMessage ?? this.errorMessage),
+      pendingDeletion: clearPendingDeletion ? null : (pendingDeletion ?? this.pendingDeletion),
       categoryId: categoryId ?? this.categoryId,
     );
   }
 
   @override
-  List<Object?> get props =>
-      <Object?>[cards, status, errorMessage, pendingDeletion, categoryId];
+  List<Object?> get props => <Object?>[cards, status, errorMessage, pendingDeletion, categoryId];
 }

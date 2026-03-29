@@ -10,9 +10,7 @@ import 'card_draw_event.dart';
 import 'card_draw_state.dart';
 
 class CardDrawBloc extends Bloc<CardDrawEvent, CardDrawState> {
-  CardDrawBloc({required CardRepository cardRepository})
-      : _cardRepository = cardRepository,
-        super(const CardDrawState()) {
+  CardDrawBloc({required CardRepository cardRepository}) : _cardRepository = cardRepository, super(const CardDrawState()) {
     on<CardDrawRequested>(_onDrawRequested);
     on<CardRedrawRequested>(_onRedrawRequested);
     on<CardFavoriteToggled>(_onFavoriteToggled);
@@ -25,29 +23,18 @@ class CardDrawBloc extends Bloc<CardDrawEvent, CardDrawState> {
   String? _category;
   Difficulty? _difficulty;
 
-  Future<void> _onDrawRequested(
-    CardDrawRequested event,
-    Emitter<CardDrawState> emit,
-  ) async {
+  Future<void> _onDrawRequested(CardDrawRequested event, Emitter<CardDrawState> emit) async {
     _category = event.category;
     _difficulty = event.difficulty;
     await _draw(emit);
   }
 
-  Future<void> _onRedrawRequested(
-    CardRedrawRequested event,
-    Emitter<CardDrawState> emit,
-  ) async {
+  Future<void> _onRedrawRequested(CardRedrawRequested event, Emitter<CardDrawState> emit) async {
     await _draw(emit);
   }
 
   Future<void> _draw(Emitter<CardDrawState> emit) async {
-    emit(
-      state.copyWith(
-        status: CardDrawStatus.loading,
-        clearErrorMessage: true,
-      ),
-    );
+    emit(state.copyWith(status: CardDrawStatus.loading, clearErrorMessage: true));
 
     final result = await _cardRepository.getAll();
     await result.fold(
@@ -90,30 +77,18 @@ class CardDrawBloc extends Bloc<CardDrawEvent, CardDrawState> {
     );
   }
 
-  TopicCard? _pickRandom(
-    List<TopicCard> all,
-    String? categoryFilter,
-    Difficulty? difficultyFilter,
-  ) {
+  TopicCard? _pickRandom(List<TopicCard> all, String? categoryFilter, Difficulty? difficultyFilter) {
     List<TopicCard> pool = List<TopicCard>.from(all);
     if (categoryFilter != null && categoryFilter.isNotEmpty) {
       if (categoryFilter.startsWith('custom:')) {
         final String id = categoryFilter.substring('custom:'.length);
-        pool = pool
-            .where((TopicCard c) => c.customCategoryId == id)
-            .toList();
+        pool = pool.where((TopicCard c) => c.customCategoryId == id).toList();
       } else {
-        pool = pool
-            .where(
-              (TopicCard c) =>
-                  !c.isCustom && c.category == categoryFilter,
-            )
-            .toList();
+        pool = pool.where((TopicCard c) => !c.isCustom && c.category == categoryFilter).toList();
       }
     }
     if (difficultyFilter != null) {
-      pool =
-          pool.where((TopicCard c) => c.difficulty == difficultyFilter).toList();
+      pool = pool.where((TopicCard c) => c.difficulty == difficultyFilter).toList();
     }
     if (pool.isEmpty) {
       return null;
@@ -121,32 +96,18 @@ class CardDrawBloc extends Bloc<CardDrawEvent, CardDrawState> {
     return pool[_random.nextInt(pool.length)];
   }
 
-  Future<void> _onFavoriteToggled(
-    CardFavoriteToggled event,
-    Emitter<CardDrawState> emit,
-  ) async {
+  Future<void> _onFavoriteToggled(CardFavoriteToggled event, Emitter<CardDrawState> emit) async {
     final TopicCard? current = state.currentCard;
     if (current == null || current.cardId != event.cardId) {
       return;
     }
     final result = await _cardRepository.toggleFavorite(event.cardId);
-    result.fold(
-      (_) {},
-      (TopicCard updated) {
-        emit(
-          state.copyWith(
-            currentCard: updated,
-            isFavorite: updated.isFavorite,
-          ),
-        );
-      },
-    );
+    result.fold((_) {}, (TopicCard updated) {
+      emit(state.copyWith(currentCard: updated, isFavorite: updated.isFavorite));
+    });
   }
 
-  void _onFlipPhaseChanged(
-    CardDrawFlipPhaseChanged event,
-    Emitter<CardDrawState> emit,
-  ) {
+  void _onFlipPhaseChanged(CardDrawFlipPhaseChanged event, Emitter<CardDrawState> emit) {
     emit(state.copyWith(isAnimating: event.isAnimating));
   }
 }

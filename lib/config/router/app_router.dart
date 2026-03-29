@@ -47,20 +47,14 @@ import 'router_refresh.dart';
 export 'app_routes.dart';
 export 'router_refresh.dart';
 
-final GlobalKey<NavigatorState> rootNavigatorKey =
-    GlobalKey<NavigatorState>(debugLabel: 'root');
+final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>(debugLabel: 'root');
 
 CustomTransitionPage<void> _fadeTabPage(GoRouterState state, Widget child) {
   return CustomTransitionPage<void>(
     key: state.pageKey,
     child: child,
     transitionDuration: const Duration(milliseconds: 220),
-    transitionsBuilder: (
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      Widget child,
-    ) {
+    transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
       return FadeTransition(opacity: animation, child: child);
     },
   );
@@ -71,19 +65,12 @@ CustomTransitionPage<void> _slideForwardPage(GoRouterState state, Widget child) 
     key: state.pageKey,
     child: child,
     transitionDuration: const Duration(milliseconds: 320),
-    transitionsBuilder: (
-      BuildContext context,
-      Animation<double> animation,
-      Animation<double> secondaryAnimation,
-      Widget child,
-    ) {
+    transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
       return SlideTransition(
         position: Tween<Offset>(
           begin: const Offset(0.06, 0),
           end: Offset.zero,
-        ).animate(
-          CurvedAnimation(parent: animation, curve: Curves.easeOutCubic),
-        ),
+        ).animate(CurvedAnimation(parent: animation, curve: Curves.easeOutCubic)),
         child: child,
       );
     },
@@ -92,10 +79,8 @@ CustomTransitionPage<void> _slideForwardPage(GoRouterState state, Widget child) 
 
 bool _hasSeenOnboardingSync() {
   try {
-    final Box<UserSettingsHive> box =
-        Hive.box<UserSettingsHive>(AppConstants.hiveSettingsBoxName);
-    final UserSettingsHive? hive =
-        box.get(AppConstants.hiveUserSettingsKey);
+    final Box<UserSettingsHive> box = Hive.box<UserSettingsHive>(AppConstants.hiveSettingsBoxName);
+    final UserSettingsHive? hive = box.get(AppConstants.hiveUserSettingsKey);
     return hive?.hasSeenOnboarding ?? false;
   } catch (_) {
     return false;
@@ -133,10 +118,7 @@ final GoRouter appRouter = GoRouter(
       path: AppRoutes.splash,
       name: 'splash',
       pageBuilder: (BuildContext context, GoRouterState state) {
-        return NoTransitionPage<void>(
-          key: state.pageKey,
-          child: const SplashScreen(),
-        );
+        return NoTransitionPage<void>(key: state.pageKey, child: const SplashScreen());
       },
     ),
     GoRoute(
@@ -147,11 +129,7 @@ final GoRouter appRouter = GoRouter(
       },
     ),
     StatefulShellRoute.indexedStack(
-      builder: (
-        BuildContext context,
-        GoRouterState state,
-        StatefulNavigationShell navigationShell,
-      ) {
+      builder: (BuildContext context, GoRouterState state, StatefulNavigationShell navigationShell) {
         return AppShell(navigationShell: navigationShell);
       },
       branches: <StatefulShellBranch>[
@@ -177,9 +155,7 @@ final GoRouter appRouter = GoRouter(
                           categoryRepository: context.read<CategoryRepository>(),
                           initialCategoryKey: q['category'],
                         )..add(const CategoryLoadRequested()),
-                        child: CategorySelectScreen(
-                          quickDraw: q['quickDraw'] == 'true',
-                        ),
+                        child: CategorySelectScreen(quickDraw: q['quickDraw'] == 'true'),
                       ),
                     );
                   },
@@ -192,14 +168,11 @@ final GoRouter appRouter = GoRouter(
                     return _slideForwardPage(
                       state,
                       BlocProvider<CardDrawBloc>(
-                        create: (BuildContext context) => CardDrawBloc(
-                          cardRepository: context.read<CardRepository>(),
-                        )..add(
+                        create: (BuildContext context) => CardDrawBloc(cardRepository: context.read<CardRepository>())
+                          ..add(
                             CardDrawRequested(
                               category: q['category'],
-                              difficulty: q['difficulty'] != null
-                                  ? difficultyFromRaw(q['difficulty']!)
-                                  : null,
+                              difficulty: q['difficulty'] != null ? difficultyFromRaw(q['difficulty']!) : null,
                             ),
                           ),
                         child: const CardDrawScreen(),
@@ -211,25 +184,12 @@ final GoRouter appRouter = GoRouter(
                   path: 'card-detail',
                   parentNavigatorKey: rootNavigatorKey,
                   pageBuilder: (BuildContext context, GoRouterState state) {
-                    final TopicCard? card =
-                        CardDetailRouteArgs.cardFromExtra(state.extra);
-                    final CardDrawBloc? drawBloc =
-                        CardDetailRouteArgs.drawBlocFromExtra(state.extra);
+                    final TopicCard? card = CardDetailRouteArgs.cardFromExtra(state.extra);
+                    final CardDrawBloc? drawBloc = CardDetailRouteArgs.drawBlocFromExtra(state.extra);
                     if (card == null) {
-                      return _slideForwardPage(
-                        state,
-                        const Scaffold(
-                          body: Center(child: Text('No card to display')),
-                        ),
-                      );
+                      return _slideForwardPage(state, const Scaffold(body: Center(child: Text('No card to display'))));
                     }
-                    return _slideForwardPage(
-                      state,
-                      CardDetailScreen(
-                        card: card,
-                        drawBloc: drawBloc,
-                      ),
-                    );
+                    return _slideForwardPage(state, CardDetailScreen(card: card, drawBloc: drawBloc));
                   },
                 ),
                 GoRoute(
@@ -237,58 +197,34 @@ final GoRouter appRouter = GoRouter(
                   parentNavigatorKey: rootNavigatorKey,
                   pageBuilder: (BuildContext context, GoRouterState state) {
                     final TopicCard? card = state.extra as TopicCard?;
-                    return _slideForwardPage(
-                      state,
-                      TimerSetupScreen(card: card),
-                    );
+                    return _slideForwardPage(state, TimerSetupScreen(card: card));
                   },
                 ),
                 GoRoute(
                   path: 'active-practice',
                   parentNavigatorKey: rootNavigatorKey,
                   pageBuilder: (BuildContext context, GoRouterState state) {
-                    final ActivePracticeArgs? args =
-                        state.extra as ActivePracticeArgs?;
+                    final ActivePracticeArgs? args = state.extra as ActivePracticeArgs?;
                     if (args == null) {
-                      return _slideForwardPage(
-                        state,
-                        const Scaffold(
-                          body: Center(
-                            child: Text('Missing practice session'),
-                          ),
-                        ),
-                      );
+                      return _slideForwardPage(state, const Scaffold(body: Center(child: Text('Missing practice session'))));
                     }
-                    return _slideForwardPage(
-                      state,
-                      ActivePracticeScreen(args: args),
-                    );
+                    return _slideForwardPage(state, ActivePracticeScreen(args: args));
                   },
                 ),
                 GoRoute(
                   path: 'session-end',
                   parentNavigatorKey: rootNavigatorKey,
                   pageBuilder: (BuildContext context, GoRouterState state) {
-                    final SessionEndRouteArgs? args =
-                        state.extra as SessionEndRouteArgs?;
+                    final SessionEndRouteArgs? args = state.extra as SessionEndRouteArgs?;
                     if (args == null) {
-                      return _slideForwardPage(
-                        state,
-                        const Scaffold(
-                          body: Center(
-                            child: Text('Missing session summary'),
-                          ),
-                        ),
-                      );
+                      return _slideForwardPage(state, const Scaffold(body: Center(child: Text('Missing session summary'))));
                     }
                     return _slideForwardPage(
                       state,
                       BlocProvider<SessionEndBloc>(
                         create: (BuildContext context) => SessionEndBloc(
-                          sessionRepository:
-                              context.read<SessionRepository>(),
-                          settingsRepository:
-                              context.read<SettingsRepository>(),
+                          sessionRepository: context.read<SessionRepository>(),
+                          settingsRepository: context.read<SettingsRepository>(),
                           args: args,
                         ),
                         child: const SessionEndScreen(),
@@ -342,10 +278,9 @@ final GoRouter appRouter = GoRouter(
         return _slideForwardPage(
           state,
           BlocProvider<CustomCategoryBloc>(
-            create: (BuildContext context) => CustomCategoryBloc(
-              categoryRepository: context.read<CategoryRepository>(),
-              cardRepository: context.read<CardRepository>(),
-            )..add(const CategoriesLoadRequested()),
+            create: (BuildContext context) =>
+                CustomCategoryBloc(categoryRepository: context.read<CategoryRepository>(), cardRepository: context.read<CardRepository>())
+                  ..add(const CategoriesLoadRequested()),
             child: const MyCategoriesScreen(),
           ),
         );
@@ -357,19 +292,12 @@ final GoRouter appRouter = GoRouter(
           pageBuilder: (BuildContext context, GoRouterState state) {
             final Object? extra = state.extra;
             if (extra is! CustomCategory) {
-              return _slideForwardPage(
-                state,
-                const Scaffold(
-                  body: Center(child: Text('Category not found')),
-                ),
-              );
+              return _slideForwardPage(state, const Scaffold(body: Center(child: Text('Category not found'))));
             }
             return _slideForwardPage(
               state,
               BlocProvider<CustomCardBloc>(
-                create: (BuildContext context) => CustomCardBloc(
-                  cardRepository: context.read<CardRepository>(),
-                ),
+                create: (BuildContext context) => CustomCardBloc(cardRepository: context.read<CardRepository>()),
                 child: CategoryDetailScreen(category: extra),
               ),
             );
@@ -381,17 +309,9 @@ final GoRouter appRouter = GoRouter(
           pageBuilder: (BuildContext context, GoRouterState state) {
             final Object? extra = state.extra;
             if (extra is! CreateCardRouteArgs) {
-              return _slideForwardPage(
-                state,
-                const Scaffold(
-                  body: Center(child: Text('Missing card arguments')),
-                ),
-              );
+              return _slideForwardPage(state, const Scaffold(body: Center(child: Text('Missing card arguments'))));
             }
-            return _slideForwardPage(
-              state,
-              CreateCardScreen(args: extra),
-            );
+            return _slideForwardPage(state, CreateCardScreen(args: extra));
           },
         ),
       ],
