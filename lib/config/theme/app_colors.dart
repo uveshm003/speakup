@@ -66,9 +66,6 @@ abstract class AppColorsNew {
   static const Color secondaryContainer = Color(0xFFF5E0A2); // light gold tint
   static const Color onSecondaryContainer = Color(0xFF241A00);
 
-  // ---------------------------------------------------------------------------
-  // Tertiary (Depth) — Deep blue for secondary paths & instructional metadata
-  // ---------------------------------------------------------------------------
   static const Color tertiary = Color(0xFF002183);
   static const Color onTertiary = Color(0xFFFFFFFF);
   static const Color tertiaryContainer = Color(0xFFDDE1FF);
@@ -89,39 +86,23 @@ abstract class AppColorsNew {
   static const Color surfaceContainerHigh = Color(0xFFEAE8E4);
   static const Color surfaceContainerHighest = Color(0xFFE4E2DE);
 
-  // ---------------------------------------------------------------------------
-  // Outline — The "Ghost Border" fallback (use at 15% opacity)
-  // ---------------------------------------------------------------------------
   static const Color outline = Color(0xFF72796F);
   static const Color outlineVariant = Color(0xFFBFC8C8); // at 15% = ghost border
 
-  // ---------------------------------------------------------------------------
-  // Inverse & Scrim
-  // ---------------------------------------------------------------------------
   static const Color inverseSurface = Color(0xFF2F3130);
   static const Color onInverseSurface = Color(0xFFF1F1EC);
   static const Color inversePrimary = Color(0xFF62DBC4);
   static const Color scrim = Color(0xFF000000);
-  static const Color shadow = Color(0xFF1B1C1A); // tinted, not pure black
+  static const Color shadow = Color(0xFF1B1C1A);
 
-  // ---------------------------------------------------------------------------
-  // Glassmorphism helpers — use these for bottom nav / sticky headers
-  //   surface at 80% opacity + 20px backdrop-blur
-  // ---------------------------------------------------------------------------
   static const Color glassBackground = Color(0xCCFBF9F5); // surface @ 80%
 
-  // ---------------------------------------------------------------------------
-  // Gradient helpers — "Jewel-like" CTA buttons
-  // ---------------------------------------------------------------------------
   static const LinearGradient primaryButtonGradient = LinearGradient(
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
     colors: [primary, primaryContainer],
   );
 
-  // ---------------------------------------------------------------------------
-  // Ambient shadow spec — blur:24, spread:-4, opacity:6%
-  // ---------------------------------------------------------------------------
   static List<BoxShadow> get ambientShadow => [BoxShadow(color: shadow.withOpacity(0.06), blurRadius: 24, spreadRadius: -4)];
 }
 

@@ -19,8 +19,6 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   PackageInfo? _packageInfo;
 
-  static const List<double> _textScales = <double>[0.85, 1.0, 1.15, 1.3];
-  static const List<String> _textScaleLabels = <String>['Small', 'Normal', 'Large', 'Extra Large'];
 
   @override
   void initState() {
@@ -32,16 +30,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
-  static ThemeMode _themeModeFromSettings(UserSettings s) {
-    switch (s.themeModeRaw) {
-      case 'light':
-        return ThemeMode.light;
-      case 'dark':
-        return ThemeMode.dark;
-      default:
-        return ThemeMode.system;
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -59,38 +48,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
         }
 
         final ThemeData theme = Theme.of(context);
-        final ThemeMode themeMode = _themeModeFromSettings(state.settings);
 
         return Scaffold(
           appBar: AppBar(title: const Text('Settings')),
           body: ListView(
             padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
             children: <Widget>[
-              _sectionLabel(context, 'Appearance'),
-              _card(
-                context,
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.sm, AppSpacing.md, AppSpacing.md),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: <Widget>[
-                      Text('Theme', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
-                      const SizedBox(height: AppSpacing.sm),
-                      SegmentedButton<ThemeMode>(
-                        segments: const <ButtonSegment<ThemeMode>>[
-                          ButtonSegment<ThemeMode>(value: ThemeMode.light, label: Text('Light')),
-                          ButtonSegment<ThemeMode>(value: ThemeMode.dark, label: Text('Dark')),
-                          ButtonSegment<ThemeMode>(value: ThemeMode.system, label: Text('System')),
-                        ],
-                        selected: <ThemeMode>{themeMode},
-                        onSelectionChanged: (Set<ThemeMode> next) {
-                          context.read<SettingsBloc>().add(AppearanceThemeModeChanged(next.first));
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+
               _sectionLabel(context, 'Practice defaults'),
               _card(
                 context,
@@ -102,41 +66,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       trailing: const Icon(Icons.chevron_right_rounded),
                       onTap: () => _showTimerPicker(context, state.settings.defaultTimerSeconds),
                     ),
-                    const Divider(height: 1),
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.sm),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              Text('Text size', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600)),
-                              Text(
-                                _textScaleLabels[_scaleIndex(state.settings.textSizeScale)],
-                                style: theme.textTheme.labelLarge?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w700),
-                              ),
-                            ],
-                          ),
-                          Slider(
-                            value: _scaleIndex(state.settings.textSizeScale).toDouble(),
-                            min: 0,
-                            max: 3,
-                            divisions: 3,
-                            label: _textScaleLabels[_scaleIndex(state.settings.textSizeScale)],
-                            onChanged: (double v) {
-                              context.read<SettingsBloc>().add(TextScaleChanged(_textScales[v.round()]));
-                            },
-                          ),
-                          Text(
-                            'The quick brown fox jumps over the lazy dog.',
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              fontSize: (theme.textTheme.bodyMedium?.fontSize ?? 14) * state.settings.textSizeScale,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
+
                   ],
                 ),
               ),
@@ -145,13 +75,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 context,
                 child: Column(
                   children: <Widget>[
-                    ListTile(
-                      title: const Text('Replay onboarding'),
-                      subtitle: const Text('Show the welcome flow again'),
-                      trailing: const Icon(Icons.school_outlined),
-                      onTap: () => _confirmOnboardingReset(context),
-                    ),
-                    const Divider(height: 1),
+
                     ListTile(
                       title: const Text('Clear session history'),
                       subtitle: const Text('Removes all practice sessions from this device'),
@@ -208,18 +132,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  int _scaleIndex(double scale) {
-    int best = 1;
-    double bestDelta = double.infinity;
-    for (int i = 0; i < _textScales.length; i++) {
-      final double d = (_textScales[i] - scale).abs();
-      if (d < bestDelta) {
-        bestDelta = d;
-        best = i;
-      }
-    }
-    return best;
-  }
+
 
   Widget _sectionLabel(BuildContext context, String title) {
     return Padding(
@@ -245,22 +158,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  Future<void> _confirmOnboardingReset(BuildContext context) async {
-    final bool? ok = await showDialog<bool>(
-      context: context,
-      builder: (BuildContext ctx) => AlertDialog(
-        title: const Text('Replay onboarding?'),
-        content: const Text('You will see the welcome screens again. You can finish or skip to return to the app.'),
-        actions: <Widget>[
-          TextButton(onPressed: () => Navigator.pop(ctx, false), child: const Text('Cancel')),
-          FilledButton(onPressed: () => Navigator.pop(ctx, true), child: const Text('Continue')),
-        ],
-      ),
-    );
-    if (ok == true && context.mounted) {
-      context.read<SettingsBloc>().add(const OnboardingResetRequested());
-    }
-  }
+
 
   Future<void> _confirmClearHistory(BuildContext context) async {
     final bool? ok = await showDialog<bool>(

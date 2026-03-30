@@ -41,9 +41,12 @@ dev_dependencies:
   objectbox_generator: ^5.3.0
   # Replaces hive_generator: classic hive_generator conflicts with objectbox_generator (source_gen).
   hive_generator_io: ^3.2.2
+  mocktail: ^1.0.4
+  bloc_test: ^10.0.0
 
 flutter:
   uses-material-design: true
 
   assets:
     - assets/data/cards.json
+    - assets/images/

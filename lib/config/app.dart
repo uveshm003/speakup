@@ -49,7 +49,6 @@ class SpeakUpApp extends StatelessWidget {
             create: (BuildContext context) => SettingsBloc(
               settingsRepository: context.read<SettingsRepository>(),
               sessionRepository: context.read<SessionRepository>(),
-              themeBloc: context.read<ThemeBloc>(),
               historyBloc: context.read<HistoryBloc>(),
             ),
           ),

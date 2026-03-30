@@ -148,73 +148,75 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         }
 
         return Scaffold(
-          body: CustomScrollView(
-            slivers: <Widget>[
-              SliverPadding(
-                padding: pagePad.copyWith(top: pagePad.top + AppSpacing.md, bottom: AppSpacing.xxl),
-                sliver: SliverList(
-                  delegate: SliverChildListDelegate(<Widget>[
-                    AnimatedOpacity(
-                      opacity: _showGreeting ? 1 : 0,
-                      duration: const Duration(milliseconds: 380),
-                      curve: Curves.easeOut,
-                      child: _GreetingHeader(
-                        greeting: _greetingLine(),
-                        streak: state.streak,
-                        subtitleRecent: state.recentCategories.isNotEmpty,
-                        recentCategories: state.recentCategories,
+          body: SafeArea(
+            child: CustomScrollView(
+              slivers: <Widget>[
+                SliverPadding(
+                  padding: pagePad.copyWith(top: pagePad.top + AppSpacing.md, bottom: AppSpacing.xxl),
+                  sliver: SliverList(
+                    delegate: SliverChildListDelegate(<Widget>[
+                      AnimatedOpacity(
+                        opacity: _showGreeting ? 1 : 0,
+                        duration: const Duration(milliseconds: 380),
+                        curve: Curves.easeOut,
+                        child: _GreetingHeader(
+                          greeting: _greetingLine(),
+                          streak: state.streak,
+                          subtitleRecent: state.recentCategories.isNotEmpty,
+                          recentCategories: state.recentCategories,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: AppSpacing.xl),
-                    AnimatedSlide(
-                      duration: const Duration(milliseconds: 420),
-                      curve: Curves.easeOutCubic,
-                      offset: _showStreak ? Offset.zero : const Offset(0, 0.06),
-                      child: AnimatedOpacity(
-                        opacity: _showStreak ? 1 : 0,
+                      const SizedBox(height: AppSpacing.xl),
+                      AnimatedSlide(
+                        duration: const Duration(milliseconds: 420),
+                        curve: Curves.easeOutCubic,
+                        offset: _showStreak ? Offset.zero : const Offset(0, 0.06),
+                        child: AnimatedOpacity(
+                          opacity: _showStreak ? 1 : 0,
+                          duration: const Duration(milliseconds: 320),
+                          child: _StreakCard(streak: state.streak, todayCount: state.todaySessionCount, theme: theme),
+                        ),
+                      ),
+                      const SizedBox(height: AppSpacing.xl),
+                      AnimatedOpacity(
+                        opacity: _showCta ? 1 : 0,
                         duration: const Duration(milliseconds: 320),
-                        child: _StreakCard(streak: state.streak, todayCount: state.todaySessionCount, theme: theme),
+                        child: ScaleTransition(
+                          scale: _ctaScale,
+                          child: _IdlePulseCta(onPressed: () => context.read<HomeBloc>().add(const HomeQuickDrawRequested())),
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: AppSpacing.xl),
-                    AnimatedOpacity(
-                      opacity: _showCta ? 1 : 0,
-                      duration: const Duration(milliseconds: 320),
-                      child: ScaleTransition(
-                        scale: _ctaScale,
-                        child: _IdlePulseCta(onPressed: () => context.read<HomeBloc>().add(const HomeQuickDrawRequested())),
-                      ),
-                    ),
-                    const SizedBox(height: AppSpacing.xxl),
-                    AnimatedOpacity(
-                      opacity: _showGrid ? 1 : 0,
-                      duration: const Duration(milliseconds: 400),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text('Browse by category', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
-                          const SizedBox(height: AppSpacing.md),
-                          _CategoryGrid(
-                            crossAxisCount: _gridCrossAxisCount(context),
-                            categoryCardCounts: state.categoryCardCounts,
-                            customCardsCount: state.customCardsCount,
-                            recentCategories: state.recentCategories,
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (state.recentSessions.isNotEmpty) ...<Widget>[
                       const SizedBox(height: AppSpacing.xxl),
                       AnimatedOpacity(
                         opacity: _showGrid ? 1 : 0,
                         duration: const Duration(milliseconds: 400),
-                        child: _RecentSessionsRow(sessions: state.recentSessions),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Text('Browse by category', style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
+                            const SizedBox(height: AppSpacing.md),
+                            _CategoryGrid(
+                              crossAxisCount: _gridCrossAxisCount(context),
+                              categoryCardCounts: state.categoryCardCounts,
+                              customCardsCount: state.customCardsCount,
+                              recentCategories: state.recentCategories,
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ]),
+                      if (state.recentSessions.isNotEmpty) ...<Widget>[
+                        const SizedBox(height: AppSpacing.xxl),
+                        AnimatedOpacity(
+                          opacity: _showGrid ? 1 : 0,
+                          duration: const Duration(milliseconds: 400),
+                          child: _RecentSessionsRow(sessions: state.recentSessions),
+                        ),
+                      ],
+                    ]),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         );
       },
@@ -256,14 +258,14 @@ class _GreetingHeader extends StatelessWidget {
             ],
           ),
         ),
-        CircleAvatar(
-          radius: 22,
-          backgroundColor: theme.colorScheme.primaryContainer,
-          child: Text(
-            'S',
-            style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: theme.colorScheme.onPrimaryContainer),
-          ),
-        ),
+        // CircleAvatar(
+        //   radius: 22,
+        //   backgroundColor: theme.colorScheme.primaryContainer,
+        //   child: Text(
+        //     'S',
+        //     style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700, color: theme.colorScheme.onPrimaryContainer),
+        //   ),
+        // ),
       ],
     );
   }

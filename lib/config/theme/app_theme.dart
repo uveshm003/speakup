@@ -11,42 +11,32 @@ class AppTheme {
   AppTheme._();
 
   static TextTheme _buildTextTheme() {
-    // Newsreader for display / headline — authority & grace
     final serif = GoogleFonts.newsreader;
-    // Inter for titles, body, labels — functional clarity
+
     final sans = GoogleFonts.inter;
 
     return TextTheme(
-      // --- Display (serif) ---
       displayLarge: serif(fontSize: 57, fontWeight: FontWeight.w400, letterSpacing: -0.25, color: AppColorsNew.onSurface),
       displayMedium: serif(fontSize: 45, fontWeight: FontWeight.w400, color: AppColorsNew.onSurface),
       displaySmall: serif(fontSize: 36, fontWeight: FontWeight.w400, color: AppColorsNew.onSurface),
 
-      // --- Headline (serif) ---
       headlineLarge: serif(fontSize: 32, fontWeight: FontWeight.w600, color: AppColorsNew.onSurface),
       headlineMedium: serif(fontSize: 28, fontWeight: FontWeight.w500, color: AppColorsNew.onSurface),
       headlineSmall: serif(fontSize: 24, fontWeight: FontWeight.w500, color: AppColorsNew.onSurface),
 
-      // --- Title (sans) ---
       titleLarge: sans(fontSize: 22, fontWeight: FontWeight.w500, color: AppColorsNew.onSurface),
       titleMedium: sans(fontSize: 16, fontWeight: FontWeight.w500, letterSpacing: 0.15, color: AppColorsNew.onSurface),
       titleSmall: sans(fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: 0.1, color: AppColorsNew.onSurface),
 
-      // --- Body (sans) ---
       bodyLarge: sans(fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.5, color: AppColorsNew.onSurface),
       bodyMedium: sans(fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.25, color: AppColorsNew.onSurface),
       bodySmall: sans(fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.4, color: AppColorsNew.onSurfaceVariant),
 
-      // --- Label (sans) ---
       labelLarge: sans(fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.1, color: AppColorsNew.onSurface),
       labelMedium: sans(fontSize: 12, fontWeight: FontWeight.w500, letterSpacing: 0.5, color: AppColorsNew.onSurface),
       labelSmall: sans(fontSize: 11, fontWeight: FontWeight.w500, letterSpacing: 0.5, color: AppColorsNew.onSurfaceVariant),
     );
   }
-
-  // ---------------------------------------------------------------------------
-  // ColorScheme
-  // ---------------------------------------------------------------------------
 
   static const ColorScheme _colorScheme = ColorScheme(
     brightness: Brightness.light,
