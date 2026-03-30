@@ -9,6 +9,7 @@ import 'package:speakup/config/router/app_routes.dart';
 import 'package:speakup/config/router/router_refresh.dart';
 import 'package:speakup/config/theme/app_colors.dart';
 import 'package:speakup/core/constants/app_constants.dart';
+import 'package:speakup/core/core.dart';
 import 'package:speakup/features/settings/data/mappers/user_settings_mapper.dart';
 import 'package:speakup/features/settings/data/models/user_settings_hive.dart';
 import 'package:speakup/features/settings/domain/entities/user_settings.dart';
@@ -29,17 +30,17 @@ final List<_OnboardingData> _pages = [
   _OnboardingData(
     title: 'Speak with Confidence',
     body: 'Master spoken English through guided, real-world topics and vocabulary boosts.',
-    illustrationBuilder: (_) => const _IllustrationSpeaker(),
+    illustrationBuilder: (_) => Image.asset(AppAssets.ob1),
   ),
   _OnboardingData(
     title: 'Learn Before You Speak',
     body: 'Every card has a Mini Guide and Vocabulary Boost to help you prepare in under 60 seconds.',
-    illustrationBuilder: (_) => const _IllustrationBook(),
+    illustrationBuilder: (_) => Image.asset(AppAssets.ob2),
   ),
   _OnboardingData(
     title: 'Practice Daily, Build Streaks',
     body: 'Track your sessions, earn streaks, and grow one conversation at a time.',
-    illustrationBuilder: (_) => const _IllustrationStreak(),
+    illustrationBuilder: (_) => Image.asset(AppAssets.ob3),
   ),
 ];
 
@@ -129,9 +130,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> with SingleTickerPr
           // ── Main content ────────────────────────────────────────────────
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 48),
+              padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 32),
               child: Column(
                 children: [
+                  const SizedBox(height: 24),
+
                   // Illustration area (flex-1)
                   Expanded(
                     child: PageView.builder(
@@ -194,6 +197,7 @@ class _TopHeader extends StatelessWidget {
         padding: EdgeInsets.fromLTRB(32, top + 20, 32, 20),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Brand wordmark
             Text(
@@ -202,16 +206,16 @@ class _TopHeader extends StatelessWidget {
             ),
 
             // Streak badge
-            Row(
-              children: [
-                Icon(Icons.local_fire_department, color: AppColorsNew.primary, size: 22),
-                const SizedBox(width: 4),
-                Text(
-                  '0',
-                  style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w700, color: AppColorsNew.primary, letterSpacing: -0.5),
-                ),
-              ],
-            ),
+            // Row(
+            //   children: [
+            //     Icon(Icons.local_fire_department, color: AppColorsNew.primary, size: 22),
+            //     const SizedBox(width: 4),
+            //     Text(
+            //       '0',
+            //       style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w700, color: AppColorsNew.primary, letterSpacing: -0.5),
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       ),
@@ -231,40 +235,7 @@ class _IllustrationArea extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: AspectRatio(
-        aspectRatio: 1,
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            // Primary blob
-            Positioned.fill(
-              child: Center(
-                child: Container(
-                  width: 256,
-                  height: 256,
-                  decoration: BoxDecoration(shape: BoxShape.circle, color: AppColorsNew.primary.withValues(alpha: 0.05)),
-                  child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 40, sigmaY: 40), child: const SizedBox.expand()),
-                ),
-              ),
-            ),
-
-            // Secondary blob (top-right offset)
-            Positioned(
-              top: 0,
-              right: 0,
-              child: Container(
-                width: 192,
-                height: 192,
-                decoration: BoxDecoration(shape: BoxShape.circle, color: AppColorsNew.secondary.withValues(alpha: 0.10)),
-                child: BackdropFilter(filter: ImageFilter.blur(sigmaX: 32, sigmaY: 32), child: const SizedBox.expand()),
-              ),
-            ),
-
-            // Illustration
-            Padding(padding: const EdgeInsets.all(32), child: page.illustrationBuilder(context)),
-          ],
-        ),
-      ),
+      child: Padding(padding: const EdgeInsets.all(18), child: page.illustrationBuilder(context)),
     );
   }
 }
@@ -306,7 +277,7 @@ class _BottomCard extends StatelessWidget {
           // Typography group
           _TypographyGroup(page: page),
 
-          const SizedBox(height: 32),
+          const SizedBox(height: 20),
 
           // Interaction group
           Column(
@@ -315,7 +286,7 @@ class _BottomCard extends StatelessWidget {
               // Progress dots
               _ProgressDots(current: pageIndex, total: total),
 
-              const SizedBox(height: 40),
+              const SizedBox(height: 16),
 
               // Footer actions
               Row(
@@ -327,7 +298,7 @@ class _BottomCard extends StatelessWidget {
                       onTap: onSkip,
                       child: Text(
                         'Skip',
-                        style: GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.w600, color: AppColorsNew.onSurfaceVariant),
+                        style: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600, color: AppColorsNew.onSurfaceVariant),
                       ),
                     )
                   else
@@ -362,15 +333,15 @@ class _TypographyGroup extends StatelessWidget {
         // Headline — Newsreader bold, 36px, primary, tight tracking
         Text(
           page.title,
-          style: GoogleFonts.newsreader(fontSize: 36, fontWeight: FontWeight.w700, color: AppColorsNew.primary, letterSpacing: -0.5, height: 1.15),
+          style: GoogleFonts.newsreader(fontSize: 28, fontWeight: FontWeight.w700, color: AppColorsNew.primary, letterSpacing: -0.5, height: 1.15),
         ),
 
-        const SizedBox(height: 16),
+        const SizedBox(height: 10),
 
         // Body — Inter regular, 18px, onSurfaceVariant, relaxed leading
         Text(
           page.body,
-          style: GoogleFonts.inter(fontSize: 17, fontWeight: FontWeight.w400, color: AppColorsNew.onSurfaceVariant, height: 1.6),
+          style: GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.w400, color: AppColorsNew.onSurfaceVariant, height: 1.6),
         ),
       ],
     );
@@ -440,239 +411,4 @@ class _NextButton extends StatelessWidget {
       ),
     );
   }
-}
-
-// =============================================================================
-// Illustrations — geometric SVG-style CustomPainters
-// =============================================================================
-
-/// Page 1 — Person speaking with sound waves (teal + indigo)
-class _IllustrationSpeaker extends StatelessWidget {
-  const _IllustrationSpeaker();
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(painter: _SpeakerPainter());
-  }
-}
-
-class _SpeakerPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final cx = size.width / 2;
-    final cy = size.height / 2;
-
-    // ── Golden sun circle (secondary) ──────────────────────────────────
-    canvas.drawCircle(Offset(cx, cy - size.height * 0.05), size.width * 0.28, Paint()..color = AppColorsNew.secondary.withValues(alpha: 0.18));
-    canvas.drawCircle(Offset(cx, cy - size.height * 0.05), size.width * 0.20, Paint()..color = AppColorsNew.secondary.withValues(alpha: 0.30));
-
-    // ── Person silhouette (primary) ─────────────────────────────────────
-    final headR = size.width * 0.09;
-    final headCenter = Offset(cx, cy - size.height * 0.18);
-    canvas.drawCircle(headCenter, headR, Paint()..color = AppColorsNew.primary);
-
-    // Body
-    final bodyPath = Path()
-      ..moveTo(cx - size.width * 0.10, cy - size.height * 0.08)
-      ..quadraticBezierTo(cx, cy + size.height * 0.12, cx - size.width * 0.12, cy + size.height * 0.25)
-      ..lineTo(cx + size.width * 0.12, cy + size.height * 0.25)
-      ..quadraticBezierTo(cx, cy + size.height * 0.12, cx + size.width * 0.10, cy - size.height * 0.08)
-      ..close();
-    canvas.drawPath(bodyPath, Paint()..color = AppColorsNew.primary);
-
-    // ── Sound waves (tertiary) ──────────────────────────────────────────
-    final wavePaint = Paint()
-      ..color = AppColorsNew.tertiary.withValues(alpha: 0.55)
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = size.width * 0.025
-      ..strokeCap = StrokeCap.round;
-
-    for (int i = 1; i <= 3; i++) {
-      final r = size.width * (0.32 + i * 0.08);
-      canvas.drawArc(
-        Rect.fromCenter(center: Offset(cx, cy - size.height * 0.05), width: r * 2, height: r * 2),
-        -0.8,
-        1.6,
-        false,
-        wavePaint..color = AppColorsNew.tertiary.withValues(alpha: 0.55 - i * 0.12),
-      );
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter _) => false;
-}
-
-// ---------------------------------------------------------------------------
-
-/// Page 2 — Open book with vocabulary highlights
-class _IllustrationBook extends StatelessWidget {
-  const _IllustrationBook();
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(painter: _BookPainter());
-  }
-}
-
-class _BookPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final cx = size.width / 2;
-    final cy = size.height / 2;
-
-    // ── Book pages ──────────────────────────────────────────────────────
-    final bookW = size.width * 0.72;
-    final bookH = size.height * 0.50;
-    final bookTop = cy - bookH / 2;
-
-    // Left page
-    final leftPage = RRect.fromRectAndCorners(
-      Rect.fromLTWH(cx - bookW / 2, bookTop, bookW / 2 - 4, bookH),
-      topLeft: const Radius.circular(8),
-      bottomLeft: const Radius.circular(8),
-    );
-    canvas.drawRRect(
-      leftPage,
-      Paint()
-        ..color = AppColorsNew.surfaceContainerLowest
-        ..style = PaintingStyle.fill,
-    );
-    canvas.drawRRect(
-      leftPage,
-      Paint()
-        ..color = AppColorsNew.primary.withValues(alpha: 0.15)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.5,
-    );
-
-    // Right page
-    final rightPage = RRect.fromRectAndCorners(
-      Rect.fromLTWH(cx + 4, bookTop, bookW / 2 - 4, bookH),
-      topRight: const Radius.circular(8),
-      bottomRight: const Radius.circular(8),
-    );
-    canvas.drawRRect(
-      rightPage,
-      Paint()
-        ..color = AppColorsNew.surfaceContainerLowest
-        ..style = PaintingStyle.fill,
-    );
-    canvas.drawRRect(
-      rightPage,
-      Paint()
-        ..color = AppColorsNew.primary.withValues(alpha: 0.15)
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = 1.5,
-    );
-
-    // Spine
-    canvas.drawRect(Rect.fromLTWH(cx - 4, bookTop, 8, bookH), Paint()..color = AppColorsNew.primaryContainer);
-
-    // ── Lines on left page ──────────────────────────────────────────────
-    final linePaint = Paint()
-      ..color = AppColorsNew.onSurfaceVariant.withValues(alpha: 0.18)
-      ..strokeWidth = 2
-      ..strokeCap = StrokeCap.round;
-
-    for (int i = 0; i < 5; i++) {
-      final y = bookTop + bookH * 0.20 + i * bookH * 0.13;
-      final xStart = cx - bookW / 2 + 16;
-      final xEnd = cx - 20.0;
-      canvas.drawLine(Offset(xStart, y), Offset(xEnd, y), linePaint);
-    }
-
-    // ── Vocabulary highlight (secondary) on right page ──────────────────
-    final hlPaint = Paint()
-      ..color = AppColorsNew.secondary.withValues(alpha: 0.30)
-      ..style = PaintingStyle.fill;
-
-    canvas.drawRRect(
-      RRect.fromRectAndRadius(Rect.fromLTWH(cx + 12, bookTop + bookH * 0.18, bookW * 0.28, bookH * 0.10), const Radius.circular(4)),
-      hlPaint,
-    );
-
-    for (int i = 0; i < 4; i++) {
-      final y = bookTop + bookH * 0.35 + i * bookH * 0.13;
-      canvas.drawLine(Offset(cx + 12, y), Offset(cx + bookW / 2 - 20, y), linePaint);
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter _) => false;
-}
-
-// ---------------------------------------------------------------------------
-
-/// Page 3 — Streak / flame with calendar dots
-class _IllustrationStreak extends StatelessWidget {
-  const _IllustrationStreak();
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomPaint(painter: _StreakPainter());
-  }
-}
-
-class _StreakPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final cx = size.width / 2;
-    final cy = size.height / 2;
-
-    // ── Background glow ─────────────────────────────────────────────────
-    canvas.drawCircle(Offset(cx, cy), size.width * 0.30, Paint()..color = AppColorsNew.secondary.withValues(alpha: 0.12));
-
-    // ── Flame shape (secondary gold → primary) ──────────────────────────
-    final flameGrad = Paint()
-      ..shader = LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [AppColorsNew.secondary, AppColorsNew.primary],
-      ).createShader(Rect.fromCenter(center: Offset(cx, cy - size.height * 0.05), width: size.width * 0.30, height: size.height * 0.45));
-
-    final flamePath = Path()
-      ..moveTo(cx, cy - size.height * 0.30)
-      ..cubicTo(cx + size.width * 0.18, cy - size.height * 0.10, cx + size.width * 0.14, cy + size.height * 0.04, cx, cy + size.height * 0.15)
-      ..cubicTo(cx - size.width * 0.14, cy + size.height * 0.04, cx - size.width * 0.18, cy - size.height * 0.10, cx, cy - size.height * 0.30)
-      ..close();
-
-    canvas.drawPath(flamePath, flameGrad);
-
-    // Inner lighter flame
-    final innerGrad = Paint()
-      ..shader = LinearGradient(
-        begin: Alignment.topCenter,
-        end: Alignment.bottomCenter,
-        colors: [AppColorsNew.secondary.withValues(alpha: 0.80), AppColorsNew.secondaryContainer],
-      ).createShader(Rect.fromCenter(center: Offset(cx, cy - size.height * 0.05), width: size.width * 0.15, height: size.height * 0.25));
-
-    final innerFlame = Path()
-      ..moveTo(cx, cy - size.height * 0.18)
-      ..cubicTo(cx + size.width * 0.09, cy - size.height * 0.06, cx + size.width * 0.07, cy + size.height * 0.02, cx, cy + size.height * 0.08)
-      ..cubicTo(cx - size.width * 0.07, cy + size.height * 0.02, cx - size.width * 0.09, cy - size.height * 0.06, cx, cy - size.height * 0.18)
-      ..close();
-    canvas.drawPath(innerFlame, innerGrad);
-
-    // ── Calendar dots below flame ───────────────────────────────────────
-    const dotCount = 7;
-    const dotR = 5.0;
-    final dotY = cy + size.height * 0.28;
-    final totalW = (dotCount - 1) * 24.0;
-    final startX = cx - totalW / 2;
-
-    for (int i = 0; i < dotCount; i++) {
-      final filled = i < 5; // 5 of 7 days completed
-      canvas.drawCircle(
-        Offset(startX + i * 24, dotY),
-        dotR,
-        Paint()
-          ..color = filled ? AppColorsNew.primary : AppColorsNew.outlineVariant.withValues(alpha: 0.50)
-          ..style = PaintingStyle.fill,
-      );
-    }
-  }
-
-  @override
-  bool shouldRepaint(covariant CustomPainter _) => false;
 }
