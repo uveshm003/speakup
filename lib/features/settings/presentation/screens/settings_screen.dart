@@ -19,7 +19,6 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   PackageInfo? _packageInfo;
 
-
   @override
   void initState() {
     super.initState();
@@ -29,8 +28,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       }
     });
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +51,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
           body: ListView(
             padding: const EdgeInsets.only(bottom: AppSpacing.xxl),
             children: <Widget>[
-
               _sectionLabel(context, 'Practice defaults'),
               _card(
                 context,
@@ -66,7 +62,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       trailing: const Icon(Icons.chevron_right_rounded),
                       onTap: () => _showTimerPicker(context, state.settings.defaultTimerSeconds),
                     ),
-
                   ],
                 ),
               ),
@@ -75,7 +70,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 context,
                 child: Column(
                   children: <Widget>[
-
                     ListTile(
                       title: const Text('Clear session history'),
                       subtitle: const Text('Removes all practice sessions from this device'),
@@ -132,8 +126,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-
-
   Widget _sectionLabel(BuildContext context, String title) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.lg, AppSpacing.lg, AppSpacing.sm),
@@ -157,8 +149,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
     );
   }
-
-
 
   Future<void> _confirmClearHistory(BuildContext context) async {
     final bool? ok = await showDialog<bool>(
