@@ -42,42 +42,42 @@ class HistoryScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text('History'),
           actions: <Widget>[
-            BlocBuilder<HistoryBloc, HistoryState>(
-              builder: (BuildContext context, HistoryState state) {
-                return IconButton(
-                  icon: Icon(state.filterRange != null ? Icons.filter_alt_rounded : Icons.filter_alt_outlined),
-                  tooltip: 'Filter by date',
-                  onPressed: () async {
-                    final DateTimeRange? r = await showDateRangePicker(
-                      context: context,
-                      firstDate: DateTime.now().subtract(const Duration(days: 365 * 3)),
-                      lastDate: DateTime.now(),
-                    );
-                    if (!context.mounted) {
-                      return;
-                    }
-                    if (r == null) {
-                      return;
-                    }
-                    context.read<HistoryBloc>().add(HistoryFilterChanged(range: r));
-                  },
-                );
-              },
-            ),
-            BlocBuilder<HistoryBloc, HistoryState>(
-              builder: (BuildContext context, HistoryState state) {
-                if (state.filterRange == null) {
-                  return const SizedBox.shrink();
-                }
-                return IconButton(
-                  icon: const Icon(Icons.clear_rounded),
-                  tooltip: 'Clear filter',
-                  onPressed: () {
-                    context.read<HistoryBloc>().add(const HistoryFilterChanged(range: null));
-                  },
-                );
-              },
-            ),
+            // BlocBuilder<HistoryBloc, HistoryState>(
+            //   builder: (BuildContext context, HistoryState state) {
+            //     return IconButton(
+            //       icon: Icon(state.filterRange != null ? Icons.filter_alt_rounded : Icons.filter_alt_outlined),
+            //       tooltip: 'Filter by date',
+            //       onPressed: () async {
+            //         final DateTimeRange? r = await showDateRangePicker(
+            //           context: context,
+            //           firstDate: DateTime.now().subtract(const Duration(days: 365 * 3)),
+            //           lastDate: DateTime.now(),
+            //         );
+            //         if (!context.mounted) {
+            //           return;
+            //         }
+            //         if (r == null) {
+            //           return;
+            //         }
+            //         context.read<HistoryBloc>().add(HistoryFilterChanged(range: r));
+            //       },
+            //     );
+            //   },
+            // ),
+            // BlocBuilder<HistoryBloc, HistoryState>(
+            //   builder: (BuildContext context, HistoryState state) {
+            //     if (state.filterRange == null) {
+            //       return const SizedBox.shrink();
+            //     }
+            //     return IconButton(
+            //       icon: const Icon(Icons.clear_rounded),
+            //       tooltip: 'Clear filter',
+            //       onPressed: () {
+            //         context.read<HistoryBloc>().add(const HistoryFilterChanged(range: null));
+            //       },
+            //     );
+            //   },
+            // ),
           ],
         ),
         body: BlocBuilder<HistoryBloc, HistoryState>(
@@ -228,10 +228,10 @@ class _HeatmapSection extends StatelessWidget {
         ),
         const SizedBox(height: AppSpacing.md),
         SizedBox(
-          height: 200,
+          height: 350,
           child: PageView.builder(
             itemCount: 3,
-            controller: PageController(viewportFraction: 0.92),
+            controller: PageController(viewportFraction: 1),
             itemBuilder: (BuildContext context, int pageIndex) {
               final DateTime month = DateTime(now.year, now.month - pageIndex, 1);
               return Padding(

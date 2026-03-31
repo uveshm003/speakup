@@ -65,28 +65,20 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ],
                 ),
               ),
-              _sectionLabel(context, 'App'),
-              _card(
-                context,
-                child: Column(
-                  children: <Widget>[
-                    ListTile(
-                      title: const Text('Clear session history'),
-                      subtitle: const Text('Removes all practice sessions from this device'),
-                      trailing: Icon(Icons.delete_outline_rounded, color: theme.colorScheme.error),
-                      onTap: () => _confirmClearHistory(context),
-                    ),
-                    const Divider(height: 1),
-                    ListTile(
-                      title: const Text('App version'),
-                      trailing: Text(
-                        _packageInfo == null ? '…' : '${_packageInfo!.version} (${_packageInfo!.buildNumber})',
-                        style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // _sectionLabel(context, 'App'),
+              // _card(
+              //   context,
+              //   child: Column(
+              //     children: <Widget>[
+              //       // ListTile(
+              //       //   title: const Text('Clear session history'),
+              //       //   subtitle: const Text('Removes all practice sessions from this device'),
+              //       //   trailing: Icon(Icons.delete_outline_rounded, color: theme.colorScheme.error),
+              //       //   onTap: () => _confirmClearHistory(context),
+              //       // ),
+              //     ],
+              //   ),
+              // ),
               _sectionLabel(context, 'About'),
               _card(
                 context,
@@ -106,6 +98,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       onTap: () {
                         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Thanks! App store rating coming soon.')));
                       },
+                    ),
+                    const Divider(height: 1),
+                    ListTile(
+                      title: const Text('App version'),
+                      trailing: Text(
+                        _packageInfo == null ? '…' : '${_packageInfo!.version} (${_packageInfo!.buildNumber})',
+                        style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                      ),
                     ),
                   ],
                 ),
