@@ -108,21 +108,22 @@ class _Body extends StatelessWidget {
     if (card == null) {
       return const SizedBox.shrink();
     }
-
+    final CardDrawBloc bloc = context.read<CardDrawBloc>();
     return Center(
       child: SingleChildScrollView(
         child: FlipDrawCard(
           key: ValueKey<String>(card.cardId),
           card: card,
           isFavorite: state.isFavorite,
+          drawBloc: bloc,
           onFlipPhaseChanged: (bool animating) {
-            context.read<CardDrawBloc>().add(CardDrawFlipPhaseChanged(animating));
+            bloc.add(CardDrawFlipPhaseChanged(animating));
           },
           onToggleFavorite: () {
-            context.read<CardDrawBloc>().add(CardFavoriteToggled(card.cardId));
+            bloc.add(CardFavoriteToggled(card.cardId));
           },
           onRedraw: () {
-            context.read<CardDrawBloc>().add(const CardRedrawRequested());
+            bloc.add(const CardRedrawRequested());
           },
           onPractice: () {
             context.push(AppRoutes.timerSetup, extra: card);
