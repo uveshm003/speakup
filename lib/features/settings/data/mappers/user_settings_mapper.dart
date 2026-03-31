@@ -11,6 +11,7 @@ extension UserSettingsHiveMapper on UserSettingsHive {
       lastSessionDate: lastSessionDate,
       currentStreak: currentStreak,
       cardsSeeded: cardsSeeded,
+      cardsSeedVersion: cardsSeedVersion,
     );
   }
 }
@@ -24,5 +25,6 @@ UserSettingsHive userSettingsHiveFromDomain(UserSettings s) {
     lastSessionDate: s.lastSessionDate,
     currentStreak: s.currentStreak,
     cardsSeeded: s.cardsSeeded,
+    cardsSeedVersion: s.cardsSeedVersion,
   );
 }

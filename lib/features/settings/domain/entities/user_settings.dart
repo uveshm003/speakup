@@ -10,6 +10,7 @@ class UserSettings extends Equatable {
     this.lastSessionDate,
     this.currentStreak = 0,
     this.cardsSeeded = false,
+    this.cardsSeedVersion = 0,
   });
 
   final int defaultTimerSeconds;
@@ -21,6 +22,7 @@ class UserSettings extends Equatable {
   final DateTime? lastSessionDate;
   final int currentStreak;
   final bool cardsSeeded;
+  final int cardsSeedVersion;
 
   UserSettings copyWith({
     int? defaultTimerSeconds,
@@ -30,6 +32,7 @@ class UserSettings extends Equatable {
     DateTime? lastSessionDate,
     int? currentStreak,
     bool? cardsSeeded,
+    int? cardsSeedVersion,
   }) {
     return UserSettings(
       defaultTimerSeconds: defaultTimerSeconds ?? this.defaultTimerSeconds,
@@ -39,6 +42,7 @@ class UserSettings extends Equatable {
       lastSessionDate: lastSessionDate ?? this.lastSessionDate,
       currentStreak: currentStreak ?? this.currentStreak,
       cardsSeeded: cardsSeeded ?? this.cardsSeeded,
+      cardsSeedVersion: cardsSeedVersion ?? this.cardsSeedVersion,
     );
   }
 
@@ -51,5 +55,6 @@ class UserSettings extends Equatable {
     lastSessionDate,
     currentStreak,
     cardsSeeded,
+    cardsSeedVersion,
   ];
 }

@@ -24,13 +24,14 @@ class UserSettingsHiveAdapter extends TypeAdapter<UserSettingsHive> {
       lastSessionDate: fields[4] as DateTime?,
       currentStreak: (fields[5] as num).toInt(),
       cardsSeeded: fields[6] as bool,
+      cardsSeedVersion: (fields[7] as num?)?.toInt() ?? 0,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserSettingsHive obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.defaultTimerSeconds)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class UserSettingsHiveAdapter extends TypeAdapter<UserSettingsHive> {
       ..writeByte(5)
       ..write(obj.currentStreak)
       ..writeByte(6)
-      ..write(obj.cardsSeeded);
+      ..write(obj.cardsSeeded)
+      ..writeByte(7)
+      ..write(obj.cardsSeedVersion);
   }
 
   @override

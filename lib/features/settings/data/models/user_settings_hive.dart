@@ -12,6 +12,7 @@ class UserSettingsHive extends HiveObject {
     this.lastSessionDate,
     this.currentStreak = 0,
     this.cardsSeeded = false,
+    this.cardsSeedVersion = 0,
   });
 
   @HiveField(0)
@@ -34,4 +35,7 @@ class UserSettingsHive extends HiveObject {
 
   @HiveField(6)
   bool cardsSeeded;
+
+  @HiveField(7)
+  int cardsSeedVersion;
 }
