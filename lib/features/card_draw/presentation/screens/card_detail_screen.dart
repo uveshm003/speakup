@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:speakup/config/config.dart';
 
 import 'package:speakup/config/router/app_routes.dart';
 import 'package:speakup/config/theme/app_layout.dart';
@@ -331,6 +332,13 @@ class _CollapsibleGuideSection extends StatelessWidget {
             ),
           ),
         ),
+        expanded
+            ? Padding(
+                padding: EdgeInsets.only(bottom: 8),
+                child: Divider(color: AppColorsNew.primaryContainer, thickness: 1),
+              )
+            : Offstage(),
+
         AnimatedSize(
           duration: const Duration(milliseconds: 320),
           curve: Curves.easeInOutCubic,
@@ -399,6 +407,12 @@ class _CollapsibleVocabSection extends StatelessWidget {
             ),
           ),
         ),
+        expanded
+            ? Padding(
+                padding: EdgeInsets.only(bottom: 8),
+                child: Divider(color: AppColorsNew.primaryContainer, thickness: 1),
+              )
+            : Offstage(),
         AnimatedSize(
           duration: const Duration(milliseconds: 320),
           curve: Curves.easeInOutCubic,
