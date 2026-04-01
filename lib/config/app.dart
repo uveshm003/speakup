@@ -74,6 +74,7 @@ class SpeakUpApp extends StatelessWidget {
                     darkTheme: AppTheme.dark,
                     themeMode: themeState.mode,
                     routerConfig: appRouter,
+                    debugShowCheckedModeBanner: false,
                     builder: (BuildContext context, Widget? child) {
                       final MediaQueryData mq = MediaQuery.of(context);
                       return MediaQuery(
