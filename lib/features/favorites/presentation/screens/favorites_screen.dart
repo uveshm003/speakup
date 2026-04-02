@@ -215,7 +215,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> with TickerProviderSt
                   builder: (BuildContext context, Widget? child) => Transform.scale(scale: _fabScale.value, child: child),
                   child: FloatingActionButton(
                     onPressed: () => _drawRandom(context, filtered.isEmpty ? state.cards : filtered),
-                    // label: const Text('Shuffle'),
                     elevation: 2,
                     child: const Icon(Icons.shuffle_rounded, size: 18),
                   ),
