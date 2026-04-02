@@ -213,11 +213,11 @@ class _FavoritesScreenState extends State<FavoritesScreen> with TickerProviderSt
               ? AnimatedBuilder(
                   animation: _fabScale,
                   builder: (BuildContext context, Widget? child) => Transform.scale(scale: _fabScale.value, child: child),
-                  child: FloatingActionButton.extended(
+                  child: FloatingActionButton(
                     onPressed: () => _drawRandom(context, filtered.isEmpty ? state.cards : filtered),
-                    icon: const Icon(Icons.shuffle_rounded, size: 18),
-                    label: const Text('Shuffle'),
+                    // label: const Text('Shuffle'),
                     elevation: 2,
+                    child: const Icon(Icons.shuffle_rounded, size: 18),
                   ),
                 )
               : null,
@@ -433,89 +433,94 @@ class _DifficultySegment extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    return Row(
-      children: <Widget>[
-        Icon(Icons.signal_cellular_alt_rounded, size: 13, color: theme.colorScheme.onSurfaceVariant),
-        const SizedBox(width: AppSpacing.xs),
-        Text(
-          'Difficulty',
-          style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700, letterSpacing: 0.5, color: theme.colorScheme.onSurfaceVariant),
-        ),
-        const SizedBox(width: AppSpacing.sm),
-        // Segmented pill
-        Container(
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-            borderRadius: BorderRadius.circular(AppRadius.full),
-            border: Border.all(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.3)),
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: <Widget>[
+          Icon(Icons.signal_cellular_alt_rounded, size: 13, color: theme.colorScheme.onSurfaceVariant),
+          const SizedBox(width: AppSpacing.xs),
+          Text(
+            'Difficulty',
+            style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700, letterSpacing: 0.5, color: theme.colorScheme.onSurfaceVariant),
           ),
-          padding: const EdgeInsets.all(2),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: Difficulty.values.map((Difficulty d) {
-              final bool sel = selected == d;
-              final Color dc = _diffColor(context, d);
-              return GestureDetector(
-                onTap: () => onChanged(sel ? null : d),
-                child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 180),
-                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
-                  decoration: BoxDecoration(
-                    color: sel ? dc.withValues(alpha: 0.15) : Colors.transparent,
-                    borderRadius: BorderRadius.circular(AppRadius.full),
-                    border: sel ? Border.all(color: dc.withValues(alpha: 0.5), width: 1.2) : null,
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: <Widget>[
-                      Container(
-                        width: 6,
-                        height: 6,
-                        decoration: BoxDecoration(shape: BoxShape.circle, color: sel ? dc : dc.withValues(alpha: 0.45)),
-                      ),
-                      const SizedBox(width: 4),
-                      Text(
-                        _diffLabel(d),
-                        style: theme.textTheme.labelSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 10.5,
-                          color: sel ? dc : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+          const SizedBox(width: AppSpacing.sm),
+          // Segmented pill
+          Container(
+            decoration: BoxDecoration(
+              color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+              borderRadius: BorderRadius.circular(AppRadius.full),
+              border: Border.all(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.3)),
+            ),
+            padding: const EdgeInsets.all(2),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: Difficulty.values.map((Difficulty d) {
+                final bool sel = selected == d;
+                final Color dc = _diffColor(context, d);
+                return GestureDetector(
+                  onTap: () => onChanged(sel ? null : d),
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 180),
+                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
+                    decoration: BoxDecoration(
+                      color: sel ? dc.withValues(alpha: 0.15) : Colors.transparent,
+                      borderRadius: BorderRadius.circular(AppRadius.full),
+                      border: sel ? Border.all(color: dc.withValues(alpha: 0.5), width: 1.2) : null,
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Container(
+                          width: 6,
+                          height: 6,
+                          decoration: BoxDecoration(shape: BoxShape.circle, color: sel ? dc : dc.withValues(alpha: 0.45)),
                         ),
-                      ),
-                    ],
+                        const SizedBox(width: 4),
+                        Text(
+                          _diffLabel(d),
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            fontSize: 10.5,
+                            color: sel ? dc : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
-            }).toList(),
-          ),
-        ),
-        const Spacer(),
-        // Clear-all badge
-        if (hasActiveFilter)
-          GestureDetector(
-            onTap: onClearAll,
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 160),
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primary.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(AppRadius.full),
-                border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.25)),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(Icons.close_rounded, size: 11, color: theme.colorScheme.primary),
-                  const SizedBox(width: 3),
-                  Text(
-                    'Clear',
-                    style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700, fontSize: 10.5, color: theme.colorScheme.primary),
-                  ),
-                ],
-              ),
+                );
+              }).toList(),
             ),
           ),
-      ],
+          // const Spacer(),
+          // SizedBox(width: 16),
+
+          // Clear-all badge
+          // if (hasActiveFilter)
+          //   GestureDetector(
+          //     onTap: onClearAll,
+          //     child: AnimatedContainer(
+          //       duration: const Duration(milliseconds: 160),
+          //       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
+          //       decoration: BoxDecoration(
+          //         color: theme.colorScheme.primary.withValues(alpha: 0.1),
+          //         borderRadius: BorderRadius.circular(AppRadius.full),
+          //         border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.25)),
+          //       ),
+          //       child: Row(
+          //         mainAxisSize: MainAxisSize.min,
+          //         children: <Widget>[
+          //           Icon(Icons.close_rounded, size: 11, color: theme.colorScheme.primary),
+          //           const SizedBox(width: 3),
+          //           Text(
+          //             'Clear',
+          //             style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700, fontSize: 10.5, color: theme.colorScheme.primary),
+          //           ),
+          //         ],
+          //       ),
+          //     ),
+          //   ),
+        ],
+      ),
     );
   }
 }
