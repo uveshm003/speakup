@@ -26,8 +26,33 @@ class HistoryScreen extends StatefulWidget {
   State<HistoryScreen> createState() => _HistoryScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen> {
+class _HistoryScreenState extends State<HistoryScreen>
+    with SingleTickerProviderStateMixin {
   bool _calendarExpanded = false;
+  final TextEditingController _searchController = TextEditingController();
+  String _searchQuery = '';
+  late final AnimationController _headerAnimController;
+  late final Animation<double> _headerFade;
+
+  @override
+  void initState() {
+    super.initState();
+    _headerAnimController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 600),
+    )..forward();
+    _headerFade = CurvedAnimation(
+      parent: _headerAnimController,
+      curve: Curves.easeOut,
+    );
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _headerAnimController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +70,9 @@ class _HistoryScreenState extends State<HistoryScreen> {
             duration: const Duration(seconds: 5),
             action: SnackBarAction(
               label: 'Undo',
-              onPressed: () =>
-                  context.read<HistoryBloc>().add(const SessionDeleteUndoRequested()),
+              onPressed: () => context
+                  .read<HistoryBloc>()
+                  .add(const SessionDeleteUndoRequested()),
             ),
           ),
         );
@@ -58,50 +84,36 @@ class _HistoryScreenState extends State<HistoryScreen> {
               // ── Loading ────────────────────────────────────────────────────
               if (state.status == HistoryStatus.loading &&
                   state.allSessions.isEmpty) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    _InlineHeader(pad: pad),
-                    const Expanded(
-                        child: ShimmerListPlaceholder(
-                            itemCount: 7, itemHeight: 72)),
-                  ],
-                );
+                return _LoadingSkeleton(pad: pad);
               }
 
               // ── Error ──────────────────────────────────────────────────────
               if (state.status == HistoryStatus.failure &&
                   state.allSessions.isEmpty) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    _InlineHeader(pad: pad),
-                    Expanded(
-                      child: Center(
-                          child: Text(
-                              state.errorMessage ?? 'Could not load history')),
-                    ),
-                  ],
+                return _ErrorState(
+                  message: state.errorMessage ?? 'Could not load history',
+                  pad: pad,
                 );
               }
 
-              return CustomScrollView(
-                slivers: <Widget>[
-                  // ── Header ─────────────────────────────────────────────────
-                  SliverToBoxAdapter(
-                    child: _InlineHeader(pad: pad),
-                  ),
+              // derive filtered sessions for the list
+              final List<PracticeSession> filtered = _applySearch(
+                state.logSessions,
+                _searchQuery,
+              );
 
-                  // ── Stats row ──────────────────────────────────────────────
-                  SliverPadding(
-                    padding: EdgeInsets.fromLTRB(
-                        pad.left, AppSpacing.md, pad.right, 0),
-                    sliver: SliverToBoxAdapter(
-                      child: _StatsRow(state: state),
+              return CustomScrollView(
+                physics: const BouncingScrollPhysics(),
+                slivers: <Widget>[
+                  // ── Immersive Stats Header ─────────────────────────────────
+                  SliverToBoxAdapter(
+                    child: FadeTransition(
+                      opacity: _headerFade,
+                      child: _StatsHeader(state: state, pad: pad),
                     ),
                   ),
 
-                  // ── Activity section (compact strip + optional calendar) ───
+                  // ── Activity section ──────────────────────────────────────
                   SliverPadding(
                     padding: EdgeInsets.fromLTRB(
                         pad.left, AppSpacing.xl, pad.right, 0),
@@ -115,12 +127,29 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     ),
                   ),
 
-                  // ── Sessions or empty ──────────────────────────────────────
-                  if (state.logSessions.isEmpty)
+                  // ── Search bar ────────────────────────────────────────────
+                  SliverPadding(
+                    padding: EdgeInsets.fromLTRB(
+                        pad.left, AppSpacing.lg, pad.right, AppSpacing.sm),
+                    sliver: SliverToBoxAdapter(
+                      child: _SearchBar(
+                        controller: _searchController,
+                        onChanged: (String q) =>
+                            setState(() => _searchQuery = q),
+                      ),
+                    ),
+                  ),
+
+                  // ── Sessions list / empty ─────────────────────────────────
+                  if (filtered.isEmpty && state.logSessions.isEmpty)
                     const SliverFillRemaining(
                         hasScrollBody: false, child: _EmptyHistory())
+                  else if (filtered.isEmpty)
+                    SliverFillRemaining(
+                        hasScrollBody: false,
+                        child: _NoSearchResults(query: _searchQuery))
                   else
-                    ..._buildGroupedSlivers(context, state, pad),
+                    ..._buildTimelineSlivers(context, filtered, pad),
                 ],
               );
             },
@@ -129,51 +158,187 @@ class _HistoryScreenState extends State<HistoryScreen> {
       ),
     );
   }
+
+  /// Filter sessions by search query (card title or category).
+  List<PracticeSession> _applySearch(
+      List<PracticeSession> sessions, String q) {
+    if (q.trim().isEmpty) return sessions;
+    final String lower = q.toLowerCase();
+    return sessions
+        .where((PracticeSession s) =>
+            s.cardTitle.toLowerCase().contains(lower) ||
+            s.category.toLowerCase().contains(lower))
+        .toList();
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Inline header (no AppBar — consistent with Favorites / Home)
+// Loading skeleton
 // ─────────────────────────────────────────────────────────────────────────────
 
-class _InlineHeader extends StatelessWidget {
-  const _InlineHeader({required this.pad});
+class _LoadingSkeleton extends StatelessWidget {
+  const _LoadingSkeleton({required this.pad});
+  final EdgeInsets pad;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color base =
+        Theme.of(context).colorScheme.surfaceContainerHighest;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        // Fake header banner
+        ShimmerWidget(
+          width: double.infinity,
+          height: 160,
+          borderRadius: BorderRadius.zero,
+        ),
+        Expanded(
+          child: ShimmerListPlaceholder(itemCount: 6, itemHeight: 80),
+        ),
+      ],
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Error state
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _ErrorState extends StatelessWidget {
+  const _ErrorState({required this.message, required this.pad});
+  final String message;
   final EdgeInsets pad;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    return Padding(
-      padding: pad.copyWith(top: pad.top + AppSpacing.md, bottom: 0),
-      child: Row(
+    return Center(
+      child: Padding(
+        padding: pad,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(Icons.error_outline_rounded,
+                size: 48, color: theme.colorScheme.error),
+            const SizedBox(height: AppSpacing.md),
+            Text(message,
+                textAlign: TextAlign.center,
+                style: theme.textTheme.bodyMedium),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Immersive stats header — tonal gradient banner with 3 stat chips
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _StatsHeader extends StatelessWidget {
+  const _StatsHeader({required this.state, required this.pad});
+  final HistoryState state;
+  final EdgeInsets pad;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final Color primary = theme.colorScheme.primary;
+    final Color primaryContainer = theme.colorScheme.primaryContainer;
+    final bool dark = theme.brightness == Brightness.dark;
+
+    // Gradient: primary at top left → surface at bottom right
+    final LinearGradient grad = LinearGradient(
+      begin: Alignment.topLeft,
+      end: Alignment.bottomRight,
+      colors: dark
+          ? <Color>[
+              primary.withValues(alpha: 0.22),
+              theme.colorScheme.surface,
+            ]
+          : <Color>[
+              primaryContainer.withValues(alpha: 0.55),
+              theme.colorScheme.surface,
+            ],
+    );
+
+    return Container(
+      decoration: BoxDecoration(gradient: grad),
+      padding: EdgeInsets.fromLTRB(
+          pad.left, pad.top + AppSpacing.md, pad.right, AppSpacing.xl),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'History',
-                  style: theme.textTheme.headlineSmall
-                      ?.copyWith(fontWeight: FontWeight.w700, letterSpacing: -0.3),
+          // Title row
+          Row(
+            children: <Widget>[
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'History',
+                      style: theme.textTheme.headlineSmall?.copyWith(
+                        fontWeight: FontWeight.w700,
+                        letterSpacing: -0.5,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      'Your practice journey',
+                      style: theme.textTheme.bodySmall?.copyWith(
+                        color: theme.colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(height: 2),
-                Text(
-                  'Your practice sessions',
-                  style: theme.textTheme.bodySmall
-                      ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              ),
+              // Icon badge
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: primary.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(AppRadius.lg),
+                  border: Border.all(
+                      color: primary.withValues(alpha: 0.2), width: 1),
                 ),
-              ],
-            ),
+                child: Icon(Icons.auto_graph_rounded,
+                    size: 20, color: primary),
+              ),
+            ],
           ),
-          // Icon badge
-          Container(
-            padding: const EdgeInsets.all(AppSpacing.sm + 2),
-            decoration: BoxDecoration(
-              color:
-                  theme.colorScheme.primaryContainer.withValues(alpha: 0.55),
-              borderRadius: BorderRadius.circular(AppRadius.lg),
-            ),
-            child: Icon(Icons.history_rounded,
-                size: 22, color: theme.colorScheme.primary),
+
+          const SizedBox(height: AppSpacing.xl),
+
+          // Stat chips row
+          Row(
+            children: <Widget>[
+              _StatChip(
+                icon: Icons.local_fire_department_rounded,
+                iconColor: const Color(0xFFEA580C),
+                label: 'Streak',
+                value: '${state.currentStreak}d',
+                accentColor: const Color(0xFFEA580C),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              _StatChip(
+                icon: Icons.playlist_play_rounded,
+                iconColor: primary,
+                label: 'Sessions',
+                value: '${state.totalSessions}',
+                accentColor: primary,
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              _StatChip(
+                icon: Icons.timer_outlined,
+                iconColor: const Color(0xFF16A34A),
+                label: 'Minutes',
+                value: '${state.totalPracticeMinutes}m',
+                accentColor: const Color(0xFF16A34A),
+              ),
+            ],
           ),
         ],
       ),
@@ -181,93 +346,70 @@ class _InlineHeader extends StatelessWidget {
   }
 }
 
-// ─────────────────────────────────────────────────────────────────────────────
-// Stats row — three metric cards
-// ─────────────────────────────────────────────────────────────────────────────
+class _StatChip extends StatelessWidget {
+  const _StatChip({
+    required this.icon,
+    required this.iconColor,
+    required this.label,
+    required this.value,
+    required this.accentColor,
+  });
 
-class _StatsRow extends StatelessWidget {
-  const _StatsRow({required this.state});
-  final HistoryState state;
+  final IconData icon;
+  final Color iconColor;
+  final String label;
+  final String value;
+  final Color accentColor;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return Row(
-      children: <Widget>[
-        _StatCard(
-          emoji: '🔥',
-          label: 'Streak',
-          value: '${state.currentStreak}d',
-          accentColor: const Color(0xFFEA580C),
-          theme: theme,
-        ),
-        const SizedBox(width: AppSpacing.sm),
-        _StatCard(
-          emoji: '📋',
-          label: 'Sessions',
-          value: '${state.totalSessions}',
-          accentColor: theme.colorScheme.primary,
-          theme: theme,
-        ),
-        const SizedBox(width: AppSpacing.sm),
-        _StatCard(
-          emoji: '⏱',
-          label: 'Minutes',
-          value: '${state.totalPracticeMinutes}m',
-          accentColor: const Color(0xFF16A34A),
-          theme: theme,
-        ),
-      ],
-    );
-  }
-}
-
-class _StatCard extends StatelessWidget {
-  const _StatCard({
-    required this.emoji,
-    required this.label,
-    required this.value,
-    required this.accentColor,
-    required this.theme,
-  });
-
-  final String emoji;
-  final String label;
-  final String value;
-  final Color accentColor;
-  final ThemeData theme;
-
-  @override
-  Widget build(BuildContext context) {
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(
-            vertical: AppSpacing.md + 2, horizontal: AppSpacing.sm),
+            vertical: AppSpacing.md, horizontal: AppSpacing.sm),
         decoration: BoxDecoration(
-          color: accentColor.withValues(alpha: 0.08),
+          color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
           border: Border.all(
-              color: accentColor.withValues(alpha: 0.18), width: 1),
+              color: accentColor.withValues(alpha: 0.15), width: 1),
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+              color: accentColor.withValues(alpha: 0.06),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
         ),
         child: Column(
           children: <Widget>[
-            Text(emoji, style: const TextStyle(fontSize: 22)),
-            const SizedBox(height: AppSpacing.xs),
+            Container(
+              width: 32,
+              height: 32,
+              decoration: BoxDecoration(
+                color: accentColor.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(AppRadius.sm),
+              ),
+              child: Icon(icon, size: 16, color: iconColor),
+            ),
+            const SizedBox(height: AppSpacing.xs + 2),
             Text(
               value,
               style: GoogleFonts.plusJakartaSans(
-                fontSize: 20,
+                fontSize: 18,
                 fontWeight: FontWeight.w800,
                 color: accentColor,
+                height: 1.1,
               ),
             ),
             const SizedBox(height: 2),
             Text(
               label,
               style: theme.textTheme.labelSmall?.copyWith(
-                  color: accentColor.withValues(alpha: 0.75),
-                  fontWeight: FontWeight.w600),
+                color: theme.colorScheme.onSurfaceVariant,
+                letterSpacing: 0.2,
+              ),
             ),
           ],
         ),
@@ -277,7 +419,50 @@ class _StatCard extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Activity section — compact week strip + expandable monthly calendar
+// Search bar
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _SearchBar extends StatelessWidget {
+  const _SearchBar(
+      {required this.controller, required this.onChanged});
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return TextField(
+      controller: controller,
+      onChanged: onChanged,
+      style: theme.textTheme.bodyMedium,
+      decoration: InputDecoration(
+        hintText: 'Search sessions…',
+        prefixIcon: Icon(
+          Icons.search_rounded,
+          size: 20,
+          color: theme.colorScheme.onSurfaceVariant,
+        ),
+        suffixIcon: controller.text.isNotEmpty
+            ? GestureDetector(
+                onTap: () {
+                  controller.clear();
+                  onChanged('');
+                },
+                child: Icon(Icons.close_rounded,
+                    size: 18,
+                    color: theme.colorScheme.onSurfaceVariant),
+              )
+            : null,
+        contentPadding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.md, vertical: AppSpacing.sm + 2),
+        isDense: true,
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Activity section — compact week heatmap strip + toggleable monthly calendar
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _ActivitySection extends StatelessWidget {
@@ -295,80 +480,114 @@ class _ActivitySection extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        // ── Section heading row ────────────────────────────────────────────
-        Row(
+    return Container(
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surfaceContainerLow,
+        borderRadius: BorderRadius.circular(AppRadius.xl),
+        border: Border.all(
+            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35),
+            width: 1),
+      ),
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          // ── Heading row ─────────────────────────────────────────────────
+          Row(
+            children: <Widget>[
+              Icon(Icons.bar_chart_rounded,
+                  size: 16, color: theme.colorScheme.primary),
+              const SizedBox(width: AppSpacing.xs),
+              Text(
+                'Activity',
+                style: theme.textTheme.titleSmall
+                    ?.copyWith(fontWeight: FontWeight.w700),
+              ),
+              const Spacer(),
+              _ToggleChip(expanded: expanded, onTap: onToggle),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.md),
+
+          // ── 7-day strip ──────────────────────────────────────────────────
+          _WeekStrip(counts: counts),
+
+          // ── Full monthly calendar ────────────────────────────────────────
+          AnimatedSize(
+            duration: const Duration(milliseconds: 320),
+            curve: Curves.easeInOut,
+            child: expanded
+                ? Padding(
+                    padding: const EdgeInsets.only(top: AppSpacing.xl),
+                    child: _MonthPageView(counts: counts),
+                  )
+                : const SizedBox.shrink(),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ToggleChip extends StatelessWidget {
+  const _ToggleChip({required this.expanded, required this.onTap});
+  final bool expanded;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return GestureDetector(
+      onTap: onTap,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(
+            horizontal: AppSpacing.sm + 2, vertical: AppSpacing.xs),
+        decoration: BoxDecoration(
+          color: expanded
+              ? theme.colorScheme.primaryContainer.withValues(alpha: 0.4)
+              : theme.colorScheme.surfaceContainerHighest
+                  .withValues(alpha: 0.6),
+          borderRadius: BorderRadius.circular(AppRadius.full),
+          border: Border.all(
+              color: expanded
+                  ? theme.colorScheme.primary.withValues(alpha: 0.3)
+                  : theme.colorScheme.outlineVariant.withValues(alpha: 0.4),
+              width: 1),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             Text(
-              'Activity',
-              style: theme.textTheme.titleSmall
-                  ?.copyWith(fontWeight: FontWeight.w700),
+              expanded ? 'Hide' : 'Calendar',
+              style: theme.textTheme.labelSmall?.copyWith(
+                fontWeight: FontWeight.w600,
+                color: expanded
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.onSurfaceVariant,
+              ),
             ),
-            const Spacer(),
-            GestureDetector(
-              onTap: onToggle,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.sm + 2, vertical: AppSpacing.xs),
-                decoration: BoxDecoration(
-                  color: theme.colorScheme.surfaceContainerHighest
-                      .withValues(alpha: 0.6),
-                  borderRadius: BorderRadius.circular(AppRadius.full),
-                  border: Border.all(
-                      color: theme.colorScheme.outlineVariant
-                          .withValues(alpha: 0.4)),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    Text(
-                      expanded ? 'Hide calendar' : 'Full calendar',
-                      style: theme.textTheme.labelSmall?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: theme.colorScheme.onSurfaceVariant),
-                    ),
-                    const SizedBox(width: AppSpacing.xs),
-                    AnimatedRotation(
-                      turns: expanded ? 0.5 : 0,
-                      duration: const Duration(milliseconds: 200),
-                      child: Icon(Icons.keyboard_arrow_down_rounded,
-                          size: 14,
-                          color: theme.colorScheme.onSurfaceVariant),
-                    ),
-                  ],
-                ),
+            const SizedBox(width: AppSpacing.xs),
+            AnimatedRotation(
+              turns: expanded ? 0.5 : 0,
+              duration: const Duration(milliseconds: 250),
+              child: Icon(
+                Icons.keyboard_arrow_down_rounded,
+                size: 14,
+                color: expanded
+                    ? theme.colorScheme.primary
+                    : theme.colorScheme.onSurfaceVariant,
               ),
             ),
           ],
         ),
-        const SizedBox(height: AppSpacing.md),
-
-        // ── 7-day compact strip (always visible) ──────────────────────────
-        _WeekStrip(counts: counts),
-
-        // ── Full monthly calendar (collapsible) ───────────────────────────
-        AnimatedSize(
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-          child: expanded
-              ? Padding(
-                  padding: const EdgeInsets.only(top: AppSpacing.xl),
-                  child: _MonthPageView(counts: counts),
-                )
-              : const SizedBox.shrink(),
-        ),
-
-        const SizedBox(height: AppSpacing.xl),
-      ],
+      ),
     );
   }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// 7-day compact strip (Mon–Sun of current week)
+// 7-day compact strip
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _WeekStrip extends StatelessWidget {
@@ -386,15 +605,13 @@ class _WeekStrip extends StatelessWidget {
     final Color brandLight =
         dark ? AppColorsDark.primaryLight : AppColors.primaryLight;
     final Color emptyBg = theme.colorScheme.surfaceContainerHighest
-        .withValues(alpha: dark ? 0.5 : 0.7);
+        .withValues(alpha: dark ? 0.5 : 0.6);
 
     final DateTime now = DateTime.now();
     final DateTime today = DateTime(now.year, now.month, now.day);
-    // Start of the current ISO week (Monday)
     final DateTime weekStart =
         today.subtract(Duration(days: today.weekday - 1));
-
-    final List<String> dow = <String>['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+    const List<String> dow = <String>['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
     return Row(
       children: List<Widget>.generate(7, (int i) {
@@ -420,11 +637,11 @@ class _WeekStrip extends StatelessWidget {
             padding: EdgeInsets.only(right: i < 6 ? AppSpacing.xs : 0),
             child: Column(
               children: <Widget>[
-                // Day letter
                 Text(
                   dow[i],
                   style: theme.textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w600,
+                    fontSize: 10,
                     color: isToday
                         ? primary
                         : theme.colorScheme.onSurfaceVariant
@@ -432,11 +649,10 @@ class _WeekStrip extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xs),
-                // Activity cell
                 AnimatedContainer(
                   duration: const Duration(milliseconds: 250),
                   width: double.infinity,
-                  height: 38,
+                  height: 36,
                   decoration: BoxDecoration(
                     color: fill,
                     borderRadius: BorderRadius.circular(AppRadius.sm + 2),
@@ -449,10 +665,11 @@ class _WeekStrip extends StatelessWidget {
                     '${day.day}',
                     style: theme.textTheme.labelSmall?.copyWith(
                       fontWeight: FontWeight.w700,
+                      fontSize: 11,
                       color: n > 0 && !isFuture
                           ? (n >= 2 ? Colors.white : primary)
                           : theme.colorScheme.onSurfaceVariant
-                              .withValues(alpha: isFuture ? 0.3 : 0.55),
+                              .withValues(alpha: isFuture ? 0.28 : 0.5),
                     ),
                   ),
                 ),
@@ -466,7 +683,7 @@ class _WeekStrip extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Full monthly page view (visible when expanded)
+// Full monthly page view
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _MonthPageView extends StatelessWidget {
@@ -476,16 +693,11 @@ class _MonthPageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final DateTime now = DateTime.now();
-    // Use LayoutBuilder to compute the exact height the grid needs so it never
-    // overflows its parent. Each cell is square with side = width/7 minus gaps.
-    // Grid: 5 rows × cellSize + 4 × 4px gaps.
-    // Above it: monthTitle(≈20) + gap(8) + DOW row(≈18) + gap(4) = 50px fixed.
     return LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         const double cellGap = 4;
         final double cellSize = (constraints.maxWidth - 6 * cellGap) / 7;
         final double gridHeight = 5 * cellSize + 4 * cellGap;
-        // 20 title + 8 gap + 18 DOW row + 4 gap
         final double totalHeight = 50 + gridHeight;
 
         return SizedBox(
@@ -528,7 +740,7 @@ class _MonthGrid extends StatelessWidget {
     final DateTime gridStart = first.subtract(Duration(days: fromMonday));
     final DateTime today = DateTime.now();
     final DateTime todayNorm = DateTime(today.year, today.month, today.day);
-    final List<String> dow = <String>['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+    const List<String> dow = <String>['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -542,8 +754,8 @@ class _MonthGrid extends StatelessWidget {
               .map((String d) => Expanded(
                     child: Center(
                       child: Text(d,
-                          style: theme.textTheme.labelSmall
-                              ?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+                          style: theme.textTheme.labelSmall?.copyWith(
+                              color: theme.colorScheme.onSurfaceVariant)),
                     ),
                   ))
               .toList(),
@@ -574,9 +786,8 @@ class _MonthGrid extends StatelessWidget {
             } else {
               fill = primary;
             }
-            final DateTime cn =
-                DateTime(cell.year, cell.month, cell.day);
-            final bool isToday = cn == todayNorm;
+            final bool isToday =
+                DateTime(cell.year, cell.month, cell.day) == todayNorm;
 
             return DecoratedBox(
               decoration: BoxDecoration(
@@ -609,14 +820,14 @@ class _MonthGrid extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Grouped slivers builder
+// Timeline slivers builder — vertical timeline with date nodes
 // ─────────────────────────────────────────────────────────────────────────────
 
-List<Widget> _buildGroupedSlivers(
-    BuildContext context, HistoryState state, EdgeInsets pad) {
+List<Widget> _buildTimelineSlivers(
+    BuildContext context, List<PracticeSession> sessions, EdgeInsets pad) {
   final Map<DateTime, List<PracticeSession>> byDay =
       <DateTime, List<PracticeSession>>{};
-  for (final PracticeSession s in state.logSessions) {
+  for (final PracticeSession s in sessions) {
     final DateTime d = DateTime(
         s.completedAt.year, s.completedAt.month, s.completedAt.day);
     byDay.putIfAbsent(d, () => <PracticeSession>[]).add(s);
@@ -628,30 +839,29 @@ List<Widget> _buildGroupedSlivers(
   final DateTime today = DateTime(now.year, now.month, now.day);
   final List<Widget> out = <Widget>[];
 
-  for (final DateTime day in days) {
-    // ── Day header sliver ──────────────────────────────────────────────────
-    out.add(SliverPersistentHeader(
-      pinned: true,
-      delegate: _DateHeaderDelegate(
-          label: _dayHeaderLabel(day, today)),
-    ));
-    // ── Sessions sliver ────────────────────────────────────────────────────
+  for (int dayIdx = 0; dayIdx < days.length; dayIdx++) {
+    final DateTime day = days[dayIdx];
     final List<PracticeSession> list = byDay[day]!;
+    final bool isLast = dayIdx == days.length - 1;
+
+    // Render all sessions for this day as timeline cards
     out.add(
       SliverPadding(
-        padding: EdgeInsets.fromLTRB(pad.left, 0, pad.right, AppSpacing.xs),
+        padding: EdgeInsets.fromLTRB(pad.left, 0, pad.right, 0),
         sliver: SliverList(
           delegate: SliverChildBuilderDelegate(
             (BuildContext context, int i) {
-              final PracticeSession s = list[i];
-              return Padding(
-                padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-                child: _SessionTile(
-                  session: s,
-                  onDelete: () => context
-                      .read<HistoryBloc>()
-                      .add(SessionDeleted(s.sessionId)),
-                ),
+              final bool isFirstInDay = i == 0;
+              final bool isLastInDay = i == list.length - 1;
+              return _TimelineSessionCard(
+                session: list[i],
+                dayLabel: isFirstInDay
+                    ? _dayHeaderLabel(day, today)
+                    : null,
+                isLastCard: isLast && isLastInDay,
+                onDelete: () => context
+                    .read<HistoryBloc>()
+                    .add(SessionDeleted(list[i].sessionId)),
               );
             },
             childCount: list.length,
@@ -661,7 +871,7 @@ List<Widget> _buildGroupedSlivers(
     );
   }
 
-  // Bottom padding so last tile clears nav bar
+  // Bottom breathing room
   out.add(const SliverPadding(
       padding: EdgeInsets.only(bottom: AppSpacing.huge)));
   return out;
@@ -671,53 +881,25 @@ String _dayHeaderLabel(DateTime day, DateTime today) {
   final DateTime yesterday = today.subtract(const Duration(days: 1));
   if (day == today) return 'Today';
   if (day == yesterday) return 'Yesterday';
-  return DateFormat('EEEE, MMM d').format(day);
+  return DateFormat('EEE, MMM d').format(day);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Sticky date header
+// Timeline session card — left timeline spine with date badge
 // ─────────────────────────────────────────────────────────────────────────────
 
-class _DateHeaderDelegate extends SliverPersistentHeaderDelegate {
-  _DateHeaderDelegate({required this.label});
-  final String label;
+class _TimelineSessionCard extends StatelessWidget {
+  const _TimelineSessionCard({
+    required this.session,
+    required this.onDelete,
+    required this.isLastCard,
+    this.dayLabel,
+  });
 
-  @override
-  double get minExtent => 36;
-  @override
-  double get maxExtent => 36;
-
-  @override
-  Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
-    final ThemeData theme = Theme.of(context);
-    return Container(
-      color: theme.colorScheme.surface,
-      alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-      child: Text(
-        label,
-        style: theme.textTheme.labelLarge?.copyWith(
-          fontWeight: FontWeight.w700,
-          color: theme.colorScheme.onSurfaceVariant,
-        ),
-      ),
-    );
-  }
-
-  @override
-  bool shouldRebuild(covariant _DateHeaderDelegate old) =>
-      old.label != label;
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Session tile — dismissible with accent left border
-// ─────────────────────────────────────────────────────────────────────────────
-
-class _SessionTile extends StatelessWidget {
-  const _SessionTile({required this.session, required this.onDelete});
   final PracticeSession session;
   final VoidCallback onDelete;
+  final bool isLastCard;
+  final String? dayLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -727,56 +909,211 @@ class _SessionTile extends StatelessWidget {
     final String time = DateFormat.jm().format(session.completedAt);
     final bool completed = session.wasCompleted;
 
+    // Spine color: the vertical line connecting cards
+    final Color spineColor = theme.colorScheme.outlineVariant.withValues(alpha: 0.4);
+
+    return Padding(
+      padding: const EdgeInsets.only(top: AppSpacing.xs),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          // ── Left timeline axis (spine + dot) ──────────────────────────
+          SizedBox(
+            width: 52,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                // Date badge — only for first card in day
+                if (dayLabel != null) ...<Widget>[
+                  _DateBadge(label: dayLabel!, theme: theme),
+                  const SizedBox(height: AppSpacing.xs),
+                ] else
+                  const SizedBox(height: AppSpacing.xs + 4),
+
+                // Spine dot
+                Container(
+                  width: 10,
+                  height: 10,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: accent,
+                    boxShadow: <BoxShadow>[
+                      BoxShadow(
+                          color: accent.withValues(alpha: 0.35),
+                          blurRadius: 6,
+                          spreadRadius: 1),
+                    ],
+                  ),
+                ),
+
+                // Spine line going down (hidden for last card)
+                if (!isLastCard)
+                  Container(
+                    width: 1.5,
+                    height: 56,
+                    color: spineColor,
+                    margin: const EdgeInsets.only(top: 4),
+                  ),
+              ],
+            ),
+          ),
+
+          const SizedBox(width: AppSpacing.sm),
+
+          // ── Session card ───────────────────────────────────────────────
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  bottom: AppSpacing.sm, top: 0),
+              child: _SessionCard(
+                session: session,
+                emoji: emoji,
+                accent: accent,
+                time: time,
+                completed: completed,
+                onDelete: onDelete,
+                hasTopLabel: dayLabel != null,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DateBadge extends StatelessWidget {
+  const _DateBadge({required this.label, required this.theme});
+  final String label;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      constraints: const BoxConstraints(maxWidth: 52),
+      padding: const EdgeInsets.symmetric(
+          horizontal: AppSpacing.xs, vertical: 3),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.45),
+        borderRadius: BorderRadius.circular(AppRadius.xs),
+      ),
+      child: Text(
+        label.length > 5 ? label.substring(0, 3) : label,
+        textAlign: TextAlign.center,
+        style: theme.textTheme.labelSmall?.copyWith(
+          fontWeight: FontWeight.w700,
+          fontSize: 9,
+          color: theme.colorScheme.primary,
+          letterSpacing: 0.3,
+        ),
+      ),
+    );
+  }
+}
+
+class _SessionCard extends StatelessWidget {
+  const _SessionCard({
+    required this.session,
+    required this.emoji,
+    required this.accent,
+    required this.time,
+    required this.completed,
+    required this.onDelete,
+    required this.hasTopLabel,
+  });
+
+  final PracticeSession session;
+  final String emoji;
+  final Color accent;
+  final String time;
+  final bool completed;
+  final VoidCallback onDelete;
+  final bool hasTopLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+
     return Dismissible(
       key: ValueKey<String>(session.sessionId),
       direction: DismissDirection.endToStart,
       background: Container(
         alignment: Alignment.centerRight,
-        padding: const EdgeInsets.only(right: AppSpacing.xxl),
+        padding: const EdgeInsets.only(right: AppSpacing.xl),
         decoration: BoxDecoration(
-          color: theme.colorScheme.error,
+          color: theme.colorScheme.error.withValues(alpha: 0.12),
           borderRadius: BorderRadius.circular(AppRadius.lg),
         ),
-        child: const Icon(Icons.delete_outline_rounded, color: Colors.white),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Icon(Icons.delete_outline_rounded,
+                color: theme.colorScheme.error, size: 20),
+            const SizedBox(width: AppSpacing.xs),
+            Text(
+              'Delete',
+              style: theme.textTheme.labelSmall?.copyWith(
+                  color: theme.colorScheme.error,
+                  fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
       ),
       onDismissed: (_) => onDelete(),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppRadius.lg),
-        child: Material(
-          color: theme.colorScheme.surfaceContainerLow,
-          child: InkWell(
-            onTap: () {},
-            child: Row(
-              children: <Widget>[
-                // Accent left strip
-                Container(
-                  width: 4,
-                  height: 68,
-                  color: accent,
-                ),
+      child: Material(
+        color: Colors.transparent,
+        child: Container(
+          // Align card top with the spine dot when there's a date label
+          margin: EdgeInsets.only(top: hasTopLabel ? 0 : 0),
+          decoration: BoxDecoration(
+            color: theme.colorScheme.surfaceContainerLow,
+            borderRadius: BorderRadius.circular(AppRadius.lg),
+            border: Border.all(
+                color: accent.withValues(alpha: 0.18), width: 1),
+          ),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(AppRadius.lg),
+            child: InkWell(
+              onTap: () {},
+              borderRadius: BorderRadius.circular(AppRadius.lg),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  // Accent top strip
+                  Container(
+                    height: 3,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: <Color>[
+                          accent,
+                          accent.withValues(alpha: 0.3),
+                        ],
+                      ),
+                    ),
+                  ),
 
-                // Content
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: AppSpacing.md, vertical: AppSpacing.md),
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(AppSpacing.md,
+                        AppSpacing.sm, AppSpacing.md, AppSpacing.sm),
                     child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
                         // Emoji avatar
                         Container(
-                          width: 40,
-                          height: 40,
+                          width: 42,
+                          height: 42,
                           decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: accent.withValues(alpha: 0.15),
+                            color: accent.withValues(alpha: 0.12),
+                            borderRadius:
+                                BorderRadius.circular(AppRadius.md),
                           ),
                           alignment: Alignment.center,
-                          child:
-                              Text(emoji, style: const TextStyle(fontSize: 18)),
+                          child: Text(emoji,
+                              style: const TextStyle(fontSize: 20)),
                         ),
                         const SizedBox(width: AppSpacing.md),
 
-                        // Title + subtitle
+                        // Title + meta
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -785,38 +1122,46 @@ class _SessionTile extends StatelessWidget {
                                 session.cardTitle,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: theme.textTheme.titleSmall
-                                    ?.copyWith(fontWeight: FontWeight.w700),
+                                style:
+                                    theme.textTheme.titleSmall?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  height: 1.3,
+                                ),
                               ),
                               const SizedBox(height: 3),
                               Row(
                                 children: <Widget>[
-                                  Text(
-                                    time,
-                                    style: theme.textTheme.bodySmall?.copyWith(
-                                        color: theme
-                                            .colorScheme.onSurfaceVariant),
-                                  ),
-                                  const SizedBox(width: AppSpacing.xs),
+                                  // Category pill
                                   Container(
-                                    width: 3,
-                                    height: 3,
+                                    padding:
+                                        const EdgeInsets.symmetric(
+                                            horizontal: AppSpacing.xs + 2,
+                                            vertical: 2),
                                     decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: theme.colorScheme.onSurfaceVariant
-                                          .withValues(alpha: 0.5),
+                                      color: accent.withValues(alpha: 0.1),
+                                      borderRadius:
+                                          BorderRadius.circular(AppRadius.xs),
                                     ),
-                                  ),
-                                  const SizedBox(width: AppSpacing.xs),
-                                  Flexible(
                                     child: Text(
                                       session.category,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: theme.textTheme.bodySmall
-                                          ?.copyWith(
-                                              color: theme.colorScheme
-                                                  .onSurfaceVariant),
+                                      style: GoogleFonts.inter(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w600,
+                                        color: accent,
+                                        letterSpacing: 0.2,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: AppSpacing.xs),
+                                  Text(
+                                    '· $time',
+                                    style: theme.textTheme.bodySmall
+                                        ?.copyWith(
+                                      color: theme
+                                          .colorScheme.onSurfaceVariant
+                                          .withValues(alpha: 0.7),
                                     ),
                                   ),
                                 ],
@@ -827,33 +1172,37 @@ class _SessionTile extends StatelessWidget {
 
                         const SizedBox(width: AppSpacing.sm),
 
-                        // Duration + completion dot
+                        // Right metadata column
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
-                          mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
+                            // Duration badge
                             Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: AppSpacing.sm, vertical: 3),
                               decoration: BoxDecoration(
                                 color: theme.colorScheme.primaryContainer
-                                    .withValues(alpha: 0.5),
+                                    .withValues(alpha: 0.45),
                                 borderRadius:
                                     BorderRadius.circular(AppRadius.sm),
                               ),
                               child: Text(
                                 formatPracticeMmSs(session.durationSeconds),
-                                style: theme.textTheme.labelSmall?.copyWith(
-                                    fontWeight: FontWeight.w700),
+                                style: GoogleFonts.inter(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w700,
+                                  color: theme.colorScheme.primary,
+                                ),
                               ),
                             ),
                             const SizedBox(height: AppSpacing.xs),
+                            // Completion status
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
                                 Container(
-                                  width: 6,
-                                  height: 6,
+                                  width: 5,
+                                  height: 5,
                                   decoration: BoxDecoration(
                                     shape: BoxShape.circle,
                                     color: completed
@@ -864,11 +1213,12 @@ class _SessionTile extends StatelessWidget {
                                 const SizedBox(width: AppSpacing.xs),
                                 Text(
                                   completed ? 'Done' : 'Partial',
-                                  style: theme.textTheme.labelSmall?.copyWith(
+                                  style: GoogleFonts.inter(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.w600,
                                     color: completed
                                         ? AppColors.success
                                         : AppColors.warning,
-                                    fontWeight: FontWeight.w600,
                                   ),
                                 ),
                               ],
@@ -878,8 +1228,8 @@ class _SessionTile extends StatelessWidget {
                       ],
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -904,31 +1254,122 @@ class _EmptyHistory extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Container(
-              padding: const EdgeInsets.all(AppSpacing.xl),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: theme.colorScheme.primaryContainer
-                    .withValues(alpha: 0.35),
-              ),
-              child: Icon(
-                Icons.history_rounded,
-                size: 48,
-                color: theme.colorScheme.primary.withValues(alpha: 0.7),
-              ),
+            // Layered icon decoration
+            Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: theme.colorScheme.primaryContainer
+                        .withValues(alpha: 0.2),
+                  ),
+                ),
+                Container(
+                  width: 72,
+                  height: 72,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: theme.colorScheme.primaryContainer
+                        .withValues(alpha: 0.35),
+                  ),
+                  child: Icon(
+                    Icons.history_edu_rounded,
+                    size: 36,
+                    color: theme.colorScheme.primary.withValues(alpha: 0.75),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: AppSpacing.xl),
             Text(
               'No sessions yet',
-              style: GoogleFonts.plusJakartaSans(
-                  fontSize: 20, fontWeight: FontWeight.w700),
+              style: GoogleFonts.newsreader(
+                fontSize: 22,
+                fontWeight: FontWeight.w600,
+                color: theme.colorScheme.onSurface,
+              ),
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
-              'Complete a practice session\nto see it here.',
+              'Complete your first practice session\nand your journey will appear here.',
               textAlign: TextAlign.center,
-              style: theme.textTheme.bodyMedium
-                  ?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onSurfaceVariant,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: AppSpacing.xl),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                  horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
+              decoration: BoxDecoration(
+                color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+                borderRadius: BorderRadius.circular(AppRadius.full),
+                border: Border.all(
+                    color: theme.colorScheme.primary.withValues(alpha: 0.2)),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Icon(Icons.arrow_back_rounded,
+                      size: 14,
+                      color: theme.colorScheme.primary
+                          .withValues(alpha: 0.75)),
+                  const SizedBox(width: AppSpacing.xs),
+                  Text(
+                    'Go practise!',
+                    style: GoogleFonts.inter(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w600,
+                      color: theme.colorScheme.primary,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// No search results
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _NoSearchResults extends StatelessWidget {
+  const _NoSearchResults({required this.query});
+  final String query;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(AppSpacing.xxl),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Icon(Icons.search_off_rounded,
+                size: 48,
+                color: theme.colorScheme.onSurfaceVariant
+                    .withValues(alpha: 0.5)),
+            const SizedBox(height: AppSpacing.md),
+            Text(
+              'No results for "$query"',
+              style: theme.textTheme.titleSmall
+                  ?.copyWith(fontWeight: FontWeight.w600),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: AppSpacing.sm),
+            Text(
+              'Try a different card title or category.',
+              style: theme.textTheme.bodySmall,
+              textAlign: TextAlign.center,
             ),
           ],
         ),
