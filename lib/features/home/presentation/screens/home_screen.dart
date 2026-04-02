@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:speakup/config/router/app_routes.dart';
 import 'package:speakup/config/theme/app_layout.dart';
@@ -16,6 +18,10 @@ import 'package:speakup/features/home/domain/built_in_categories.dart';
 import 'package:speakup/features/home/presentation/bloc/home_bloc.dart';
 import 'package:speakup/features/home/presentation/bloc/home_event.dart';
 import 'package:speakup/features/home/presentation/bloc/home_state.dart';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Home Screen
+// ─────────────────────────────────────────────────────────────────────────────
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -89,6 +95,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final EdgeInsets pagePad = AppLayout.pagePadding(context);
+    final ThemeData theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
 
     return BlocConsumer<HomeBloc, HomeState>(
       listenWhen: (HomeState p, HomeState c) => c.pendingQuickDrawNavigation != p.pendingQuickDrawNavigation,
@@ -100,6 +108,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         }
       },
       builder: (BuildContext context, HomeState state) {
+        // Schedule stagger once data is ready
         if (state.status == HomeLoadStatus.success && !_staggerStarted && !_staggerScheduled) {
           _staggerScheduled = true;
           WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -107,6 +116,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           });
         }
 
+        // ── Error state ─────────────────────────────────────────────────────
         if (state.status == HomeLoadStatus.failure) {
           return Scaffold(
             body: Center(
@@ -115,11 +125,20 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    const Icon(Icons.wifi_off_rounded, size: 48),
+                    Container(
+                      padding: const EdgeInsets.all(AppSpacing.lg),
+                      decoration: BoxDecoration(color: theme.colorScheme.errorContainer.withValues(alpha: 0.5), shape: BoxShape.circle),
+                      child: Icon(Icons.wifi_off_rounded, size: 40, color: theme.colorScheme.error),
+                    ),
+                    const SizedBox(height: AppSpacing.xl),
+                    Text(state.errorMessage ?? 'Something went wrong', textAlign: TextAlign.center, style: theme.textTheme.bodyLarge),
                     const SizedBox(height: AppSpacing.lg),
-                    Text(state.errorMessage ?? 'Something went wrong', textAlign: TextAlign.center),
-                    const SizedBox(height: AppSpacing.md),
-                    FilledButton(onPressed: () => context.read<HomeBloc>().add(const HomeLoadRequested()), child: const Text('Retry')),
+                    FilledButton.icon(
+                      onPressed: () => context.read<HomeBloc>().add(const HomeLoadRequested()),
+                      icon: const Icon(Icons.refresh_rounded),
+                      label: const Text('Retry'),
+                      style: FilledButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg))),
+                    ),
                   ],
                 ),
               ),
@@ -127,97 +146,226 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           );
         }
 
+        // ── Loading state ────────────────────────────────────────────────────
         if (state.status == HomeLoadStatus.initial || state.status == HomeLoadStatus.loading) {
           return const Scaffold(body: ShimmerListPlaceholder(itemCount: 6, itemHeight: 100));
         }
 
+        // ── Success state ────────────────────────────────────────────────────
         return Scaffold(
-          body: SafeArea(
-            child: CustomScrollView(
-              slivers: <Widget>[
-                SliverPadding(
-                  padding: pagePad.copyWith(top: pagePad.top + AppSpacing.md, bottom: AppSpacing.xxl),
-                  sliver: SliverList(
-                    delegate: SliverChildListDelegate(<Widget>[
-                      // ── Greeting ────────────────────────────────────────
-                      AnimatedOpacity(
-                        opacity: _showGreeting ? 1 : 0,
-                        duration: const Duration(milliseconds: 380),
-                        curve: Curves.easeOut,
-                        child: _GreetingHeader(greeting: _greeting(), streak: state.streak, recentCategories: state.recentCategories),
-                      ),
+          backgroundColor: isDark ? theme.colorScheme.surface : theme.colorScheme.surfaceContainerLowest,
+          body: CustomScrollView(
+            slivers: <Widget>[
+              // ── Hero app bar ───────────────────────────────────────────────
+              _HeroAppBar(
+                greeting: _greeting(),
+                streak: state.streak,
+                recentCategories: state.recentCategories,
+                isDark: isDark,
+                theme: theme,
+                showGreeting: _showGreeting,
+              ),
 
-                      const SizedBox(height: AppSpacing.xl),
-
-                      // ── Streak card ──────────────────────────────────────
-                      AnimatedSlide(
-                        duration: const Duration(milliseconds: 420),
-                        curve: Curves.easeOutCubic,
-                        offset: _showStreak ? Offset.zero : const Offset(0, 0.06),
-                        child: AnimatedOpacity(
-                          opacity: _showStreak ? 1 : 0,
-                          duration: const Duration(milliseconds: 320),
-                          child: _StreakCard(streak: state.streak, todayCount: state.todaySessionCount),
-                        ),
-                      ),
-
-                      const SizedBox(height: AppSpacing.xl),
-
-                      // ── Quick Draw CTA ───────────────────────────────────
-                      AnimatedOpacity(
-                        opacity: _showCta ? 1 : 0,
+              // ── Body content ───────────────────────────────────────────────
+              SliverPadding(
+                padding: pagePad.copyWith(top: AppSpacing.lg, bottom: AppSpacing.huge),
+                sliver: SliverList(
+                  delegate: SliverChildListDelegate(<Widget>[
+                    // ── Streak / stats card ──────────────────────────────────
+                    AnimatedSlide(
+                      duration: const Duration(milliseconds: 420),
+                      curve: Curves.easeOutCubic,
+                      offset: _showStreak ? Offset.zero : const Offset(0, 0.06),
+                      child: AnimatedOpacity(
+                        opacity: _showStreak ? 1 : 0,
                         duration: const Duration(milliseconds: 320),
-                        child: ScaleTransition(
-                          scale: _ctaScale,
-                          child: _IdlePulseCta(onPressed: () => context.read<HomeBloc>().add(const HomeQuickDrawRequested())),
-                        ),
+                        child: _StreakCard(streak: state.streak, todayCount: state.todaySessionCount),
                       ),
+                    ),
 
+                    const SizedBox(height: AppSpacing.xl),
+
+                    // ── Quick Draw CTA ───────────────────────────────────────
+                    AnimatedOpacity(
+                      opacity: _showCta ? 1 : 0,
+                      duration: const Duration(milliseconds: 320),
+                      child: ScaleTransition(
+                        scale: _ctaScale,
+                        child: _QuickDrawCta(onPressed: () => context.read<HomeBloc>().add(const HomeQuickDrawRequested())),
+                      ),
+                    ),
+
+                    const SizedBox(height: AppSpacing.xxl),
+
+                    // ── Category grid ────────────────────────────────────────
+                    AnimatedOpacity(
+                      opacity: _showGrid ? 1 : 0,
+                      duration: const Duration(milliseconds: 400),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          _SectionLabel(label: 'Browse by Category'),
+                          const SizedBox(height: AppSpacing.md),
+                          _CategoryGrid(
+                            crossAxisCount: _gridCrossAxisCount(context),
+                            categoryCardCounts: state.categoryCardCounts,
+                            customCardsCount: state.customCardsCount,
+                            recentCategories: state.recentCategories,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // ── Recent sessions ──────────────────────────────────────
+                    if (state.recentSessions.isNotEmpty) ...<Widget>[
                       const SizedBox(height: AppSpacing.xxl),
-
-                      // ── Category grid ────────────────────────────────────
                       AnimatedOpacity(
                         opacity: _showGrid ? 1 : 0,
                         duration: const Duration(milliseconds: 400),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            _SectionLabel(label: 'Browse by category'),
+                            _SectionLabel(label: 'Continue Practicing'),
                             const SizedBox(height: AppSpacing.md),
-                            _CategoryGrid(
-                              crossAxisCount: _gridCrossAxisCount(context),
-                              categoryCardCounts: state.categoryCardCounts,
-                              customCardsCount: state.customCardsCount,
-                              recentCategories: state.recentCategories,
-                            ),
+                            _RecentSessionsRow(sessions: state.recentSessions),
                           ],
                         ),
                       ),
-
-                      // ── Recent sessions ──────────────────────────────────
-                      if (state.recentSessions.isNotEmpty) ...<Widget>[
-                        const SizedBox(height: AppSpacing.xxl),
-                        AnimatedOpacity(
-                          opacity: _showGrid ? 1 : 0,
-                          duration: const Duration(milliseconds: 400),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              _SectionLabel(label: 'Continue practicing'),
-                              const SizedBox(height: AppSpacing.md),
-                              _RecentSessionsRow(sessions: state.recentSessions),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ]),
-                  ),
+                    ],
+                  ]),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Hero collapsible app bar with greeting
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _HeroAppBar extends StatelessWidget {
+  const _HeroAppBar({
+    required this.greeting,
+    required this.streak,
+    required this.recentCategories,
+    required this.isDark,
+    required this.theme,
+    required this.showGreeting,
+  });
+
+  final String greeting;
+  final int streak;
+  final List<String> recentCategories;
+  final bool isDark;
+  final ThemeData theme;
+  final bool showGreeting;
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverAppBar(
+      expandedHeight: 120,
+      pinned: true,
+      backgroundColor: isDark ? theme.colorScheme.surface : theme.colorScheme.primary,
+      foregroundColor: isDark ? theme.colorScheme.onSurface : Colors.white,
+      elevation: 0,
+      flexibleSpace: FlexibleSpaceBar(
+        collapseMode: CollapseMode.parallax,
+        titlePadding: const EdgeInsetsDirectional.fromSTEB(AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.lg),
+        title: AnimatedOpacity(
+          opacity: showGreeting ? 1 : 0,
+          duration: const Duration(milliseconds: 380),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                greeting,
+                style: GoogleFonts.plusJakartaSans(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 20,
+                  color: isDark ? theme.colorScheme.onSurface : Colors.white,
+                ),
+              ),
+              const SizedBox(height: 2),
+              _GreetingSubtitle(streak: streak, recentCategories: recentCategories, isDark: isDark, theme: theme),
+            ],
+          ),
+        ),
+        // background: _HeroBackground(isDark: isDark, theme: theme),
+      ),
+    );
+  }
+}
+
+class _GreetingSubtitle extends StatelessWidget {
+  const _GreetingSubtitle({required this.streak, required this.recentCategories, required this.isDark, required this.theme});
+
+  final int streak;
+  final List<String> recentCategories;
+  final bool isDark;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    final Color subtitleColor = isDark ? theme.colorScheme.onSurfaceVariant : Colors.white70;
+
+    if (streak > 0) {
+      return Text(
+        '🔥  $streak-day streak — keep going!',
+        style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: subtitleColor),
+      );
+    }
+    if (recentCategories.isNotEmpty) {
+      return Text(
+        'Recent: ${recentCategories.take(2).join(' · ')}',
+        style: TextStyle(fontSize: 11, color: subtitleColor),
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+      );
+    }
+    return Text('Start your speaking journey today', style: TextStyle(fontSize: 11, color: subtitleColor));
+  }
+}
+
+class _HeroBackground extends StatelessWidget {
+  const _HeroBackground({required this.isDark, required this.theme});
+
+  final bool isDark;
+  final ThemeData theme;
+
+  @override
+  Widget build(BuildContext context) {
+    if (isDark) {
+      return Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+            colors: <Color>[theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.8), theme.colorScheme.surface],
+          ),
+        ),
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: Opacity(opacity: 0.06, child: Icon(Icons.record_voice_over_rounded, size: 150, color: theme.colorScheme.primary)),
+        ),
+      );
+    }
+    return Container(
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: <Color>[theme.colorScheme.primary, theme.colorScheme.primary.withValues(alpha: 0.82)],
+        ),
+      ),
+      child: const Align(
+        alignment: Alignment.centerRight,
+        child: Opacity(opacity: 0.1, child: Icon(Icons.record_voice_over_rounded, size: 150, color: Colors.white)),
+      ),
     );
   }
 }
@@ -233,48 +381,9 @@ class _SectionLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    return Text(label, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700));
-  }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
-// Greeting header
-// ─────────────────────────────────────────────────────────────────────────────
-
-class _GreetingHeader extends StatelessWidget {
-  const _GreetingHeader({required this.greeting, required this.streak, required this.recentCategories});
-
-  final String greeting;
-  final int streak;
-  final List<String> recentCategories;
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(greeting, style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700, letterSpacing: -0.3)),
-        const SizedBox(height: AppSpacing.xs),
-        if (streak > 0)
-          Row(
-            children: <Widget>[
-              Text('🔥 ', style: theme.textTheme.bodyMedium),
-              Text(
-                '$streak day streak',
-                style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.secondary, fontWeight: FontWeight.w600),
-              ),
-            ],
-          )
-        else if (recentCategories.isNotEmpty)
-          Text(
-            'Recent: ${recentCategories.take(2).join(' · ')}',
-            style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-          )
-        else
-          Text('Start your speaking journey today', style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
-      ],
+    return Text(
+      label,
+      style: GoogleFonts.plusJakartaSans(fontSize: 16, fontWeight: FontWeight.w800, color: theme.colorScheme.onSurface),
     );
   }
 }
@@ -292,15 +401,35 @@ class _StreakCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+    final bool hasStreak = streak > 0;
 
-    return Material(
-      color: theme.colorScheme.surfaceContainerLow,
-      borderRadius: BorderRadius.circular(AppRadius.xl),
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.35) : theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(AppRadius.xl),
+        border: Border.all(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.4)),
+        boxShadow: isDark
+            ? null
+            : <BoxShadow>[BoxShadow(color: theme.colorScheme.shadow.withValues(alpha: 0.05), blurRadius: 12, offset: const Offset(0, 3))],
+      ),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.xl),
         child: Row(
           children: <Widget>[
-            // Streak number
+            // Streak icon badge
+            Container(
+              width: 52,
+              height: 52,
+              decoration: BoxDecoration(
+                color: hasStreak ? const Color(0xFFFFF3C0) : theme.colorScheme.primaryContainer.withValues(alpha: 0.4),
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+              ),
+              child: Center(child: Text(hasStreak ? '🔥' : '💪', style: const TextStyle(fontSize: 26))),
+            ),
+            const SizedBox(width: AppSpacing.lg),
+
+            // Streak info
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -310,39 +439,46 @@ class _StreakCard extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         '$streak',
-                        style: theme.textTheme.displaySmall?.copyWith(fontWeight: FontWeight.w700, height: 1, color: theme.colorScheme.onSurface),
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 36,
+                          fontWeight: FontWeight.w800,
+                          height: 1,
+                          color: hasStreak ? const Color(0xFFF59E0B) : theme.colorScheme.onSurface,
+                        ),
                       ),
-                      const SizedBox(width: AppSpacing.sm),
                       Padding(
-                        padding: const EdgeInsets.only(bottom: AppSpacing.xs),
-                        child: Text('day streak', style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+                        padding: const EdgeInsets.only(left: AppSpacing.xs, bottom: AppSpacing.xs),
+                        child: Text('day streak', style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
                       ),
                     ],
                   ),
-                  const SizedBox(height: AppSpacing.xs),
+                  const SizedBox(height: 2),
                   Text(
-                    streak == 0 ? 'Practice today to start a streak' : 'Keep going — you\'re on a roll!',
+                    streak == 0 ? 'Practice today to start a streak' : "Keep going — you're on a roll!",
                     style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                   ),
                 ],
               ),
             ),
+
+            // Vertical divider
             Container(
               width: 1,
-              height: 56,
+              height: 48,
               margin: const EdgeInsets.symmetric(horizontal: AppSpacing.xl),
-              color: theme.colorScheme.outlineVariant,
+              color: theme.colorScheme.outlineVariant.withValues(alpha: 0.6),
             ),
+
             // Today count
             Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 Text(
                   '$todayCount',
-                  style: theme.textTheme.headlineMedium?.copyWith(fontWeight: FontWeight.w700, height: 1, color: theme.colorScheme.primary),
+                  style: GoogleFonts.plusJakartaSans(fontSize: 28, fontWeight: FontWeight.w800, height: 1, color: theme.colorScheme.primary),
                 ),
-                const SizedBox(height: AppSpacing.xs),
-                Text('today', style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+                const SizedBox(height: 2),
+                Text('today', style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
               ],
             ),
           ],
@@ -353,18 +489,18 @@ class _StreakCard extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Quick-draw CTA (pulsing idle button)
+// Quick Draw CTA — pulsing idle button with gradient
 // ─────────────────────────────────────────────────────────────────────────────
 
-class _IdlePulseCta extends StatefulWidget {
-  const _IdlePulseCta({required this.onPressed});
+class _QuickDrawCta extends StatefulWidget {
+  const _QuickDrawCta({required this.onPressed});
   final VoidCallback onPressed;
 
   @override
-  State<_IdlePulseCta> createState() => _IdlePulseCtaState();
+  State<_QuickDrawCta> createState() => _QuickDrawCtaState();
 }
 
-class _IdlePulseCtaState extends State<_IdlePulseCta> with SingleTickerProviderStateMixin {
+class _QuickDrawCtaState extends State<_QuickDrawCta> with SingleTickerProviderStateMixin {
   late final AnimationController _ctrl;
   late final Animation<double> _scale;
   Timer? _idleTimer;
@@ -374,8 +510,8 @@ class _IdlePulseCtaState extends State<_IdlePulseCta> with SingleTickerProviderS
     super.initState();
     _ctrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 500));
     _scale = TweenSequence<double>(<TweenSequenceItem<double>>[
-      TweenSequenceItem<double>(tween: Tween<double>(begin: 1.0, end: 1.03), weight: 40),
-      TweenSequenceItem<double>(tween: Tween<double>(begin: 1.03, end: 1.0), weight: 60),
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 1.0, end: 1.025), weight: 40),
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 1.025, end: 1.0), weight: 60),
     ]).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut));
     _schedulePulse();
   }
@@ -398,17 +534,41 @@ class _IdlePulseCtaState extends State<_IdlePulseCta> with SingleTickerProviderS
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+
     return AnimatedBuilder(
       animation: _scale,
-      builder: (BuildContext context, Widget? child) => Transform.scale(scale: _scale.value, child: child),
-      child: SizedBox(
-        width: double.infinity,
-        height: 56,
-        child: FilledButton.icon(
-          onPressed: widget.onPressed,
-          style: FilledButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.xl))),
-          icon: const Icon(Icons.shuffle_rounded),
-          label: const Text('Draw a Card'),
+      builder: (BuildContext ctx, Widget? child) => Transform.scale(scale: _scale.value, child: child),
+      child: GestureDetector(
+        onTap: () {
+          HapticFeedback.mediumImpact();
+          widget.onPressed();
+        },
+        child: Container(
+          height: 60,
+          decoration: BoxDecoration(
+            gradient: isDark
+                ? LinearGradient(colors: <Color>[theme.colorScheme.primary, theme.colorScheme.primary.withValues(alpha: 0.8)])
+                : LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: <Color>[theme.colorScheme.primary, theme.colorScheme.primary.withValues(alpha: 0.85)],
+                  ),
+            borderRadius: BorderRadius.circular(AppRadius.xl),
+            boxShadow: <BoxShadow>[BoxShadow(color: theme.colorScheme.primary.withValues(alpha: 0.35), blurRadius: 16, offset: const Offset(0, 6))],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Icon(Icons.shuffle_rounded, color: Colors.white, size: 22),
+              const SizedBox(width: AppSpacing.md),
+              Text(
+                'Draw a Card',
+                style: GoogleFonts.plusJakartaSans(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -446,20 +606,28 @@ class _CategoryGrid extends StatelessWidget {
           emoji: def.emoji,
           title: def.name,
           count: categoryCardCounts[def.name] ?? 0,
+          accentColor: def.accentColor,
           isRecent: recent.contains(def.name),
           onTap: () {
             final String uri = Uri(path: AppRoutes.categorySelect, queryParameters: <String, String>{'category': def.name}).toString();
             context.push(uri);
           },
         ),
-      _CategoryTile(emoji: '✏️', title: 'My Cards', count: customCardsCount, isRecent: false, onTap: () => context.push(AppRoutes.customCategories)),
+      _CategoryTile(
+        emoji: '✏️',
+        title: 'My Cards',
+        count: customCardsCount,
+        accentColor: const Color(0xFF8B5CF6),
+        isRecent: false,
+        onTap: () => context.push(AppRoutes.customCategories),
+      ),
     ];
 
     return GridView.count(
       crossAxisCount: crossAxisCount,
       mainAxisSpacing: AppSpacing.md,
       crossAxisSpacing: AppSpacing.md,
-      childAspectRatio: 1.05,
+      childAspectRatio: 1.02,
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
       children: tiles,
@@ -468,66 +636,111 @@ class _CategoryGrid extends StatelessWidget {
 }
 
 class _CategoryTile extends StatelessWidget {
-  const _CategoryTile({required this.emoji, required this.title, required this.count, required this.isRecent, required this.onTap});
+  const _CategoryTile({
+    required this.emoji,
+    required this.title,
+    required this.count,
+    required this.accentColor,
+    required this.isRecent,
+    required this.onTap,
+  });
 
   final String emoji;
   final String title;
   final int count;
+  final Color accentColor;
   final bool isRecent;
   final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
 
     return _PressScaleTile(
       onTap: onTap,
-      child: Material(
-        color: theme.colorScheme.surfaceContainerLow,
-        borderRadius: BorderRadius.circular(AppRadius.lg),
+      child: Container(
+        decoration: BoxDecoration(
+          color: isDark ? theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.35) : theme.colorScheme.surface,
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          border: Border.all(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35)),
+          boxShadow: isDark
+              ? null
+              : <BoxShadow>[BoxShadow(color: theme.colorScheme.shadow.withValues(alpha: 0.04), blurRadius: 8, offset: const Offset(0, 2))],
+        ),
         clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: onTap,
-          child: Padding(
-            padding: const EdgeInsets.all(AppSpacing.md),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(emoji, style: const TextStyle(fontSize: 28)),
-                const Spacer(),
-                Text(
-                  title,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
-                ),
-                const SizedBox(height: AppSpacing.xs),
-                Row(
-                  children: <Widget>[
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 2),
-                      decoration: BoxDecoration(
-                        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.6),
-                        borderRadius: BorderRadius.circular(AppRadius.sm),
-                      ),
-                      child: Text(
-                        '$count cards',
-                        style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w600, color: theme.colorScheme.onPrimaryContainer),
-                      ),
-                    ),
-                    if (isRecent) ...<Widget>[
-                      const SizedBox(width: AppSpacing.xs),
-                      Container(
-                        width: 6,
-                        height: 6,
-                        decoration: BoxDecoration(color: theme.colorScheme.primary, shape: BoxShape.circle),
-                      ),
+        child: Stack(
+          children: <Widget>[
+            // Subtle top-left accent tint
+            Positioned(
+              top: 0,
+              left: 0,
+              child: Container(
+                width: 60,
+                height: 60,
+                decoration: BoxDecoration(
+                  gradient: RadialGradient(
+                    colors: <Color>[
+                      accentColor.withValues(alpha: isDark ? 0.18 : 0.12),
+                      Colors.transparent,
                     ],
-                  ],
+                    radius: 1,
+                  ),
                 ),
-              ],
+              ),
             ),
-          ),
+            // Accent top stripe
+            Positioned(
+              top: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: 3,
+                decoration: BoxDecoration(
+                  color: accentColor.withValues(alpha: 0.7),
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
+                ),
+              ),
+            ),
+            // Content
+            Padding(
+              padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.lg, AppSpacing.md, AppSpacing.md),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(emoji, style: const TextStyle(fontSize: 28)),
+                  const Spacer(),
+                  Text(
+                    title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 13, height: 1.3),
+                  ),
+                  const SizedBox(height: AppSpacing.xs),
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 2),
+                        decoration: BoxDecoration(color: accentColor.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(AppRadius.sm)),
+                        child: Text(
+                          '$count cards',
+                          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: accentColor),
+                        ),
+                      ),
+                      if (isRecent) ...<Widget>[
+                        const SizedBox(width: AppSpacing.xs),
+                        Container(
+                          width: 6,
+                          height: 6,
+                          decoration: BoxDecoration(color: accentColor, shape: BoxShape.circle),
+                        ),
+                      ],
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -535,7 +748,7 @@ class _CategoryTile extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Recent sessions
+// Recent sessions row
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _RecentSessionsRow extends StatelessWidget {
@@ -561,59 +774,77 @@ class _RecentSessionsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
 
     return SizedBox(
-      height: 108,
+      height: 112,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: sessions.length,
-        separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.md),
-        itemBuilder: (BuildContext context, int i) {
+        separatorBuilder: (_, int _i) => const SizedBox(width: AppSpacing.md),
+        itemBuilder: (BuildContext ctx, int i) {
           final HomeRecentSession s = sessions[i];
-          return Material(
-            color: theme.colorScheme.surfaceContainerLow,
-            borderRadius: BorderRadius.circular(AppRadius.lg),
-            clipBehavior: Clip.antiAlias,
-            child: InkWell(
-              onTap: () async {
-                final CardRepository repo = context.read<CardRepository>();
-                final result = await repo.getByCardId(s.cardId);
-                if (!context.mounted) return;
-                result.fold(
-                  (_) => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Could not open card'))),
-                  (card) => context.push(AppRoutes.cardDetail, extra: CardDetailRouteArgs(card: card)),
-                );
-              },
-              child: SizedBox(
-                width: 220,
-                child: Padding(
-                  padding: const EdgeInsets.all(AppSpacing.md),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        s.cardTitle,
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
-                      ),
-                      const Spacer(),
-                      Row(
-                        children: <Widget>[
-                          Text(_formatAgo(s.completedAt), style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
-                          const Spacer(),
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 2),
-                            decoration: BoxDecoration(color: theme.colorScheme.secondaryContainer, borderRadius: BorderRadius.circular(AppRadius.sm)),
-                            child: Text(
-                              _formatDuration(s.durationSeconds),
-                              style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w600, color: theme.colorScheme.onSecondaryContainer),
-                            ),
+          return GestureDetector(
+            onTap: () async {
+              HapticFeedback.selectionClick();
+              final CardRepository repo = ctx.read<CardRepository>();
+              final result = await repo.getByCardId(s.cardId);
+              if (!ctx.mounted) return;
+              result.fold(
+                (_) => ScaffoldMessenger.of(ctx)
+                  ..clearSnackBars()
+                  ..showSnackBar(const SnackBar(content: Text('Could not open card'), behavior: SnackBarBehavior.floating)),
+                (card) => ctx.push(AppRoutes.cardDetail, extra: CardDetailRouteArgs(card: card)),
+              );
+            },
+            child: Container(
+              width: 220,
+              decoration: BoxDecoration(
+                color: isDark ? theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.35) : theme.colorScheme.surface,
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+                border: Border.all(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35)),
+                boxShadow: isDark
+                    ? null
+                    : <BoxShadow>[BoxShadow(color: theme.colorScheme.shadow.withValues(alpha: 0.04), blurRadius: 8, offset: const Offset(0, 2))],
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(AppSpacing.md),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Icon(Icons.history_rounded, size: 14, color: theme.colorScheme.primary.withValues(alpha: 0.7)),
+                        const SizedBox(width: AppSpacing.xs),
+                        Text(
+                          _formatAgo(s.completedAt),
+                          style: theme.textTheme.labelSmall?.copyWith(
+                            color: theme.colorScheme.primary.withValues(alpha: 0.8),
+                            fontWeight: FontWeight.w600,
                           ),
-                        ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: AppSpacing.xs),
+                    Text(
+                      s.cardTitle,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 13, height: 1.35),
+                    ),
+                    const Spacer(),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: theme.colorScheme.secondaryContainer.withValues(alpha: 0.8),
+                        borderRadius: BorderRadius.circular(AppRadius.sm),
                       ),
-                    ],
-                  ),
+                      child: Text(
+                        _formatDuration(s.durationSeconds),
+                        style: TextStyle(fontSize: 10, fontWeight: FontWeight.w700, color: theme.colorScheme.onSecondaryContainer),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -645,7 +876,7 @@ class _PressScaleTileState extends State<_PressScaleTile> with SingleTickerProvi
   void initState() {
     super.initState();
     _ctrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 100));
-    _scale = Tween<double>(begin: 1.0, end: 0.97).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut));
+    _scale = Tween<double>(begin: 1.0, end: 0.96).animate(CurvedAnimation(parent: _ctrl, curve: Curves.easeInOut));
   }
 
   @override
@@ -660,6 +891,7 @@ class _PressScaleTileState extends State<_PressScaleTile> with SingleTickerProvi
       onTapDown: (_) => _ctrl.forward(),
       onTapUp: (_) {
         _ctrl.reverse();
+        HapticFeedback.selectionClick();
         widget.onTap();
       },
       onTapCancel: () => _ctrl.reverse(),
