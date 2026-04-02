@@ -26,8 +26,7 @@ class HistoryScreen extends StatefulWidget {
   State<HistoryScreen> createState() => _HistoryScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen>
-    with SingleTickerProviderStateMixin {
+class _HistoryScreenState extends State<HistoryScreen> with SingleTickerProviderStateMixin {
   bool _calendarExpanded = false;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
@@ -37,14 +36,8 @@ class _HistoryScreenState extends State<HistoryScreen>
   @override
   void initState() {
     super.initState();
-    _headerAnimController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 600),
-    )..forward();
-    _headerFade = CurvedAnimation(
-      parent: _headerAnimController,
-      curve: Curves.easeOut,
-    );
+    _headerAnimController = AnimationController(vsync: this, duration: const Duration(milliseconds: 600))..forward();
+    _headerFade = CurvedAnimation(parent: _headerAnimController, curve: Curves.easeOut);
   }
 
   @override
@@ -59,8 +52,7 @@ class _HistoryScreenState extends State<HistoryScreen>
     final EdgeInsets pad = AppLayout.pagePadding(context);
 
     return BlocListener<HistoryBloc, HistoryState>(
-      listenWhen: (HistoryState p, HistoryState c) =>
-          c.pendingDeletion != null && c.pendingDeletion != p.pendingDeletion,
+      listenWhen: (HistoryState p, HistoryState c) => c.pendingDeletion != null && c.pendingDeletion != p.pendingDeletion,
       listener: (BuildContext context, HistoryState state) {
         final PracticeSession? s = state.pendingDeletion;
         if (s == null) return;
@@ -68,12 +60,7 @@ class _HistoryScreenState extends State<HistoryScreen>
           SnackBar(
             content: const Text('Session removed'),
             duration: const Duration(seconds: 5),
-            action: SnackBarAction(
-              label: 'Undo',
-              onPressed: () => context
-                  .read<HistoryBloc>()
-                  .add(const SessionDeleteUndoRequested()),
-            ),
+            action: SnackBarAction(label: 'Undo', onPressed: () => context.read<HistoryBloc>().add(const SessionDeleteUndoRequested())),
           ),
         );
       },
@@ -82,25 +69,17 @@ class _HistoryScreenState extends State<HistoryScreen>
           child: BlocBuilder<HistoryBloc, HistoryState>(
             builder: (BuildContext context, HistoryState state) {
               // ── Loading ────────────────────────────────────────────────────
-              if (state.status == HistoryStatus.loading &&
-                  state.allSessions.isEmpty) {
+              if (state.status == HistoryStatus.loading && state.allSessions.isEmpty) {
                 return _LoadingSkeleton(pad: pad);
               }
 
               // ── Error ──────────────────────────────────────────────────────
-              if (state.status == HistoryStatus.failure &&
-                  state.allSessions.isEmpty) {
-                return _ErrorState(
-                  message: state.errorMessage ?? 'Could not load history',
-                  pad: pad,
-                );
+              if (state.status == HistoryStatus.failure && state.allSessions.isEmpty) {
+                return _ErrorState(message: state.errorMessage ?? 'Could not load history', pad: pad);
               }
 
               // derive filtered sessions for the list
-              final List<PracticeSession> filtered = _applySearch(
-                state.logSessions,
-                _searchQuery,
-              );
+              final List<PracticeSession> filtered = _applySearch(state.logSessions, _searchQuery);
 
               return CustomScrollView(
                 physics: const BouncingScrollPhysics(),
@@ -115,39 +94,29 @@ class _HistoryScreenState extends State<HistoryScreen>
 
                   // ── Activity section ──────────────────────────────────────
                   SliverPadding(
-                    padding: EdgeInsets.fromLTRB(
-                        pad.left, AppSpacing.xl, pad.right, 0),
+                    padding: EdgeInsets.fromLTRB(pad.left, AppSpacing.xl, pad.right, 0),
                     sliver: SliverToBoxAdapter(
                       child: _ActivitySection(
                         counts: state.sessionsPerDayKey,
                         expanded: _calendarExpanded,
-                        onToggle: () => setState(
-                            () => _calendarExpanded = !_calendarExpanded),
+                        onToggle: () => setState(() => _calendarExpanded = !_calendarExpanded),
                       ),
                     ),
                   ),
 
                   // ── Search bar ────────────────────────────────────────────
                   SliverPadding(
-                    padding: EdgeInsets.fromLTRB(
-                        pad.left, AppSpacing.lg, pad.right, AppSpacing.sm),
+                    padding: EdgeInsets.fromLTRB(pad.left, AppSpacing.lg, pad.right, AppSpacing.sm),
                     sliver: SliverToBoxAdapter(
-                      child: _SearchBar(
-                        controller: _searchController,
-                        onChanged: (String q) =>
-                            setState(() => _searchQuery = q),
-                      ),
+                      child: _SearchBar(controller: _searchController, onChanged: (String q) => setState(() => _searchQuery = q)),
                     ),
                   ),
 
                   // ── Sessions list / empty ─────────────────────────────────
                   if (filtered.isEmpty && state.logSessions.isEmpty)
-                    const SliverFillRemaining(
-                        hasScrollBody: false, child: _EmptyHistory())
+                    const SliverFillRemaining(hasScrollBody: false, child: _EmptyHistory())
                   else if (filtered.isEmpty)
-                    SliverFillRemaining(
-                        hasScrollBody: false,
-                        child: _NoSearchResults(query: _searchQuery))
+                    SliverFillRemaining(hasScrollBody: false, child: _NoSearchResults(query: _searchQuery))
                   else
                     ..._buildTimelineSlivers(context, filtered, pad),
                 ],
@@ -160,15 +129,10 @@ class _HistoryScreenState extends State<HistoryScreen>
   }
 
   /// Filter sessions by search query (card title or category).
-  List<PracticeSession> _applySearch(
-      List<PracticeSession> sessions, String q) {
+  List<PracticeSession> _applySearch(List<PracticeSession> sessions, String q) {
     if (q.trim().isEmpty) return sessions;
     final String lower = q.toLowerCase();
-    return sessions
-        .where((PracticeSession s) =>
-            s.cardTitle.toLowerCase().contains(lower) ||
-            s.category.toLowerCase().contains(lower))
-        .toList();
+    return sessions.where((PracticeSession s) => s.cardTitle.toLowerCase().contains(lower) || s.category.toLowerCase().contains(lower)).toList();
   }
 }
 
@@ -182,20 +146,13 @@ class _LoadingSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color base =
-        Theme.of(context).colorScheme.surfaceContainerHighest;
+    final Color base = Theme.of(context).colorScheme.surfaceContainerHighest;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         // Fake header banner
-        ShimmerWidget(
-          width: double.infinity,
-          height: 160,
-          borderRadius: BorderRadius.zero,
-        ),
-        Expanded(
-          child: ShimmerListPlaceholder(itemCount: 6, itemHeight: 80),
-        ),
+        ShimmerWidget(width: double.infinity, height: 160, borderRadius: BorderRadius.zero),
+        Expanded(child: ShimmerListPlaceholder(itemCount: 6, itemHeight: 80)),
       ],
     );
   }
@@ -219,12 +176,9 @@ class _ErrorState extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(Icons.error_outline_rounded,
-                size: 48, color: theme.colorScheme.error),
+            Icon(Icons.error_outline_rounded, size: 48, color: theme.colorScheme.error),
             const SizedBox(height: AppSpacing.md),
-            Text(message,
-                textAlign: TextAlign.center,
-                style: theme.textTheme.bodyMedium),
+            Text(message, textAlign: TextAlign.center, style: theme.textTheme.bodyMedium),
           ],
         ),
       ),
@@ -253,20 +207,13 @@ class _StatsHeader extends StatelessWidget {
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
       colors: dark
-          ? <Color>[
-              primary.withValues(alpha: 0.22),
-              theme.colorScheme.surface,
-            ]
-          : <Color>[
-              primaryContainer.withValues(alpha: 0.55),
-              theme.colorScheme.surface,
-            ],
+          ? <Color>[primary.withValues(alpha: 0.22), theme.colorScheme.surface]
+          : <Color>[primaryContainer.withValues(alpha: 0.55), theme.colorScheme.surface],
     );
 
     return Container(
       decoration: BoxDecoration(gradient: grad),
-      padding: EdgeInsets.fromLTRB(
-          pad.left, pad.top + AppSpacing.md, pad.right, AppSpacing.xl),
+      padding: EdgeInsets.fromLTRB(pad.left, pad.top + AppSpacing.md, pad.right, AppSpacing.xl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -277,20 +224,9 @@ class _StatsHeader extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(
-                      'History',
-                      style: theme.textTheme.headlineSmall?.copyWith(
-                        fontWeight: FontWeight.w700,
-                        letterSpacing: -0.5,
-                      ),
-                    ),
+                    Text('History', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700, letterSpacing: -0.5)),
                     const SizedBox(height: 2),
-                    Text(
-                      'Your practice journey',
-                      style: theme.textTheme.bodySmall?.copyWith(
-                        color: theme.colorScheme.onSurfaceVariant,
-                      ),
-                    ),
+                    Text('Your practice journey', style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
                   ],
                 ),
               ),
@@ -301,11 +237,9 @@ class _StatsHeader extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: primary.withValues(alpha: 0.12),
                   borderRadius: BorderRadius.circular(AppRadius.lg),
-                  border: Border.all(
-                      color: primary.withValues(alpha: 0.2), width: 1),
+                  border: Border.all(color: primary.withValues(alpha: 0.2), width: 1),
                 ),
-                child: Icon(Icons.auto_graph_rounded,
-                    size: 20, color: primary),
+                child: Icon(Icons.auto_graph_rounded, size: 20, color: primary),
               ),
             ],
           ),
@@ -347,13 +281,7 @@ class _StatsHeader extends StatelessWidget {
 }
 
 class _StatChip extends StatelessWidget {
-  const _StatChip({
-    required this.icon,
-    required this.iconColor,
-    required this.label,
-    required this.value,
-    required this.accentColor,
-  });
+  const _StatChip({required this.icon, required this.iconColor, required this.label, required this.value, required this.accentColor});
 
   final IconData icon;
   final Color iconColor;
@@ -367,50 +295,28 @@ class _StatChip extends StatelessWidget {
 
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.symmetric(
-            vertical: AppSpacing.md, horizontal: AppSpacing.sm),
+        padding: const EdgeInsets.symmetric(vertical: AppSpacing.md, horizontal: AppSpacing.sm),
         decoration: BoxDecoration(
           color: theme.colorScheme.surface,
           borderRadius: BorderRadius.circular(AppRadius.lg),
-          border: Border.all(
-              color: accentColor.withValues(alpha: 0.15), width: 1),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: accentColor.withValues(alpha: 0.06),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
-            ),
-          ],
+          border: Border.all(color: accentColor.withValues(alpha: 0.15), width: 1),
+          boxShadow: <BoxShadow>[BoxShadow(color: accentColor.withValues(alpha: 0.06), blurRadius: 12, offset: const Offset(0, 4))],
         ),
         child: Column(
           children: <Widget>[
             Container(
               width: 32,
               height: 32,
-              decoration: BoxDecoration(
-                color: accentColor.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(AppRadius.sm),
-              ),
+              decoration: BoxDecoration(color: accentColor.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(AppRadius.sm)),
               child: Icon(icon, size: 16, color: iconColor),
             ),
             const SizedBox(height: AppSpacing.xs + 2),
             Text(
               value,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 18,
-                fontWeight: FontWeight.w800,
-                color: accentColor,
-                height: 1.1,
-              ),
+              style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.w800, color: accentColor, height: 1.1),
             ),
             const SizedBox(height: 2),
-            Text(
-              label,
-              style: theme.textTheme.labelSmall?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-                letterSpacing: 0.2,
-              ),
-            ),
+            Text(label, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant, letterSpacing: 0.2)),
           ],
         ),
       ),
@@ -423,8 +329,7 @@ class _StatChip extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _SearchBar extends StatelessWidget {
-  const _SearchBar(
-      {required this.controller, required this.onChanged});
+  const _SearchBar({required this.controller, required this.onChanged});
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
 
@@ -437,24 +342,17 @@ class _SearchBar extends StatelessWidget {
       style: theme.textTheme.bodyMedium,
       decoration: InputDecoration(
         hintText: 'Search sessions…',
-        prefixIcon: Icon(
-          Icons.search_rounded,
-          size: 20,
-          color: theme.colorScheme.onSurfaceVariant,
-        ),
+        prefixIcon: Icon(Icons.search_rounded, size: 20, color: theme.colorScheme.onSurfaceVariant),
         suffixIcon: controller.text.isNotEmpty
             ? GestureDetector(
                 onTap: () {
                   controller.clear();
                   onChanged('');
                 },
-                child: Icon(Icons.close_rounded,
-                    size: 18,
-                    color: theme.colorScheme.onSurfaceVariant),
+                child: Icon(Icons.close_rounded, size: 18, color: theme.colorScheme.onSurfaceVariant),
               )
             : null,
-        contentPadding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md, vertical: AppSpacing.sm + 2),
+        contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm + 2),
         isDense: true,
       ),
     );
@@ -466,11 +364,7 @@ class _SearchBar extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _ActivitySection extends StatelessWidget {
-  const _ActivitySection({
-    required this.counts,
-    required this.expanded,
-    required this.onToggle,
-  });
+  const _ActivitySection({required this.counts, required this.expanded, required this.onToggle});
 
   final Map<String, int> counts;
   final bool expanded;
@@ -484,9 +378,7 @@ class _ActivitySection extends StatelessWidget {
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerLow,
         borderRadius: BorderRadius.circular(AppRadius.xl),
-        border: Border.all(
-            color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35),
-            width: 1),
+        border: Border.all(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.35), width: 1),
       ),
       padding: const EdgeInsets.all(AppSpacing.lg),
       child: Column(
@@ -495,14 +387,9 @@ class _ActivitySection extends StatelessWidget {
           // ── Heading row ─────────────────────────────────────────────────
           Row(
             children: <Widget>[
-              Icon(Icons.bar_chart_rounded,
-                  size: 16, color: theme.colorScheme.primary),
+              Icon(Icons.bar_chart_rounded, size: 16, color: theme.colorScheme.primary),
               const SizedBox(width: AppSpacing.xs),
-              Text(
-                'Activity',
-                style: theme.textTheme.titleSmall
-                    ?.copyWith(fontWeight: FontWeight.w700),
-              ),
+              Text('Activity', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
               const Spacer(),
               _ToggleChip(expanded: expanded, onTap: onToggle),
             ],
@@ -541,19 +428,16 @@ class _ToggleChip extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.sm + 2, vertical: AppSpacing.xs),
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm + 2, vertical: AppSpacing.xs),
         decoration: BoxDecoration(
           color: expanded
               ? theme.colorScheme.primaryContainer.withValues(alpha: 0.4)
-              : theme.colorScheme.surfaceContainerHighest
-                  .withValues(alpha: 0.6),
+              : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
           borderRadius: BorderRadius.circular(AppRadius.full),
           border: Border.all(
-              color: expanded
-                  ? theme.colorScheme.primary.withValues(alpha: 0.3)
-                  : theme.colorScheme.outlineVariant.withValues(alpha: 0.4),
-              width: 1),
+            color: expanded ? theme.colorScheme.primary.withValues(alpha: 0.3) : theme.colorScheme.outlineVariant.withValues(alpha: 0.4),
+            width: 1,
+          ),
         ),
         child: Row(
           mainAxisSize: MainAxisSize.min,
@@ -562,9 +446,7 @@ class _ToggleChip extends StatelessWidget {
               expanded ? 'Hide' : 'Calendar',
               style: theme.textTheme.labelSmall?.copyWith(
                 fontWeight: FontWeight.w600,
-                color: expanded
-                    ? theme.colorScheme.primary
-                    : theme.colorScheme.onSurfaceVariant,
+                color: expanded ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
               ),
             ),
             const SizedBox(width: AppSpacing.xs),
@@ -574,9 +456,7 @@ class _ToggleChip extends StatelessWidget {
               child: Icon(
                 Icons.keyboard_arrow_down_rounded,
                 size: 14,
-                color: expanded
-                    ? theme.colorScheme.primary
-                    : theme.colorScheme.onSurfaceVariant,
+                color: expanded ? theme.colorScheme.primary : theme.colorScheme.onSurfaceVariant,
               ),
             ),
           ],
@@ -594,23 +474,19 @@ class _WeekStrip extends StatelessWidget {
   const _WeekStrip({required this.counts});
   final Map<String, int> counts;
 
-  static String _key(DateTime d) =>
-      '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+  static String _key(DateTime d) => '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final Color primary = theme.colorScheme.primary;
     final bool dark = theme.brightness == Brightness.dark;
-    final Color brandLight =
-        dark ? AppColorsDark.primaryLight : AppColors.primaryLight;
-    final Color emptyBg = theme.colorScheme.surfaceContainerHighest
-        .withValues(alpha: dark ? 0.5 : 0.6);
+    final Color brandLight = dark ? AppColorsDark.primaryLight : AppColors.primaryLight;
+    final Color emptyBg = theme.colorScheme.surfaceContainerHighest.withValues(alpha: dark ? 0.5 : 0.6);
 
     final DateTime now = DateTime.now();
     final DateTime today = DateTime(now.year, now.month, now.day);
-    final DateTime weekStart =
-        today.subtract(Duration(days: today.weekday - 1));
+    final DateTime weekStart = today.subtract(Duration(days: today.weekday - 1));
     const List<String> dow = <String>['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 
     return Row(
@@ -642,10 +518,7 @@ class _WeekStrip extends StatelessWidget {
                   style: theme.textTheme.labelSmall?.copyWith(
                     fontWeight: FontWeight.w600,
                     fontSize: 10,
-                    color: isToday
-                        ? primary
-                        : theme.colorScheme.onSurfaceVariant
-                            .withValues(alpha: 0.7),
+                    color: isToday ? primary : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7),
                   ),
                 ),
                 const SizedBox(height: AppSpacing.xs),
@@ -656,9 +529,7 @@ class _WeekStrip extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: fill,
                     borderRadius: BorderRadius.circular(AppRadius.sm + 2),
-                    border: isToday
-                        ? Border.all(color: primary, width: 2)
-                        : null,
+                    border: isToday ? Border.all(color: primary, width: 2) : null,
                   ),
                   alignment: Alignment.center,
                   child: Text(
@@ -668,8 +539,7 @@ class _WeekStrip extends StatelessWidget {
                       fontSize: 11,
                       color: n > 0 && !isFuture
                           ? (n >= 2 ? Colors.white : primary)
-                          : theme.colorScheme.onSurfaceVariant
-                              .withValues(alpha: isFuture ? 0.28 : 0.5),
+                          : theme.colorScheme.onSurfaceVariant.withValues(alpha: isFuture ? 0.28 : 0.5),
                     ),
                   ),
                 ),
@@ -706,8 +576,7 @@ class _MonthPageView extends StatelessWidget {
             itemCount: 3,
             controller: PageController(viewportFraction: 1),
             itemBuilder: (BuildContext context, int pageIndex) {
-              final DateTime month =
-                  DateTime(now.year, now.month - pageIndex, 1);
+              final DateTime month = DateTime(now.year, now.month - pageIndex, 1);
               return _MonthGrid(month: month, counts: counts);
             },
           ),
@@ -722,18 +591,15 @@ class _MonthGrid extends StatelessWidget {
   final DateTime month;
   final Map<String, int> counts;
 
-  static String _key(DateTime d) =>
-      '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+  static String _key(DateTime d) => '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
 
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final Color primary = theme.colorScheme.primary;
     final bool dark = theme.brightness == Brightness.dark;
-    final Color brandLight =
-        dark ? AppColorsDark.primaryLight : AppColors.primaryLight;
-    final Color empty = theme.colorScheme.surfaceContainerHighest
-        .withValues(alpha: dark ? 0.4 : 0.6);
+    final Color brandLight = dark ? AppColorsDark.primaryLight : AppColors.primaryLight;
+    final Color empty = theme.colorScheme.surfaceContainerHighest.withValues(alpha: dark ? 0.4 : 0.6);
 
     final DateTime first = DateTime(month.year, month.month, 1);
     final int fromMonday = first.weekday - 1;
@@ -745,19 +611,17 @@ class _MonthGrid extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(DateFormat('MMMM yyyy').format(month),
-            style: theme.textTheme.titleSmall
-                ?.copyWith(fontWeight: FontWeight.w700)),
+        Text(DateFormat('MMMM yyyy').format(month), style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
         const SizedBox(height: AppSpacing.sm),
         Row(
           children: dow
-              .map((String d) => Expanded(
-                    child: Center(
-                      child: Text(d,
-                          style: theme.textTheme.labelSmall?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant)),
-                    ),
-                  ))
+              .map(
+                (String d) => Expanded(
+                  child: Center(
+                    child: Text(d, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+                  ),
+                ),
+              )
               .toList(),
         ),
         const SizedBox(height: AppSpacing.xs),
@@ -786,16 +650,13 @@ class _MonthGrid extends StatelessWidget {
             } else {
               fill = primary;
             }
-            final bool isToday =
-                DateTime(cell.year, cell.month, cell.day) == todayNorm;
+            final bool isToday = DateTime(cell.year, cell.month, cell.day) == todayNorm;
 
             return DecoratedBox(
               decoration: BoxDecoration(
                 color: inMonth ? fill : Colors.transparent,
                 borderRadius: BorderRadius.circular(5),
-                border: isToday && inMonth
-                    ? Border.all(color: primary, width: 1.8)
-                    : null,
+                border: isToday && inMonth ? Border.all(color: primary, width: 1.8) : null,
               ),
               child: inMonth
                   ? Center(
@@ -803,10 +664,7 @@ class _MonthGrid extends StatelessWidget {
                         '${cell.day}',
                         style: theme.textTheme.labelSmall?.copyWith(
                           fontWeight: FontWeight.w700,
-                          color: n > 0
-                              ? (n >= 2 ? Colors.white : primary)
-                              : theme.colorScheme.onSurfaceVariant
-                                  .withValues(alpha: 0.55),
+                          color: n > 0 ? (n >= 2 ? Colors.white : primary) : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.55),
                         ),
                       ),
                     )
@@ -823,17 +681,13 @@ class _MonthGrid extends StatelessWidget {
 // Timeline slivers builder — vertical timeline with date nodes
 // ─────────────────────────────────────────────────────────────────────────────
 
-List<Widget> _buildTimelineSlivers(
-    BuildContext context, List<PracticeSession> sessions, EdgeInsets pad) {
-  final Map<DateTime, List<PracticeSession>> byDay =
-      <DateTime, List<PracticeSession>>{};
+List<Widget> _buildTimelineSlivers(BuildContext context, List<PracticeSession> sessions, EdgeInsets pad) {
+  final Map<DateTime, List<PracticeSession>> byDay = <DateTime, List<PracticeSession>>{};
   for (final PracticeSession s in sessions) {
-    final DateTime d = DateTime(
-        s.completedAt.year, s.completedAt.month, s.completedAt.day);
+    final DateTime d = DateTime(s.completedAt.year, s.completedAt.month, s.completedAt.day);
     byDay.putIfAbsent(d, () => <PracticeSession>[]).add(s);
   }
-  final List<DateTime> days = byDay.keys.toList()
-    ..sort((DateTime a, DateTime b) => b.compareTo(a));
+  final List<DateTime> days = byDay.keys.toList()..sort((DateTime a, DateTime b) => b.compareTo(a));
 
   final DateTime now = DateTime.now();
   final DateTime today = DateTime(now.year, now.month, now.day);
@@ -849,31 +703,23 @@ List<Widget> _buildTimelineSlivers(
       SliverPadding(
         padding: EdgeInsets.fromLTRB(pad.left, 0, pad.right, 0),
         sliver: SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (BuildContext context, int i) {
-              final bool isFirstInDay = i == 0;
-              final bool isLastInDay = i == list.length - 1;
-              return _TimelineSessionCard(
-                session: list[i],
-                dayLabel: isFirstInDay
-                    ? _dayHeaderLabel(day, today)
-                    : null,
-                isLastCard: isLast && isLastInDay,
-                onDelete: () => context
-                    .read<HistoryBloc>()
-                    .add(SessionDeleted(list[i].sessionId)),
-              );
-            },
-            childCount: list.length,
-          ),
+          delegate: SliverChildBuilderDelegate((BuildContext context, int i) {
+            final bool isFirstInDay = i == 0;
+            final bool isLastInDay = i == list.length - 1;
+            return _TimelineSessionCard(
+              session: list[i],
+              dayLabel: isFirstInDay ? _dayHeaderLabel(day, today) : null,
+              isLastCard: isLast && isLastInDay,
+              onDelete: () => context.read<HistoryBloc>().add(SessionDeleted(list[i].sessionId)),
+            );
+          }, childCount: list.length),
         ),
       ),
     );
   }
 
   // Bottom breathing room
-  out.add(const SliverPadding(
-      padding: EdgeInsets.only(bottom: AppSpacing.huge)));
+  out.add(const SliverPadding(padding: EdgeInsets.only(bottom: AppSpacing.huge)));
   return out;
 }
 
@@ -889,12 +735,7 @@ String _dayHeaderLabel(DateTime day, DateTime today) {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _TimelineSessionCard extends StatelessWidget {
-  const _TimelineSessionCard({
-    required this.session,
-    required this.onDelete,
-    required this.isLastCard,
-    this.dayLabel,
-  });
+  const _TimelineSessionCard({required this.session, required this.onDelete, required this.isLastCard, this.dayLabel});
 
   final PracticeSession session;
   final VoidCallback onDelete;
@@ -924,10 +765,7 @@ class _TimelineSessionCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
                 // Date badge — only for first card in day
-                if (dayLabel != null) ...<Widget>[
-                  _DateBadge(label: dayLabel!, theme: theme),
-                  const SizedBox(height: AppSpacing.xs),
-                ] else
+                if (dayLabel != null) ...<Widget>[_DateBadge(label: dayLabel!, theme: theme), const SizedBox(height: AppSpacing.xs)] else
                   const SizedBox(height: AppSpacing.xs + 4),
 
                 // Spine dot
@@ -937,23 +775,12 @@ class _TimelineSessionCard extends StatelessWidget {
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     color: accent,
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                          color: accent.withValues(alpha: 0.35),
-                          blurRadius: 6,
-                          spreadRadius: 1),
-                    ],
+                    boxShadow: <BoxShadow>[BoxShadow(color: accent.withValues(alpha: 0.35), blurRadius: 6, spreadRadius: 1)],
                   ),
                 ),
 
                 // Spine line going down (hidden for last card)
-                if (!isLastCard)
-                  Container(
-                    width: 1.5,
-                    height: 56,
-                    color: spineColor,
-                    margin: const EdgeInsets.only(top: 4),
-                  ),
+                if (!isLastCard) Container(width: 1.5, height: 56, color: spineColor, margin: const EdgeInsets.only(top: 4)),
               ],
             ),
           ),
@@ -963,8 +790,7 @@ class _TimelineSessionCard extends StatelessWidget {
           // ── Session card ───────────────────────────────────────────────
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.only(
-                  bottom: AppSpacing.sm, top: 0),
+              padding: const EdgeInsets.only(bottom: AppSpacing.sm, top: 0),
               child: _SessionCard(
                 session: session,
                 emoji: emoji,
@@ -991,21 +817,12 @@ class _DateBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       constraints: const BoxConstraints(maxWidth: 52),
-      padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.xs, vertical: 3),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.primaryContainer.withValues(alpha: 0.45),
-        borderRadius: BorderRadius.circular(AppRadius.xs),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs, vertical: 3),
+      decoration: BoxDecoration(color: theme.colorScheme.primaryContainer.withValues(alpha: 0.45), borderRadius: BorderRadius.circular(AppRadius.xs)),
       child: Text(
         label.length > 5 ? label.substring(0, 3) : label,
         textAlign: TextAlign.center,
-        style: theme.textTheme.labelSmall?.copyWith(
-          fontWeight: FontWeight.w700,
-          fontSize: 9,
-          color: theme.colorScheme.primary,
-          letterSpacing: 0.3,
-        ),
+        style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700, fontSize: 9, color: theme.colorScheme.primary, letterSpacing: 0.3),
       ),
     );
   }
@@ -1040,21 +857,15 @@ class _SessionCard extends StatelessWidget {
       background: Container(
         alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: AppSpacing.xl),
-        decoration: BoxDecoration(
-          color: theme.colorScheme.error.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(AppRadius.lg),
-        ),
+        decoration: BoxDecoration(color: theme.colorScheme.error.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(AppRadius.lg)),
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Icon(Icons.delete_outline_rounded,
-                color: theme.colorScheme.error, size: 20),
+            Icon(Icons.delete_outline_rounded, color: theme.colorScheme.error, size: 20),
             const SizedBox(width: AppSpacing.xs),
             Text(
               'Delete',
-              style: theme.textTheme.labelSmall?.copyWith(
-                  color: theme.colorScheme.error,
-                  fontWeight: FontWeight.w600),
+              style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.error, fontWeight: FontWeight.w600),
             ),
           ],
         ),
@@ -1068,8 +879,7 @@ class _SessionCard extends StatelessWidget {
           decoration: BoxDecoration(
             color: theme.colorScheme.surfaceContainerLow,
             borderRadius: BorderRadius.circular(AppRadius.lg),
-            border: Border.all(
-                color: accent.withValues(alpha: 0.18), width: 1),
+            border: Border.all(color: accent.withValues(alpha: 0.18), width: 1),
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(AppRadius.lg),
@@ -1082,19 +892,11 @@ class _SessionCard extends StatelessWidget {
                   // Accent top strip
                   Container(
                     height: 3,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        colors: <Color>[
-                          accent,
-                          accent.withValues(alpha: 0.3),
-                        ],
-                      ),
-                    ),
+                    decoration: BoxDecoration(gradient: LinearGradient(colors: <Color>[accent, accent.withValues(alpha: 0.3)])),
                   ),
 
                   Padding(
-                    padding: const EdgeInsets.fromLTRB(AppSpacing.md,
-                        AppSpacing.sm, AppSpacing.md, AppSpacing.sm),
+                    padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.sm, AppSpacing.md, AppSpacing.sm),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
@@ -1102,14 +904,9 @@ class _SessionCard extends StatelessWidget {
                         Container(
                           width: 42,
                           height: 42,
-                          decoration: BoxDecoration(
-                            color: accent.withValues(alpha: 0.12),
-                            borderRadius:
-                                BorderRadius.circular(AppRadius.md),
-                          ),
+                          decoration: BoxDecoration(color: accent.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(AppRadius.md)),
                           alignment: Alignment.center,
-                          child: Text(emoji,
-                              style: const TextStyle(fontSize: 20)),
+                          child: Text(emoji, style: const TextStyle(fontSize: 20)),
                         ),
                         const SizedBox(width: AppSpacing.md),
 
@@ -1122,47 +919,29 @@ class _SessionCard extends StatelessWidget {
                                 session.cardTitle,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style:
-                                    theme.textTheme.titleSmall?.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  height: 1.3,
-                                ),
+                                style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700, height: 1.3),
                               ),
                               const SizedBox(height: 3),
                               Row(
                                 children: <Widget>[
                                   // Category pill
                                   Container(
-                                    padding:
-                                        const EdgeInsets.symmetric(
-                                            horizontal: AppSpacing.xs + 2,
-                                            vertical: 2),
+                                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs + 2, vertical: 2),
                                     decoration: BoxDecoration(
                                       color: accent.withValues(alpha: 0.1),
-                                      borderRadius:
-                                          BorderRadius.circular(AppRadius.xs),
+                                      borderRadius: BorderRadius.circular(AppRadius.xs),
                                     ),
                                     child: Text(
                                       session.category,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.inter(
-                                        fontSize: 10,
-                                        fontWeight: FontWeight.w600,
-                                        color: accent,
-                                        letterSpacing: 0.2,
-                                      ),
+                                      style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w600, color: accent, letterSpacing: 0.2),
                                     ),
                                   ),
                                   const SizedBox(width: AppSpacing.xs),
                                   Text(
                                     '· $time',
-                                    style: theme.textTheme.bodySmall
-                                        ?.copyWith(
-                                      color: theme
-                                          .colorScheme.onSurfaceVariant
-                                          .withValues(alpha: 0.7),
-                                    ),
+                                    style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7)),
                                   ),
                                 ],
                               ),
@@ -1178,21 +957,14 @@ class _SessionCard extends StatelessWidget {
                           children: <Widget>[
                             // Duration badge
                             Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: AppSpacing.sm, vertical: 3),
+                              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 3),
                               decoration: BoxDecoration(
-                                color: theme.colorScheme.primaryContainer
-                                    .withValues(alpha: 0.45),
-                                borderRadius:
-                                    BorderRadius.circular(AppRadius.sm),
+                                color: theme.colorScheme.primaryContainer.withValues(alpha: 0.45),
+                                borderRadius: BorderRadius.circular(AppRadius.sm),
                               ),
                               child: Text(
                                 formatPracticeMmSs(session.durationSeconds),
-                                style: GoogleFonts.inter(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  color: theme.colorScheme.primary,
-                                ),
+                                style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w700, color: theme.colorScheme.primary),
                               ),
                             ),
                             const SizedBox(height: AppSpacing.xs),
@@ -1203,12 +975,7 @@ class _SessionCard extends StatelessWidget {
                                 Container(
                                   width: 5,
                                   height: 5,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: completed
-                                        ? AppColors.success
-                                        : AppColors.warning,
-                                  ),
+                                  decoration: BoxDecoration(shape: BoxShape.circle, color: completed ? AppColors.success : AppColors.warning),
                                 ),
                                 const SizedBox(width: AppSpacing.xs),
                                 Text(
@@ -1216,9 +983,7 @@ class _SessionCard extends StatelessWidget {
                                   style: GoogleFonts.inter(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w600,
-                                    color: completed
-                                        ? AppColors.success
-                                        : AppColors.warning,
+                                    color: completed ? AppColors.success : AppColors.warning,
                                   ),
                                 ),
                               ],
@@ -1261,71 +1026,43 @@ class _EmptyHistory extends StatelessWidget {
                 Container(
                   width: 100,
                   height: 100,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: theme.colorScheme.primaryContainer
-                        .withValues(alpha: 0.2),
-                  ),
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: theme.colorScheme.primaryContainer.withValues(alpha: 0.2)),
                 ),
                 Container(
                   width: 72,
                   height: 72,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: theme.colorScheme.primaryContainer
-                        .withValues(alpha: 0.35),
-                  ),
-                  child: Icon(
-                    Icons.history_edu_rounded,
-                    size: 36,
-                    color: theme.colorScheme.primary.withValues(alpha: 0.75),
-                  ),
+                  decoration: BoxDecoration(shape: BoxShape.circle, color: theme.colorScheme.primaryContainer.withValues(alpha: 0.35)),
+                  child: Icon(Icons.history_edu_rounded, size: 36, color: theme.colorScheme.primary.withValues(alpha: 0.75)),
                 ),
               ],
             ),
             const SizedBox(height: AppSpacing.xl),
             Text(
               'No sessions yet',
-              style: GoogleFonts.newsreader(
-                fontSize: 22,
-                fontWeight: FontWeight.w600,
-                color: theme.colorScheme.onSurface,
-              ),
+              style: GoogleFonts.newsreader(fontSize: 22, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
               'Complete your first practice session\nand your journey will appear here.',
               textAlign: TextAlign.center,
-              style: theme.textTheme.bodyMedium?.copyWith(
-                color: theme.colorScheme.onSurfaceVariant,
-                height: 1.5,
-              ),
+              style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant, height: 1.5),
             ),
             const SizedBox(height: AppSpacing.xl),
             Container(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
               decoration: BoxDecoration(
                 color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(AppRadius.full),
-                border: Border.all(
-                    color: theme.colorScheme.primary.withValues(alpha: 0.2)),
+                border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.2)),
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Icon(Icons.arrow_back_rounded,
-                      size: 14,
-                      color: theme.colorScheme.primary
-                          .withValues(alpha: 0.75)),
+                  Icon(Icons.arrow_back_rounded, size: 14, color: theme.colorScheme.primary.withValues(alpha: 0.75)),
                   const SizedBox(width: AppSpacing.xs),
                   Text(
                     'Go practise!',
-                    style: GoogleFonts.inter(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                      color: theme.colorScheme.primary,
-                    ),
+                    style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w600, color: theme.colorScheme.primary),
                   ),
                 ],
               ),
@@ -1354,23 +1091,15 @@ class _NoSearchResults extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(Icons.search_off_rounded,
-                size: 48,
-                color: theme.colorScheme.onSurfaceVariant
-                    .withValues(alpha: 0.5)),
+            Icon(Icons.search_off_rounded, size: 48, color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5)),
             const SizedBox(height: AppSpacing.md),
             Text(
               'No results for "$query"',
-              style: theme.textTheme.titleSmall
-                  ?.copyWith(fontWeight: FontWeight.w600),
+              style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: AppSpacing.sm),
-            Text(
-              'Try a different card title or category.',
-              style: theme.textTheme.bodySmall,
-              textAlign: TextAlign.center,
-            ),
+            Text('Try a different card title or category.', style: theme.textTheme.bodySmall, textAlign: TextAlign.center),
           ],
         ),
       ),

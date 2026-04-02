@@ -41,8 +41,7 @@ class FlipDrawCard extends StatefulWidget {
   State<FlipDrawCard> createState() => _FlipDrawCardState();
 }
 
-class _FlipDrawCardState extends State<FlipDrawCard>
-    with TickerProviderStateMixin {
+class _FlipDrawCardState extends State<FlipDrawCard> with TickerProviderStateMixin {
   late final AnimationController _entranceController;
   late final Animation<double> _entranceScale;
   late final AnimationController _flipController;
@@ -54,18 +53,11 @@ class _FlipDrawCardState extends State<FlipDrawCard>
   @override
   void initState() {
     super.initState();
-    _entranceController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 420));
-    _entranceScale = Tween<double>(begin: 0.82, end: 1).animate(
-        CurvedAnimation(
-            parent: _entranceController, curve: Curves.easeOutCubic));
-    _flipController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 600));
+    _entranceController = AnimationController(vsync: this, duration: const Duration(milliseconds: 420));
+    _entranceScale = Tween<double>(begin: 0.82, end: 1).animate(CurvedAnimation(parent: _entranceController, curve: Curves.easeOutCubic));
+    _flipController = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
     _flipTurns = TweenSequence<double>(<TweenSequenceItem<double>>[
-      TweenSequenceItem<double>(
-          tween: Tween<double>(begin: 0, end: 1)
-              .chain(CurveTween(curve: Curves.easeInOutCubic)),
-          weight: 1),
+      TweenSequenceItem<double>(tween: Tween<double>(begin: 0, end: 1).chain(CurveTween(curve: Curves.easeInOutCubic)), weight: 1),
     ]).animate(_flipController);
     _flipController.addStatusListener(_onFlipStatus);
     _runEntranceThenFlip();
@@ -150,8 +142,7 @@ class _FlipDrawCardState extends State<FlipDrawCard>
       child: Material(
         color: Colors.transparent,
         child: AnimatedBuilder(
-          animation: Listenable.merge(
-              <Listenable>[_entranceController, _flipController]),
+          animation: Listenable.merge(<Listenable>[_entranceController, _flipController]),
           builder: (BuildContext context, Widget? child) {
             final double scale = _entranceScale.value;
             final double angle = _flipTurns.value * pi;
@@ -182,10 +173,8 @@ class _FlipDrawCardState extends State<FlipDrawCard>
                               card: widget.card,
                               accent: accent,
                               theme: theme,
-                              difficultyLabel:
-                                  _difficultyLabel(widget.card.difficulty),
-                              difficultyIcon:
-                                  _difficultyIcon(widget.card.difficulty),
+                              difficultyLabel: _difficultyLabel(widget.card.difficulty),
+                              difficultyIcon: _difficultyIcon(widget.card.difficulty),
                               contentOpacity: _contentOpacity,
                               actionsOpacity: _actionsOpacity,
                               isFavorite: widget.isFavorite,
@@ -225,14 +214,8 @@ class _CardFront extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(28),
         boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: start.withValues(alpha: 0.35),
-              blurRadius: 36,
-              offset: const Offset(0, 18)),
-          BoxShadow(
-              color: Colors.black.withValues(alpha: 0.10),
-              blurRadius: 10,
-              offset: const Offset(0, 4)),
+          BoxShadow(color: start.withValues(alpha: 0.35), blurRadius: 36, offset: const Offset(0, 18)),
+          BoxShadow(color: Colors.black.withValues(alpha: 0.10), blurRadius: 10, offset: const Offset(0, 4)),
         ],
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -247,20 +230,11 @@ class _CardFront extends StatelessWidget {
           fit: StackFit.expand,
           children: <Widget>[
             CustomPaint(
-              painter: _StripePainter(
-                  color: Colors.white.withValues(alpha: dark ? 0.04 : 0.07)),
+              painter: _StripePainter(color: Colors.white.withValues(alpha: dark ? 0.04 : 0.07)),
             ),
             // Decorative circles
-            Positioned(
-              top: -50,
-              right: -50,
-              child: _GlassCircle(size: 200),
-            ),
-            Positioned(
-              bottom: -70,
-              left: -40,
-              child: _GlassCircle(size: 240),
-            ),
+            Positioned(top: -50, right: -50, child: _GlassCircle(size: 200)),
+            Positioned(bottom: -70, left: -40, child: _GlassCircle(size: 240)),
             // Category accent stripe
             Positioned(
               left: 0,
@@ -270,10 +244,7 @@ class _CardFront extends StatelessWidget {
                 width: 6,
                 decoration: BoxDecoration(
                   color: accent.withValues(alpha: 0.85),
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(28),
-                    bottomLeft: Radius.circular(28),
-                  ),
+                  borderRadius: const BorderRadius.only(topLeft: Radius.circular(28), bottomLeft: Radius.circular(28)),
                 ),
               ),
             ),
@@ -287,14 +258,9 @@ class _CardFront extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.white.withValues(alpha: 0.13),
-                      border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.2), width: 1),
+                      border: Border.all(color: Colors.white.withValues(alpha: 0.2), width: 1),
                     ),
-                    child: Icon(
-                      Icons.record_voice_over_rounded,
-                      size: 52,
-                      color: theme.colorScheme.onPrimary.withValues(alpha: 0.97),
-                    ),
+                    child: Icon(Icons.record_voice_over_rounded, size: 52, color: theme.colorScheme.onPrimary.withValues(alpha: 0.97)),
                   ),
                   const SizedBox(height: AppSpacing.lg),
                   Text(
@@ -312,8 +278,7 @@ class _CardFront extends StatelessWidget {
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
-                      color:
-                          theme.colorScheme.onPrimary.withValues(alpha: 0.5),
+                      color: theme.colorScheme.onPrimary.withValues(alpha: 0.5),
                       letterSpacing: 3,
                     ),
                   ),
@@ -328,10 +293,7 @@ class _CardFront extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  Icon(Icons.swipe_rounded,
-                      size: 13,
-                      color:
-                          theme.colorScheme.onPrimary.withValues(alpha: 0.35)),
+                  Icon(Icons.swipe_rounded, size: 13, color: theme.colorScheme.onPrimary.withValues(alpha: 0.35)),
                   const SizedBox(width: 4),
                   Text(
                     'Swipe to re-draw',
@@ -360,10 +322,7 @@ class _GlassCircle extends StatelessWidget {
     return Container(
       width: size,
       height: size,
-      decoration: BoxDecoration(
-        shape: BoxShape.circle,
-        color: Colors.white.withValues(alpha: 0.06),
-      ),
+      decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.white.withValues(alpha: 0.06)),
     );
   }
 }
@@ -420,14 +379,8 @@ class _CardBack extends StatelessWidget {
         color: cardBg,
         borderRadius: BorderRadius.circular(28),
         boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: accent.withValues(alpha: 0.20),
-              blurRadius: 32,
-              offset: const Offset(0, 16)),
-          BoxShadow(
-              color: Colors.black.withValues(alpha: 0.07),
-              blurRadius: 8,
-              offset: const Offset(0, 2)),
+          BoxShadow(color: accent.withValues(alpha: 0.20), blurRadius: 32, offset: const Offset(0, 16)),
+          BoxShadow(color: Colors.black.withValues(alpha: 0.07), blurRadius: 8, offset: const Offset(0, 2)),
         ],
       ),
       child: ClipRRect(
@@ -441,18 +394,13 @@ class _CardBack extends StatelessWidget {
               right: 0,
               child: Container(
                 height: 5,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: <Color>[accent, accent.withValues(alpha: 0.35)],
-                  ),
-                ),
+                decoration: BoxDecoration(gradient: LinearGradient(colors: <Color>[accent, accent.withValues(alpha: 0.35)])),
               ),
             ),
 
             // Main body
             Padding(
-              padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.xl, AppSpacing.xxl, AppSpacing.xl, AppSpacing.lg),
+              padding: const EdgeInsets.fromLTRB(AppSpacing.xl, AppSpacing.xxl, AppSpacing.xl, AppSpacing.lg),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
@@ -462,18 +410,12 @@ class _CardBack extends StatelessWidget {
                     duration: const Duration(milliseconds: 300),
                     child: Row(
                       children: <Widget>[
-                        _Tag(
-                          label: card.category,
-                          leadingEmoji: emoji,
-                          bg: accentSurface,
-                          fg: accent,
-                        ),
+                        _Tag(label: card.category, leadingEmoji: emoji, bg: accentSurface, fg: accent),
                         const SizedBox(width: AppSpacing.sm),
                         _Tag(
                           label: difficultyLabel,
                           leadingIcon: difficultyIcon,
-                          bg: theme.colorScheme.secondaryContainer
-                              .withValues(alpha: 0.75),
+                          bg: theme.colorScheme.secondaryContainer.withValues(alpha: 0.75),
                           fg: theme.colorScheme.onSecondaryContainer,
                         ),
                       ],
@@ -488,10 +430,7 @@ class _CardBack extends StatelessWidget {
                       opacity: contentOpacity,
                       duration: const Duration(milliseconds: 320),
                       child: Center(
-                        child: _TitleText(
-                          title: card.title,
-                          theme: theme,
-                        ),
+                        child: _TitleText(title: card.title, theme: theme),
                       ),
                     ),
                   ),
@@ -504,8 +443,7 @@ class _CardBack extends StatelessWidget {
                     duration: const Duration(milliseconds: 280),
                     child: Container(
                       decoration: BoxDecoration(
-                        color: theme.colorScheme.surfaceContainerHighest
-                            .withValues(alpha: 0.45),
+                        color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.45),
                         borderRadius: BorderRadius.circular(16),
                       ),
                       child: Column(
@@ -521,8 +459,7 @@ class _CardBack extends StatelessWidget {
                             height: 1,
                             indent: AppSpacing.lg,
                             endIndent: AppSpacing.lg,
-                            color:
-                                theme.colorScheme.outline.withValues(alpha: 0.2),
+                            color: theme.colorScheme.outline.withValues(alpha: 0.2),
                           ),
                           _TeaserTile(
                             icon: Icons.menu_book_rounded,
@@ -550,10 +487,8 @@ class _CardBack extends StatelessWidget {
                             icon: const Icon(Icons.shuffle_rounded, size: 19),
                             label: const Text('Re-draw'),
                             style: OutlinedButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: AppSpacing.md),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14)),
+                              padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                             ),
                           ),
                         ),
@@ -562,16 +497,13 @@ class _CardBack extends StatelessWidget {
                           flex: 2,
                           child: FilledButton.icon(
                             onPressed: onPractice,
-                            icon:
-                                const Icon(Icons.play_arrow_rounded, size: 22),
+                            icon: const Icon(Icons.play_arrow_rounded, size: 22),
                             label: const Text('Start Practice'),
                             style: FilledButton.styleFrom(
-                              padding: const EdgeInsets.symmetric(
-                                  vertical: AppSpacing.md),
+                              padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
                               backgroundColor: accent,
                               foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(14)),
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
                             ),
                           ),
                         ),
@@ -589,11 +521,7 @@ class _CardBack extends StatelessWidget {
               child: AnimatedOpacity(
                 opacity: contentOpacity,
                 duration: const Duration(milliseconds: 300),
-                child: _FavoriteButton(
-                  isFavorite: isFavorite,
-                  onTap: onToggleFavorite,
-                  theme: theme,
-                ),
+                child: _FavoriteButton(isFavorite: isFavorite, onTap: onToggleFavorite, theme: theme),
               ),
             ),
           ],
@@ -630,12 +558,7 @@ class _TitleText extends StatelessWidget {
             child: Text(
               title,
               textAlign: TextAlign.center,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: fontSize,
-                fontWeight: FontWeight.w800,
-                height: 1.35,
-                color: theme.colorScheme.onSurface,
-              ),
+              style: GoogleFonts.plusJakartaSans(fontSize: fontSize, fontWeight: FontWeight.w800, height: 1.35, color: theme.colorScheme.onSurface),
             ),
           ),
         );
@@ -649,13 +572,7 @@ class _TitleText extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _Tag extends StatelessWidget {
-  const _Tag({
-    required this.label,
-    required this.bg,
-    required this.fg,
-    this.leadingEmoji,
-    this.leadingIcon,
-  });
+  const _Tag({required this.label, required this.bg, required this.fg, this.leadingEmoji, this.leadingIcon});
 
   final String label;
   final Color bg;
@@ -667,33 +584,21 @@ class _Tag extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       constraints: const BoxConstraints(maxWidth: 190),
-      padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.md, vertical: AppSpacing.xs + 2),
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(AppRadius.full),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs + 2),
+      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(AppRadius.full)),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           if (leadingEmoji != null) ...<Widget>[
             Text(leadingEmoji!, style: const TextStyle(fontSize: 13)),
             const SizedBox(width: 5),
-          ] else if (leadingIcon != null) ...<Widget>[
-            Icon(leadingIcon, size: 13, color: fg),
-            const SizedBox(width: 5),
-          ],
+          ] else if (leadingIcon != null) ...<Widget>[Icon(leadingIcon, size: 13, color: fg), const SizedBox(width: 5)],
           Flexible(
             child: Text(
               label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.plusJakartaSans(
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                color: fg,
-                letterSpacing: 0.1,
-              ),
+              style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.w700, color: fg, letterSpacing: 0.1),
             ),
           ),
         ],
@@ -704,13 +609,7 @@ class _Tag extends StatelessWidget {
 
 /// A tappable row inside the feature teaser panel.
 class _TeaserTile extends StatelessWidget {
-  const _TeaserTile({
-    required this.icon,
-    required this.iconColor,
-    required this.label,
-    required this.subtitle,
-    required this.onTap,
-  });
+  const _TeaserTile({required this.icon, required this.iconColor, required this.label, required this.subtitle, required this.onTap});
 
   final IconData icon;
   final Color iconColor;
@@ -725,16 +624,12 @@ class _TeaserTile extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.md, vertical: AppSpacing.md),
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.md),
         child: Row(
           children: <Widget>[
             Container(
               padding: const EdgeInsets.all(AppSpacing.sm),
-              decoration: BoxDecoration(
-                color: iconColor.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(10),
-              ),
+              decoration: BoxDecoration(color: iconColor.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(10)),
               child: Icon(icon, size: 18, color: iconColor),
             ),
             const SizedBox(width: AppSpacing.md),
@@ -744,23 +639,13 @@ class _TeaserTile extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     label,
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
-                      color: theme.colorScheme.onSurface,
-                    ),
+                    style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.w700, color: theme.colorScheme.onSurface),
                   ),
-                  Text(
-                    subtitle,
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
-                  ),
+                  Text(subtitle, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
                 ],
               ),
             ),
-            Icon(Icons.chevron_right_rounded,
-                size: 20, color: theme.colorScheme.onSurfaceVariant),
+            Icon(Icons.chevron_right_rounded, size: 20, color: theme.colorScheme.onSurfaceVariant),
           ],
         ),
       ),
@@ -769,11 +654,7 @@ class _TeaserTile extends StatelessWidget {
 }
 
 class _FavoriteButton extends StatelessWidget {
-  const _FavoriteButton({
-    required this.isFavorite,
-    required this.onTap,
-    required this.theme,
-  });
+  const _FavoriteButton({required this.isFavorite, required this.onTap, required this.theme});
 
   final bool isFavorite;
   final VoidCallback onTap;
@@ -788,18 +669,13 @@ class _FavoriteButton extends StatelessWidget {
         curve: Curves.easeOut,
         padding: const EdgeInsets.all(AppSpacing.sm),
         decoration: BoxDecoration(
-          color: isFavorite
-              ? Colors.redAccent.withValues(alpha: 0.12)
-              : theme.colorScheme.surfaceContainerHighest
-                  .withValues(alpha: 0.7),
+          color: isFavorite ? Colors.redAccent.withValues(alpha: 0.12) : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.7),
           shape: BoxShape.circle,
         ),
         child: Icon(
           isFavorite ? Icons.favorite_rounded : Icons.favorite_border_rounded,
           size: 22,
-          color: isFavorite
-              ? Colors.redAccent
-              : theme.colorScheme.onSurfaceVariant,
+          color: isFavorite ? Colors.redAccent : theme.colorScheme.onSurfaceVariant,
         ),
       ),
     );

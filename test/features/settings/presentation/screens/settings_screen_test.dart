@@ -22,10 +22,7 @@ void main() {
 
   Widget buildInjectableWidget({required Widget child}) {
     return MaterialApp(
-      home: BlocProvider<SettingsBloc>.value(
-        value: mockSettingsBloc,
-        child: child,
-      ),
+      home: BlocProvider<SettingsBloc>.value(value: mockSettingsBloc, child: child),
     );
   }
 
@@ -60,7 +57,7 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Clear all session history?'), findsOneWidget);
-      
+
       // Tap Clear all
       await tester.tap(find.text('Clear all'));
       await tester.pumpAndSettle();

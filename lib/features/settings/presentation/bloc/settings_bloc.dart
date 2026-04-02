@@ -10,14 +10,11 @@ import 'settings_event.dart';
 import 'settings_state.dart';
 
 class SettingsBloc extends Bloc<SettingsEvent, SettingsState> {
-  SettingsBloc({
-    required SettingsRepository settingsRepository,
-    required SessionRepository sessionRepository,
-    required HistoryBloc historyBloc,
-  }) : _settingsRepository = settingsRepository,
-       _sessionRepository = sessionRepository,
-       _historyBloc = historyBloc,
-       super(const SettingsState()) {
+  SettingsBloc({required SettingsRepository settingsRepository, required SessionRepository sessionRepository, required HistoryBloc historyBloc})
+    : _settingsRepository = settingsRepository,
+      _sessionRepository = sessionRepository,
+      _historyBloc = historyBloc,
+      super(const SettingsState()) {
     on<SettingsLoadRequested>(_onLoad);
     on<DefaultTimerChanged>(_onDefaultTimer);
     on<SessionHistoryClearRequested>(_onClearHistory);

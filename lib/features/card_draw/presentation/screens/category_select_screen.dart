@@ -22,15 +22,13 @@ class CategorySelectScreen extends StatefulWidget {
   State<CategorySelectScreen> createState() => _CategorySelectScreenState();
 }
 
-class _CategorySelectScreenState extends State<CategorySelectScreen>
-    with SingleTickerProviderStateMixin {
+class _CategorySelectScreenState extends State<CategorySelectScreen> with SingleTickerProviderStateMixin {
   late final AnimationController _quickPulse;
 
   @override
   void initState() {
     super.initState();
-    _quickPulse = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 900));
+    _quickPulse = AnimationController(vsync: this, duration: const Duration(milliseconds: 900));
     if (widget.quickDraw) {
       _quickPulse.repeat(reverse: true);
     }
@@ -50,14 +48,11 @@ class _CategorySelectScreenState extends State<CategorySelectScreen>
     return BlocBuilder<CategoryBloc, CategoryState>(
       builder: (BuildContext context, CategoryState state) {
         Widget body;
-        if (state.status == CategoryLoadStatus.initial ||
-            state.status == CategoryLoadStatus.loading) {
+        if (state.status == CategoryLoadStatus.initial || state.status == CategoryLoadStatus.loading) {
           body = const Center(child: CircularProgressIndicator.adaptive());
         } else if (state.status == CategoryLoadStatus.failure) {
           body = Center(
-            child: Padding(
-                padding: pad,
-                child: Text(state.errorMessage ?? 'Could not load categories')),
+            child: Padding(padding: pad, child: Text(state.errorMessage ?? 'Could not load categories')),
           );
         } else {
           body = Column(
@@ -65,38 +60,29 @@ class _CategorySelectScreenState extends State<CategorySelectScreen>
             children: <Widget>[
               // ── Difficulty filter ─────────────────────────────────────────
               Padding(
-                padding: EdgeInsets.fromLTRB(
-                    pad.left, AppSpacing.sm, pad.right, AppSpacing.sm),
+                padding: EdgeInsets.fromLTRB(pad.left, AppSpacing.sm, pad.right, AppSpacing.sm),
                 child: _DifficultyFilterRow(
                   currentFilter: state.difficultyFilter,
-                  onFilterChanged: (DifficultyFilter f) =>
-                      context
-                          .read<CategoryBloc>()
-                          .add(DifficultyFilterChanged(f)),
+                  onFilterChanged: (DifficultyFilter f) => context.read<CategoryBloc>().add(DifficultyFilterChanged(f)),
                 ),
               ),
 
               // ── Category list ─────────────────────────────────────────────
               Expanded(
                 child: ListView(
-                  padding:
-                      pad.copyWith(top: AppSpacing.xs, bottom: AppSpacing.huge),
+                  padding: pad.copyWith(top: AppSpacing.xs, bottom: AppSpacing.huge),
                   children: <Widget>[
                     _AllCategoriesTile(
                       count: state.allFilteredCount,
                       selected: state.selectedCategoryKey == null,
-                      onTap: () => context
-                          .read<CategoryBloc>()
-                          .add(const CategoryFilterChanged(null)),
+                      onTap: () => context.read<CategoryBloc>().add(const CategoryFilterChanged(null)),
                     ),
                     const SizedBox(height: AppSpacing.sm),
                     for (final CategoryListItem item in state.items)
                       _CategoryTile(
                         item: item,
                         selected: state.selectedCategoryKey == item.key,
-                        onTap: () => context
-                            .read<CategoryBloc>()
-                            .add(CategoryFilterChanged(item.key)),
+                        onTap: () => context.read<CategoryBloc>().add(CategoryFilterChanged(item.key)),
                       ),
                   ],
                 ),
@@ -111,11 +97,8 @@ class _CategorySelectScreenState extends State<CategorySelectScreen>
                         final Uri uri = Uri(
                           path: AppRoutes.cardDraw,
                           queryParameters: <String, String>{
-                            if (state.selectedCategoryKey != null)
-                              'category': state.selectedCategoryKey!,
-                            if (state.difficultyFilter != DifficultyFilter.all)
-                              'difficulty':
-                                  state.difficultyFilter.asDifficulty!.raw,
+                            if (state.selectedCategoryKey != null) 'category': state.selectedCategoryKey!,
+                            if (state.difficultyFilter != DifficultyFilter.all) 'difficulty': state.difficultyFilter.asDifficulty!.raw,
                           },
                         );
                         context.push(uri.toString());
@@ -133,27 +116,18 @@ class _CategorySelectScreenState extends State<CategorySelectScreen>
               children: <Widget>[
                 // ── Inline header (no AppBar) ─────────────────────────────
                 Padding(
-                  padding: EdgeInsets.fromLTRB(
-                      pad.left, AppSpacing.md, pad.right, 0),
+                  padding: EdgeInsets.fromLTRB(pad.left, AppSpacing.md, pad.right, 0),
                   child: Row(
                     children: <Widget>[
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Text(
-                              'Choose a Topic',
-                              style: theme.textTheme.headlineSmall?.copyWith(
-                                  fontWeight: FontWeight.w700,
-                                  letterSpacing: -0.3),
-                            ),
+                            Text('Choose a Topic', style: theme.textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w700, letterSpacing: -0.3)),
                             const SizedBox(height: 2),
                             Text(
-                              widget.quickDraw
-                                  ? 'Pick a category to draw from'
-                                  : 'Select a category and difficulty',
-                              style: theme.textTheme.bodySmall?.copyWith(
-                                  color: theme.colorScheme.onSurfaceVariant),
+                              widget.quickDraw ? 'Pick a category to draw from' : 'Select a category and difficulty',
+                              style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                             ),
                           ],
                         ),
@@ -163,16 +137,8 @@ class _CategorySelectScreenState extends State<CategorySelectScreen>
                         onTap: () => context.pop(),
                         child: Container(
                           padding: const EdgeInsets.all(AppSpacing.sm),
-                          decoration: BoxDecoration(
-                            color: theme.colorScheme.surfaceContainerHighest
-                                .withValues(alpha: 0.7),
-                            shape: BoxShape.circle,
-                          ),
-                          child: Icon(
-                            Icons.close_rounded,
-                            size: 20,
-                            color: theme.colorScheme.onSurfaceVariant,
-                          ),
+                          decoration: BoxDecoration(color: theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.7), shape: BoxShape.circle),
+                          child: Icon(Icons.close_rounded, size: 20, color: theme.colorScheme.onSurfaceVariant),
                         ),
                       ),
                     ],
@@ -196,10 +162,7 @@ class _CategorySelectScreenState extends State<CategorySelectScreen>
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _DifficultyFilterRow extends StatelessWidget {
-  const _DifficultyFilterRow({
-    required this.currentFilter,
-    required this.onFilterChanged,
-  });
+  const _DifficultyFilterRow({required this.currentFilter, required this.onFilterChanged});
 
   final DifficultyFilter currentFilter;
   final ValueChanged<DifficultyFilter> onFilterChanged;
@@ -231,21 +194,17 @@ class _DifficultyFilterRow extends StatelessWidget {
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 180),
                   curve: Curves.easeOut,
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.md,
-                      vertical: AppSpacing.xs + 1),
+                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs + 1),
                   decoration: BoxDecoration(
                     color: currentFilter == f
                         ? _activeColor(context, f).withValues(alpha: 0.14)
-                        : theme.colorScheme.surfaceContainerHighest
-                            .withValues(alpha: 0.6),
+                        : theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.6),
                     borderRadius: BorderRadius.circular(AppRadius.full),
                     border: Border.all(
                       width: currentFilter == f ? 1.4 : 1.0,
                       color: currentFilter == f
                           ? _activeColor(context, f).withValues(alpha: 0.55)
-                          : theme.colorScheme.outlineVariant
-                              .withValues(alpha: 0.4),
+                          : theme.colorScheme.outlineVariant.withValues(alpha: 0.4),
                     ),
                   ),
                   child: Row(
@@ -257,10 +216,7 @@ class _DifficultyFilterRow extends StatelessWidget {
                           height: 7,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: currentFilter == f
-                                ? _activeColor(context, f)
-                                : _activeColor(context, f)
-                                    .withValues(alpha: 0.45),
+                            color: currentFilter == f ? _activeColor(context, f) : _activeColor(context, f).withValues(alpha: 0.45),
                           ),
                         ),
                         const SizedBox(width: AppSpacing.xs),
@@ -269,9 +225,7 @@ class _DifficultyFilterRow extends StatelessWidget {
                         f.label,
                         style: theme.textTheme.labelSmall?.copyWith(
                           fontWeight: FontWeight.w600,
-                          color: currentFilter == f
-                              ? _activeColor(context, f)
-                              : theme.colorScheme.onSurfaceVariant,
+                          color: currentFilter == f ? _activeColor(context, f) : theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
                     ],
@@ -290,11 +244,7 @@ class _DifficultyFilterRow extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _AllCategoriesTile extends StatelessWidget {
-  const _AllCategoriesTile({
-    required this.count,
-    required this.selected,
-    required this.onTap,
-  });
+  const _AllCategoriesTile({required this.count, required this.selected, required this.onTap});
 
   final int count;
   final bool selected;
@@ -306,9 +256,7 @@ class _AllCategoriesTile extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(AppRadius.lg),
       child: Material(
-        color: selected
-            ? theme.colorScheme.primaryContainer.withValues(alpha: 0.35)
-            : theme.colorScheme.surfaceContainerLow,
+        color: selected ? theme.colorScheme.primaryContainer.withValues(alpha: 0.35) : theme.colorScheme.surfaceContainerLow,
         child: InkWell(
           onTap: onTap,
           child: Row(
@@ -318,39 +266,25 @@ class _AllCategoriesTile extends StatelessWidget {
                 duration: const Duration(milliseconds: 200),
                 width: 4,
                 height: 72,
-                color: selected
-                    ? theme.colorScheme.primary
-                    : Colors.transparent,
+                color: selected ? theme.colorScheme.primary : Colors.transparent,
               ),
               Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: AppSpacing.lg, vertical: AppSpacing.lg + 2),
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.lg + 2),
                 child: Row(
                   children: <Widget>[
                     Container(
                       width: 46,
                       height: 46,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: theme.colorScheme.primary
-                            .withValues(alpha: 0.13),
-                      ),
-                      child: Icon(Icons.grid_view_rounded,
-                          color: theme.colorScheme.primary, size: 22),
+                      decoration: BoxDecoration(shape: BoxShape.circle, color: theme.colorScheme.primary.withValues(alpha: 0.13)),
+                      child: Icon(Icons.grid_view_rounded, color: theme.colorScheme.primary, size: 22),
                     ),
                     const SizedBox(width: AppSpacing.md),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text('All Categories',
-                            style: theme.textTheme.titleSmall?.copyWith(
-                                fontWeight: FontWeight.w800)),
+                        Text('All Categories', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800)),
                         const SizedBox(height: 3),
-                        Text(
-                          '$count cards available',
-                          style: theme.textTheme.bodySmall?.copyWith(
-                              color: theme.colorScheme.onSurfaceVariant),
-                        ),
+                        Text('$count cards available', style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
                       ],
                     ),
                   ],
@@ -359,8 +293,7 @@ class _AllCategoriesTile extends StatelessWidget {
               const Spacer(),
               Padding(
                 padding: const EdgeInsets.only(right: AppSpacing.md),
-                child: Icon(Icons.chevron_right_rounded,
-                    color: theme.colorScheme.onSurfaceVariant, size: 20),
+                child: Icon(Icons.chevron_right_rounded, color: theme.colorScheme.onSurfaceVariant, size: 20),
               ),
             ],
           ),
@@ -375,11 +308,7 @@ class _AllCategoriesTile extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _CategoryTile extends StatelessWidget {
-  const _CategoryTile({
-    required this.item,
-    required this.selected,
-    required this.onTap,
-  });
+  const _CategoryTile({required this.item, required this.selected, required this.onTap});
 
   final CategoryListItem item;
   final bool selected;
@@ -388,17 +317,14 @@ class _CategoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final int totalMix =
-        item.beginnerCount + item.intermediateCount + item.advancedCount;
+    final int totalMix = item.beginnerCount + item.intermediateCount + item.advancedCount;
 
     return Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.sm),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(AppRadius.lg),
         child: Material(
-          color: selected
-              ? item.accentColor.withValues(alpha: 0.09)
-              : theme.colorScheme.surfaceContainerLow,
+          color: selected ? item.accentColor.withValues(alpha: 0.09) : theme.colorScheme.surfaceContainerLow,
           child: InkWell(
             onTap: onTap,
             child: Row(
@@ -409,16 +335,13 @@ class _CategoryTile extends StatelessWidget {
                   duration: const Duration(milliseconds: 200),
                   width: 4,
                   height: 94,
-                  color: selected
-                      ? item.accentColor
-                      : Colors.transparent,
+                  color: selected ? item.accentColor : Colors.transparent,
                 ),
 
                 // ── Content ────────────────────────────────────────────────
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(
-                        AppSpacing.md, AppSpacing.md, AppSpacing.md, AppSpacing.md),
+                    padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, AppSpacing.md),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -431,15 +354,11 @@ class _CategoryTile extends StatelessWidget {
                             gradient: LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
-                              colors: <Color>[
-                                item.accentColor.withValues(alpha: 0.30),
-                                item.accentColor.withValues(alpha: 0.10),
-                              ],
+                              colors: <Color>[item.accentColor.withValues(alpha: 0.30), item.accentColor.withValues(alpha: 0.10)],
                             ),
                           ),
                           alignment: Alignment.center,
-                          child:
-                              Text(item.emoji, style: const TextStyle(fontSize: 24)),
+                          child: Text(item.emoji, style: const TextStyle(fontSize: 24)),
                         ),
                         const SizedBox(width: AppSpacing.md),
 
@@ -453,28 +372,18 @@ class _CategoryTile extends StatelessWidget {
                                   Expanded(
                                     child: Text(
                                       item.displayName,
-                                      style: theme.textTheme.titleSmall
-                                          ?.copyWith(
-                                              fontWeight: FontWeight.w800,
-                                              letterSpacing: -0.2),
+                                      style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w800, letterSpacing: -0.2),
                                     ),
                                   ),
                                   if (item.isCustom) ...<Widget>[
                                     const SizedBox(width: AppSpacing.sm),
                                     Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: AppSpacing.sm, vertical: 2),
+                                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 2),
                                       decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(AppRadius.xs),
-                                        border: Border.all(
-                                            color: theme.colorScheme.outline
-                                                .withValues(alpha: 0.4)),
+                                        borderRadius: BorderRadius.circular(AppRadius.xs),
+                                        border: Border.all(color: theme.colorScheme.outline.withValues(alpha: 0.4)),
                                       ),
-                                      child: Text('Custom',
-                                          style: theme.textTheme.labelSmall
-                                              ?.copyWith(
-                                                  fontWeight: FontWeight.w700)),
+                                      child: Text('Custom', style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.w700)),
                                     ),
                                   ],
                                 ],
@@ -482,9 +391,7 @@ class _CategoryTile extends StatelessWidget {
                               const SizedBox(height: 4),
                               Text(
                                 '${item.filteredCount} cards',
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                    color: theme.colorScheme.onSurfaceVariant,
-                                    fontWeight: FontWeight.w500),
+                                style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant, fontWeight: FontWeight.w500),
                               ),
                               const SizedBox(height: AppSpacing.sm),
                               _DifficultyBar(
@@ -497,9 +404,7 @@ class _CategoryTile extends StatelessWidget {
                           ),
                         ),
 
-                        Icon(Icons.chevron_right_rounded,
-                            color: theme.colorScheme.onSurfaceVariant,
-                            size: 18),
+                        Icon(Icons.chevron_right_rounded, color: theme.colorScheme.onSurfaceVariant, size: 18),
                       ],
                     ),
                   ),
@@ -518,12 +423,7 @@ class _CategoryTile extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _DifficultyBar extends StatelessWidget {
-  const _DifficultyBar({
-    required this.beginner,
-    required this.intermediate,
-    required this.advanced,
-    required this.total,
-  });
+  const _DifficultyBar({required this.beginner, required this.intermediate, required this.advanced, required this.total});
 
   final int beginner;
   final int intermediate;
@@ -536,9 +436,7 @@ class _DifficultyBar extends StatelessWidget {
     if (total == 0) {
       return Container(
         height: 5,
-        decoration: BoxDecoration(
-            color: theme.colorScheme.outline.withValues(alpha: 0.15),
-            borderRadius: BorderRadius.circular(AppRadius.full)),
+        decoration: BoxDecoration(color: theme.colorScheme.outline.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(AppRadius.full)),
       );
     }
     return LayoutBuilder(
@@ -552,14 +450,17 @@ class _DifficultyBar extends StatelessWidget {
             child: Row(
               children: <Widget>[
                 SizedBox(
-                    width: w * beginner / total,
-                    child: Container(color: AppColors.success)),
+                  width: w * beginner / total,
+                  child: Container(color: AppColors.success),
+                ),
                 SizedBox(
-                    width: w * intermediate / total,
-                    child: Container(color: AppColors.warning)),
+                  width: w * intermediate / total,
+                  child: Container(color: AppColors.warning),
+                ),
                 SizedBox(
-                    width: w * advanced / total,
-                    child: Container(color: AppColors.error)),
+                  width: w * advanced / total,
+                  child: Container(color: AppColors.error),
+                ),
               ],
             ),
           ),
@@ -574,11 +475,7 @@ class _DifficultyBar extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _BottomBar extends StatelessWidget {
-  const _BottomBar({
-    required this.state,
-    required this.onDraw,
-    this.quickPulse,
-  });
+  const _BottomBar({required this.state, required this.onDraw, this.quickPulse});
 
   final CategoryState state;
   final VoidCallback? onDraw;
@@ -606,10 +503,7 @@ class _BottomBar extends StatelessWidget {
       height: 52,
       child: FilledButton.icon(
         onPressed: onDraw,
-        style: FilledButton.styleFrom(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(AppRadius.xl)),
-        ),
+        style: FilledButton.styleFrom(shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.xl))),
         icon: const Icon(Icons.shuffle_rounded, size: 18),
         label: const Text('Draw Card'),
       ),
@@ -618,8 +512,7 @@ class _BottomBar extends StatelessWidget {
     if (quickPulse != null) {
       button = AnimatedBuilder(
         animation: quickPulse!,
-        builder: (BuildContext context, Widget? child) =>
-            Transform.scale(scale: 1 + 0.018 * quickPulse!.value, child: child),
+        builder: (BuildContext context, Widget? child) => Transform.scale(scale: 1 + 0.018 * quickPulse!.value, child: child),
         child: button,
       );
     }
@@ -632,30 +525,18 @@ class _BottomBar extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            Divider(
-                height: 1,
-                color: theme.colorScheme.outline.withValues(alpha: 0.18)),
+            Divider(height: 1, color: theme.colorScheme.outline.withValues(alpha: 0.18)),
             Padding(
-              padding: const EdgeInsets.fromLTRB(
-                  AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.lg),
+              padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.md, AppSpacing.lg, AppSpacing.lg),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   // ── Active selection summary ──────────────────────────────
                   Row(
                     children: <Widget>[
-                      _SummaryChip(
-                        label: catLabel,
-                        icon: Icons.category_rounded,
-                        color: theme.colorScheme.primary,
-                      ),
+                      _SummaryChip(label: catLabel, icon: Icons.category_rounded, color: theme.colorScheme.primary),
                       const SizedBox(width: AppSpacing.sm),
-                      if (!isAll)
-                        _SummaryChip(
-                          label: diffLabel,
-                          icon: Icons.tune_rounded,
-                          color: theme.colorScheme.secondary,
-                        ),
+                      if (!isAll) _SummaryChip(label: diffLabel, icon: Icons.tune_rounded, color: theme.colorScheme.secondary),
                     ],
                   ),
                   const SizedBox(height: AppSpacing.md),
@@ -674,11 +555,7 @@ class _BottomBar extends StatelessWidget {
 
 /// Small read-only pill showing the current selection in the bottom bar.
 class _SummaryChip extends StatelessWidget {
-  const _SummaryChip({
-    required this.label,
-    required this.icon,
-    required this.color,
-  });
+  const _SummaryChip({required this.label, required this.icon, required this.color});
 
   final String label;
   final IconData icon;
@@ -688,13 +565,11 @@ class _SummaryChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     return Container(
-      padding: const EdgeInsets.symmetric(
-          horizontal: AppSpacing.sm + 2, vertical: AppSpacing.xs),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm + 2, vertical: AppSpacing.xs),
       decoration: BoxDecoration(
         color: color.withValues(alpha: 0.10),
         borderRadius: BorderRadius.circular(AppRadius.full),
-        border:
-            Border.all(color: color.withValues(alpha: 0.30)),
+        border: Border.all(color: color.withValues(alpha: 0.30)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -703,11 +578,7 @@ class _SummaryChip extends StatelessWidget {
           const SizedBox(width: AppSpacing.xs),
           Text(
             label,
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: color,
-            ),
+            style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.w600, color: color),
           ),
         ],
       ),
