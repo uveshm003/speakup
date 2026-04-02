@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:speakup/config/app.dart';
@@ -22,6 +23,10 @@ Future<void> main() async {
     }
     return true;
   };
+
+  // Prevent google_fonts from fetching over the network — all font files
+  // are bundled locally under assets/fonts/ and declared in pubspec.yaml.
+  GoogleFonts.config.allowRuntimeFetching = false;
 
   await Hive.initFlutter();
   await bootstrapDataLayer(enableObjectBox: !kIsWeb);

@@ -50,3 +50,42 @@ flutter:
   assets:
     - assets/data/cards.json
     - assets/images/
+
+  fonts:
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-400.ttf
+          weight: 400
+        - asset: assets/fonts/Inter-500.ttf
+          weight: 500
+        - asset: assets/fonts/Inter-600.ttf
+          weight: 600
+        - asset: assets/fonts/Inter-700.ttf
+          weight: 700
+
+    - family: Plus Jakarta Sans
+      fonts:
+        - asset: assets/fonts/PlusJakartaSans-400.ttf
+          weight: 400
+        - asset: assets/fonts/PlusJakartaSans-500.ttf
+          weight: 500
+        - asset: assets/fonts/PlusJakartaSans-600.ttf
+          weight: 600
+        - asset: assets/fonts/PlusJakartaSans-700.ttf
+          weight: 700
+        - asset: assets/fonts/PlusJakartaSans-800.ttf
+          weight: 800
+
+    - family: Newsreader
+      fonts:
+        - asset: assets/fonts/Newsreader-400-normal.ttf
+          weight: 400
+        - asset: assets/fonts/Newsreader-500-normal.ttf
+          weight: 500
+        - asset: assets/fonts/Newsreader-600-normal.ttf
+          weight: 600
+        - asset: assets/fonts/Newsreader-700-normal.ttf
+          weight: 700
+        - asset: assets/fonts/Newsreader-400-italic.ttf
+          weight: 400
+          style: italic
