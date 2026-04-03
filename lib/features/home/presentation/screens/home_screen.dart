@@ -185,6 +185,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
                     const SizedBox(height: AppSpacing.xl),
 
+                    // ── Streak goal nudge (shown when no streak) ─────────────
+                    if (state.streak == 0) ...<Widget>[const _StreakGoalNudge(), const SizedBox(height: AppSpacing.xl)],
+
                     // ── Quick Draw CTA ───────────────────────────────────────
                     AnimatedOpacity(
                       opacity: _showCta ? 1 : 0,
@@ -194,6 +197,11 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         child: _QuickDrawCta(onPressed: () => context.read<HomeBloc>().add(const HomeQuickDrawRequested())),
                       ),
                     ),
+
+                    const SizedBox(height: AppSpacing.xl),
+
+                    // ── Discovery strip ───────────────────────────────────────
+                    const _DiscoveryStrip(),
 
                     const SizedBox(height: AppSpacing.xxl),
 
@@ -899,6 +907,199 @@ class _PressScaleTileState extends State<_PressScaleTile> with SingleTickerProvi
         animation: _scale,
         builder: (BuildContext ctx, Widget? child) => Transform.scale(scale: _scale.value, child: child),
         child: widget.child,
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Discovery Strip — curated topic spotlights
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _SpotlightItem {
+  const _SpotlightItem({required this.label, required this.emoji, required this.subtitle, required this.accentColor, required this.category});
+  final String label;
+  final String emoji;
+  final String subtitle;
+  final Color accentColor;
+  final String category;
+}
+
+const List<_SpotlightItem> _kSpotlights = <_SpotlightItem>[
+  _SpotlightItem(label: 'AI & Ethics', emoji: '🤖', subtitle: 'Trending topic', accentColor: Color(0xFF6366F1), category: 'Technology'),
+  _SpotlightItem(label: 'Influence Others', emoji: '💡', subtitle: "Today's pick", accentColor: Color(0xFF16A34A), category: 'Personal Growth'),
+  _SpotlightItem(label: 'Debate Corner', emoji: '🗣️', subtitle: 'Hot debate', accentColor: Color(0xFFDB2777), category: 'Opinion & Debate'),
+];
+
+class _DiscoveryStrip extends StatelessWidget {
+  const _DiscoveryStrip();
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          'Spotlight',
+          style: GoogleFonts.plusJakartaSans(fontSize: 16, fontWeight: FontWeight.w800, color: theme.colorScheme.onSurface),
+        ),
+        const SizedBox(height: AppSpacing.md),
+        SizedBox(
+          height: 100,
+          child: ListView.separated(
+            scrollDirection: Axis.horizontal,
+            clipBehavior: Clip.none,
+            itemCount: _kSpotlights.length,
+            separatorBuilder: (_, int _i) => const SizedBox(width: AppSpacing.md),
+            itemBuilder: (BuildContext ctx, int i) {
+              final _SpotlightItem s = _kSpotlights[i];
+              return GestureDetector(
+                onTap: () {
+                  HapticFeedback.selectionClick();
+                  final String uri = Uri(path: AppRoutes.categorySelect, queryParameters: <String, String>{'category': s.category}).toString();
+                  ctx.push(uri);
+                },
+                child: Container(
+                  width: 160,
+                  padding: const EdgeInsets.all(AppSpacing.md),
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      colors: <Color>[s.accentColor.withValues(alpha: 0.18), s.accentColor.withValues(alpha: 0.06)],
+                    ),
+                    borderRadius: BorderRadius.circular(AppRadius.lg),
+                    border: Border.all(color: s.accentColor.withValues(alpha: 0.3)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Row(
+                        children: <Widget>[
+                          Text(s.emoji, style: const TextStyle(fontSize: 20)),
+                          const Spacer(),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                            decoration: BoxDecoration(
+                              color: s.accentColor.withValues(alpha: 0.18),
+                              borderRadius: BorderRadius.circular(AppRadius.full),
+                            ),
+                            child: Text(
+                              s.subtitle,
+                              style: TextStyle(fontSize: 9, fontWeight: FontWeight.w700, color: s.accentColor),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const Spacer(),
+                      Text(s.label, maxLines: 2, style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 13, height: 1.2)),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Streak Goal Nudge — pill shown when streak == 0
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _StreakGoalNudge extends StatelessWidget {
+  const _StreakGoalNudge();
+
+  void _showGoalSheet(BuildContext context) {
+    HapticFeedback.selectionClick();
+    showModalBottomSheet<void>(
+      context: context,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl))),
+      builder: (BuildContext sheetCtx) {
+        final ThemeData theme = Theme.of(sheetCtx);
+        return Padding(
+          padding: const EdgeInsets.fromLTRB(AppSpacing.xl, AppSpacing.xl, AppSpacing.xl, AppSpacing.huge),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text('Set a daily goal', style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w800, fontSize: 20)),
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                'How many sessions do you want to do each day?',
+                style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+              ),
+              const SizedBox(height: AppSpacing.xl),
+              ...List<Widget>.generate(3, (int i) {
+                final int goal = i + 1;
+                final List<String> labels = <String>['1 session — Easy start', '2 sessions — Steady pace', '3 sessions — Full power'];
+                final List<String> emojis = <String>['🌱', '🔥', '⚡'];
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: AppSpacing.md),
+                  child: ListTile(
+                    leading: Text(emojis[i], style: const TextStyle(fontSize: 24)),
+                    title: Text(labels[i], style: const TextStyle(fontWeight: FontWeight.w600)),
+                    trailing: const Icon(Icons.chevron_right_rounded),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppRadius.lg),
+                      side: BorderSide(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
+                    ),
+                    onTap: () {
+                      HapticFeedback.mediumImpact();
+                      Navigator.pop(sheetCtx);
+                      ScaffoldMessenger.of(context)
+                        ..clearSnackBars()
+                        ..showSnackBar(
+                          SnackBar(
+                            content: Text('Goal set: $goal ${goal == 1 ? 'session' : 'sessions'}/day 🎯'),
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                    },
+                  ),
+                );
+              }),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+    return GestureDetector(
+      onTap: () => _showGoalSheet(context),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+        decoration: BoxDecoration(
+          color: isDark
+              ? theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.3)
+              : theme.colorScheme.primaryContainer.withValues(alpha: 0.25),
+          borderRadius: BorderRadius.circular(AppRadius.xl),
+          border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.2)),
+        ),
+        child: Row(
+          children: <Widget>[
+            const Text('🎯', style: TextStyle(fontSize: 22)),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text('Set a daily goal', style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 13)),
+                  Text('Stay consistent with a target', style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+                ],
+              ),
+            ),
+            Icon(Icons.arrow_forward_ios_rounded, size: 14, color: theme.colorScheme.primary),
+          ],
+        ),
       ),
     );
   }

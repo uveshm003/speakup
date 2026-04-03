@@ -17,4 +17,6 @@ abstract final class AppRoutes {
   static const String categoryDetail = '/custom-categories/detail';
   static const String createCard = '/custom-categories/create-card';
   static const String settings = '/settings';
+  static const String challenges = '/challenges';
+  static const String challengeDetail = '/challenges/detail';
 }

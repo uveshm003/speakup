@@ -18,6 +18,10 @@ const List<BuiltInCategoryDef> kBuiltInBrowseCategories = <BuiltInCategoryDef>[
   BuiltInCategoryDef(name: 'Culture & Society', emoji: '🌍', accentColor: Color(0xFFEA580C)),
   BuiltInCategoryDef(name: 'Business & Work', emoji: '💼', accentColor: Color(0xFF475569)),
   BuiltInCategoryDef(name: 'Storytelling & Personal', emoji: '📖', accentColor: Color(0xFFDB2777)),
+  BuiltInCategoryDef(name: 'Big Questions', emoji: '🤔', accentColor: Color(0xFF7C3AED)),
+  BuiltInCategoryDef(name: 'Health & Lifestyle', emoji: '🧘', accentColor: Color(0xFF14B8A6)),
+  BuiltInCategoryDef(name: 'Relationships & People', emoji: '🤝', accentColor: Color(0xFFE11D48)),
+  BuiltInCategoryDef(name: 'Imagine & What If', emoji: '✨', accentColor: Color(0xFFF59E0B)),
 ];
 
 /// Sentinel for the home grid "My Categories" tile (not a JSON category name).

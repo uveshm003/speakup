@@ -15,6 +15,7 @@ Future<void> bootstrapDataLayer({required bool enableObjectBox}) async {
     Hive.registerAdapter(UserSettingsHiveAdapter());
   }
   await Hive.openBox<UserSettingsHive>(AppConstants.hiveSettingsBoxName);
+  await Hive.openBox<String>(AppConstants.hiveChallengesBoxName);
 
   if (enableObjectBox) {
     await ObjectBoxStore.init();
