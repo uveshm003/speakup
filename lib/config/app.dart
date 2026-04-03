@@ -29,6 +29,9 @@ import 'package:speakup/features/settings/data/repositories/settings_repository_
 import 'package:speakup/features/settings/domain/repositories/settings_repository.dart';
 import 'package:speakup/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:speakup/features/settings/presentation/bloc/settings_state.dart';
+import 'package:speakup/features/challenges/data/repositories/challenge_repository_impl.dart';
+import 'package:speakup/features/challenges/domain/repositories/challenge_repository.dart';
+import 'package:speakup/features/challenges/presentation/bloc/challenges_bloc.dart';
 
 /// Root widget: routing + global BLoC providers (add feature blocs here).
 class SpeakUpApp extends StatelessWidget {
@@ -60,6 +63,11 @@ class SpeakUpApp extends StatelessWidget {
             ),
           ),
           BlocProvider<NavigationBloc>(create: (_) => NavigationBloc()),
+          BlocProvider<ChallengesBloc>(
+            create: (BuildContext context) => ChallengesBloc(
+              challengeRepository: context.read<ChallengeRepository>(),
+            ),
+          ),
         ],
         child: BlocBuilder<ThemeBloc, ThemeBlocState>(
           buildWhen: (ThemeBlocState p, ThemeBlocState c) => p.mode != c.mode || p.brightnessEpoch != c.brightnessEpoch,
@@ -114,6 +122,11 @@ class _RepositoryProviders extends StatelessWidget {
           ),
           RepositoryProvider<CardRepository>(create: (_) => CardRepositoryImpl(store)),
           RepositoryProvider<CategoryRepository>(create: (_) => CategoryRepositoryImpl(store)),
+          RepositoryProvider<ChallengeRepository>(
+            create: (_) => ChallengeRepositoryImpl(
+              Hive.box<String>(AppConstants.hiveChallengesBoxName),
+            ),
+          ),
         ],
         child: child,
       );
@@ -132,6 +145,11 @@ class _RepositoryProviders extends StatelessWidget {
         ),
         RepositoryProvider<CardRepository>(create: (_) => const StubCardRepository()),
         RepositoryProvider<CategoryRepository>(create: (_) => const StubCategoryRepository()),
+        RepositoryProvider<ChallengeRepository>(
+          create: (_) => ChallengeRepositoryImpl(
+            Hive.box<String>(AppConstants.hiveChallengesBoxName),
+          ),
+        ),
       ],
       child: child,
     );
