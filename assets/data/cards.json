@@ -5388,5 +5388,3085 @@
       }
     ],
     "isCustom": false
+  },
+  {
+    "id": "bq-0001-a1b2-c3d4-e5f6-a7b8c9d0e1f2",
+    "title": "Are people fundamentally good or fundamentally selfish?",
+    "category": "Big Questions",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing two situations - one where a stranger helped someone without any reward, and one where someone acted purely in self-interest.",
+      "Compare both views: humans are wired for cooperation and empathy vs. every act of kindness ultimately serves the giver in some way.",
+      "Ask yourself: when you do something kind for someone, is there any part of it that feels good for you? Does that make it selfish?",
+      "Try opening with: 'If you watch people closely enough, you start to wonder whether kindness is natural or just a very good disguise...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "altruism",
+        "meaning": "doing something for others with no benefit to yourself"
+      },
+      {
+        "word": "self-interest",
+        "meaning": "acting in ways that primarily benefit yourself"
+      },
+      {
+        "word": "empathy",
+        "meaning": "the ability to understand and share how someone else feels"
+      },
+      {
+        "word": "morality",
+        "meaning": "a set of principles about what is right and wrong behaviour"
+      },
+      {
+        "word": "instinct",
+        "meaning": "a natural behaviour that does not require conscious thought"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0002-b2c3-d4e5-f6a7-b8c9d0e1f2a3",
+    "title": "Is loyalty always a virtue - or can it become an excuse?",
+    "category": "Big Questions",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by describing a situation where someone stayed loyal to a friend, group, or institution that was clearly doing something wrong.",
+      "Compare both views: loyalty is a deep moral quality that holds relationships and communities together vs. blind loyalty can silence people who should speak up.",
+      "Ask yourself: is there a difference between being loyal and simply being afraid to question someone you care about?",
+      "Try opening with: 'We celebrate loyalty as a great virtue - but there are moments when it becomes the reason good people do nothing...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "loyalty",
+        "meaning": "a strong feeling of support and commitment to someone or something"
+      },
+      {
+        "word": "complicity",
+        "meaning": "being involved in or allowing wrongdoing without directly acting yourself"
+      },
+      {
+        "word": "integrity",
+        "meaning": "the quality of being honest and having strong moral principles"
+      },
+      {
+        "word": "courage",
+        "meaning": "the ability to do what is right even when it is difficult"
+      },
+      {
+        "word": "blind spot",
+        "meaning": "something you fail to notice or question, often about people you are close to"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0003-c3d4-e5f6-a7b8-c9d0e1f2a3b4",
+    "title": "Is happiness a choice or something that happens to you?",
+    "category": "Big Questions",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing two people in similar circumstances - one who seems content, one who is not.",
+      "Compare both views: happiness is largely a mental habit and can be cultivated vs. happiness depends heavily on real circumstances that are not always in our control.",
+      "Ask yourself: have you ever been in objectively difficult circumstances and still felt okay? What made the difference?",
+      "Try opening with: 'Some of the happiest people you will ever meet do not have the most comfortable lives - and some of the most unhappy people have everything they ever wanted...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "contentment",
+        "meaning": "a state of quiet satisfaction with your life"
+      },
+      {
+        "word": "circumstance",
+        "meaning": "a condition or situation that affects your life, often outside your control"
+      },
+      {
+        "word": "mindset",
+        "meaning": "a set of beliefs and attitudes that shape how you think and behave"
+      },
+      {
+        "word": "gratitude",
+        "meaning": "a feeling of appreciation for what you have"
+      },
+      {
+        "word": "perspective",
+        "meaning": "the way you choose to see and interpret your situation"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0004-d4e5-f6a7-b8c9-d0e1f2a3b4c5",
+    "title": "Do we actually have free will, or are our choices already determined?",
+    "category": "Big Questions",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by describing a big decision you once made - and then ask whether you could really have decided differently.",
+      "Compare both views: every choice is the product of your upbringing, biology, and circumstances vs. there is something irreducibly human about the ability to choose differently.",
+      "Ask yourself: does it even matter whether free will is real, if your life feels like a series of genuine choices?",
+      "Try opening with: 'We make hundreds of decisions every day and feel completely in control - but what if that feeling is the most convincing illusion we have?'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "free will",
+        "meaning": "the ability to make choices that are not determined by outside forces"
+      },
+      {
+        "word": "determinism",
+        "meaning": "the idea that every event, including human behaviour, is caused by prior events"
+      },
+      {
+        "word": "agency",
+        "meaning": "the capacity to act independently and make your own choices"
+      },
+      {
+        "word": "consequence",
+        "meaning": "a result that follows from an action or decision"
+      },
+      {
+        "word": "accountability",
+        "meaning": "being responsible for your choices and their effects"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0005-e5f6-a7b8-c9d0-e1f2a3b4c5d6",
+    "title": "Is it possible to truly know another person?",
+    "category": "Big Questions",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing the strange experience of thinking you knew someone well - and then discovering something unexpected about them.",
+      "Compare both views: deep, long relationships allow for real understanding of another person vs. we all carry an inner world that remains private, even from those closest to us.",
+      "Ask yourself: is there a version of yourself that nobody - not even the people closest to you - truly knows?",
+      "Try opening with: 'The more time you spend with someone, the more you realise how much of them you still cannot quite reach...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "intimacy",
+        "meaning": "a close familiarity or friendship with someone"
+      },
+      {
+        "word": "perception",
+        "meaning": "the way you understand or interpret something or someone"
+      },
+      {
+        "word": "vulnerability",
+        "meaning": "the willingness to be open and honest about your inner self"
+      },
+      {
+        "word": "projection",
+        "meaning": "attributing your own feelings or thoughts to someone else"
+      },
+      {
+        "word": "complexity",
+        "meaning": "having many different and sometimes contradictory qualities"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0006-f6a7-b8c9-d0e1-f2a3b4c5d6e7",
+    "title": "What does it mean to live a meaningful life?",
+    "category": "Big Questions",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing two lives that look very different from the outside but may feel equally meaningful from the inside.",
+      "Compare two views: meaning comes from contribution and connection with others vs. meaning is entirely personal and cannot be defined by anyone else.",
+      "Ask yourself: if your life ended tomorrow, what would you wish you had done more of?",
+      "Try opening with: 'Somewhere between achievement and contentment, there is something most of us are quietly searching for - but very few of us stop to define it...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "meaning",
+        "meaning": "a sense of purpose and importance in what you do or experience"
+      },
+      {
+        "word": "fulfilment",
+        "meaning": "a deep sense of satisfaction from living in line with your values"
+      },
+      {
+        "word": "legacy",
+        "meaning": "what you leave behind after you are gone"
+      },
+      {
+        "word": "purpose",
+        "meaning": "a reason for doing something that goes beyond personal gain"
+      },
+      {
+        "word": "values",
+        "meaning": "the principles that guide what you consider important and worth pursuing"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0007-a7b8-c9d0-e1f2-a3b4c5d6e7f8",
+    "title": "Is it better to be honest or to be kind when they conflict?",
+    "category": "Big Questions",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing a situation where someone had to choose between telling the full truth and protecting someone's feelings.",
+      "Compare both views: honesty ultimately serves people better even when it hurts vs. some truths do more damage than they do good.",
+      "Ask yourself: have you ever told a kind lie? And what happened to the relationship when the truth came out anyway?",
+      "Try opening with: 'We teach children that honesty is always the right choice - but most adults have learned that the reality is far more complicated...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "honesty",
+        "meaning": "telling the truth, even when it is uncomfortable"
+      },
+      {
+        "word": "compassion",
+        "meaning": "caring about someone's wellbeing and wanting to protect them from pain"
+      },
+      {
+        "word": "tact",
+        "meaning": "the ability to say difficult things in a way that is considerate"
+      },
+      {
+        "word": "harm",
+        "meaning": "damage or negative consequences caused to someone"
+      },
+      {
+        "word": "trust",
+        "meaning": "the belief that someone will be truthful and reliable"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0008-b8c9-d0e1-f2a3-b4c5d6e7f8a9",
+    "title": "Does money actually make people happier?",
+    "category": "Big Questions",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing what changes and what stays the same when someone suddenly comes into a lot of money.",
+      "Compare both views: financial security removes enormous stress and opens genuine opportunities vs. beyond a certain point, money does not increase happiness and may reduce it.",
+      "Ask yourself: what is the difference between needing money and wanting more money - and have you ever confused the two?",
+      "Try opening with: 'Everyone says money cannot buy happiness - but most of us still suspect that having more of it would help...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "financial security",
+        "meaning": "having enough money to meet your needs without constant worry"
+      },
+      {
+        "word": "wellbeing",
+        "meaning": "the state of being comfortable, healthy, and content"
+      },
+      {
+        "word": "diminishing returns",
+        "meaning": "the point where more of something stops producing as much benefit"
+      },
+      {
+        "word": "desire",
+        "meaning": "a strong feeling of wanting something"
+      },
+      {
+        "word": "satisfaction",
+        "meaning": "a feeling that your needs or expectations have been met"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0009-c9d0-e1f2-a3b4-c5d6e7f8a9b0",
+    "title": "Is there such a thing as a truly unselfish act?",
+    "category": "Big Questions",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing an act of generosity - and then asking what the giver might have gotten from it emotionally.",
+      "Compare both views: some people genuinely sacrifice for others with no internal benefit vs. we always feel good about acts of kindness, which means we gain something from them.",
+      "Ask yourself: does it matter whether an act is purely selfless, as long as it helps someone?",
+      "Try opening with: 'Philosophers have argued for centuries about whether a truly selfless act is even possible - and the answer might reveal something uncomfortable about human nature...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "selfless",
+        "meaning": "caring more about others than about yourself"
+      },
+      {
+        "word": "motive",
+        "meaning": "the reason behind why someone does something"
+      },
+      {
+        "word": "altruism",
+        "meaning": "concern for the wellbeing of others without personal benefit"
+      },
+      {
+        "word": "moral philosophy",
+        "meaning": "the study of what makes actions right or wrong"
+      },
+      {
+        "word": "reward",
+        "meaning": "something positive gained from an action, whether tangible or emotional"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0010-d0e1-f2a3-b4c5-d6e7f8a9b0c1",
+    "title": "What does success actually look like - and who gets to define it?",
+    "category": "Big Questions",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing two people who society would call successful but who feel very differently about their own lives.",
+      "Compare both views: success is about achievement, recognition, and financial reward vs. success is entirely personal and only meaningful if it aligns with your own values.",
+      "Ask yourself: whose definition of success have you been living by - yours, or someone else's?",
+      "Try opening with: 'From a very young age, we are given a picture of what success looks like - but very few of us stop to ask whether that picture is actually ours...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "success",
+        "meaning": "achieving a goal or reaching a standard that is considered good"
+      },
+      {
+        "word": "expectation",
+        "meaning": "a belief about what someone should achieve or become"
+      },
+      {
+        "word": "fulfilment",
+        "meaning": "a deep satisfaction from living in line with your own values"
+      },
+      {
+        "word": "external validation",
+        "meaning": "seeking approval or recognition from others to feel worthy"
+      },
+      {
+        "word": "autonomy",
+        "meaning": "the freedom to decide what is important to you"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0011-e1f2-a3b4-c5d6-e7f8a9b0c1d2",
+    "title": "Is it possible to be truly fair?",
+    "category": "Big Questions",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by describing a situation where two people were treated the same but the outcome still felt unfair.",
+      "Compare both views: fairness means giving everyone the same treatment vs. true fairness means giving people what they specifically need, which is not the same for everyone.",
+      "Ask yourself: can you think of a rule or system that seemed fair at first but turned out to disadvantage certain people?",
+      "Try opening with: 'Fairness is one of the first concepts children learn - but the older you get, the more complicated it turns out to be...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "fairness",
+        "meaning": "treating people justly and without favouritism"
+      },
+      {
+        "word": "equality",
+        "meaning": "giving everyone the same treatment or resources"
+      },
+      {
+        "word": "equity",
+        "meaning": "giving people what they individually need to have equal outcomes"
+      },
+      {
+        "word": "systemic",
+        "meaning": "deeply embedded in the rules or structure of a system"
+      },
+      {
+        "word": "bias",
+        "meaning": "an unfair tendency to favour or disfavour certain people"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0012-f2a3-b4c5-d6e7-f8a9b0c1d2e3",
+    "title": "Is a meritocracy actually possible?",
+    "category": "Big Questions",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by describing what a meritocracy is supposed to look like - where the hardest working and most talented people rise.",
+      "Compare both views: striving for meritocracy is the fairest system we have vs. no system can truly separate talent from privilege, luck, and starting conditions.",
+      "Ask yourself: think of something you have achieved - how much of it was your own merit, and how much was circumstance?",
+      "Try opening with: 'We love the idea that if you work hard enough, you can achieve anything - but the evidence suggests the story is more complicated than that...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "meritocracy",
+        "meaning": "a system where success is based on talent and effort, not background or connections"
+      },
+      {
+        "word": "privilege",
+        "meaning": "an advantage some people have that others do not, often unearned"
+      },
+      {
+        "word": "social mobility",
+        "meaning": "the ability to move between different levels of wealth or status in society"
+      },
+      {
+        "word": "inequality",
+        "meaning": "an unfair difference in wealth, opportunity, or treatment between people"
+      },
+      {
+        "word": "talent",
+        "meaning": "a natural ability or skill that someone has"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0013-a3b4-c5d6-e7f8-a9b0c1d2e3f4",
+    "title": "Is change always progress?",
+    "category": "Big Questions",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing something that changed and became clearly better - and then something that changed but arguably got worse.",
+      "Compare both views: change is the engine of progress and improvement vs. not every change improves things, and some things are worth protecting.",
+      "Ask yourself: is there something in your life, community, or society that has changed but that you quietly wish had stayed the same?",
+      "Try opening with: 'We often assume that newer means better and that moving forward is always the right direction - but is that actually true?'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "progress",
+        "meaning": "movement toward a better or more developed state"
+      },
+      {
+        "word": "tradition",
+        "meaning": "a practice passed down over time that people consider worth keeping"
+      },
+      {
+        "word": "innovation",
+        "meaning": "a new idea or approach that changes how something works"
+      },
+      {
+        "word": "nostalgia",
+        "meaning": "a longing for the past, often idealised"
+      },
+      {
+        "word": "adapt",
+        "meaning": "to change in response to new circumstances"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0014-b4c5-d6e7-f8a9-b0c1d2e3f4a5",
+    "title": "Can you ever really forgive someone who has deeply hurt you?",
+    "category": "Big Questions",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by distinguishing between forgiving someone and excusing what they did.",
+      "Compare two views: forgiveness is ultimately a gift you give yourself, not the other person vs. true forgiveness requires acknowledgement and change from the person who caused harm.",
+      "Ask yourself: is there a difference between forgiving someone and simply deciding to move on?",
+      "Try opening with: 'We are often told that forgiveness is for our own sake, not the person who hurt us - but in practice, it turns out to be one of the hardest things to actually do...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "forgiveness",
+        "meaning": "choosing to let go of anger or resentment toward someone who hurt you"
+      },
+      {
+        "word": "resentment",
+        "meaning": "a bitter feeling caused by being wronged"
+      },
+      {
+        "word": "reconciliation",
+        "meaning": "restoring a broken relationship after conflict"
+      },
+      {
+        "word": "healing",
+        "meaning": "recovering emotionally from something painful"
+      },
+      {
+        "word": "accountability",
+        "meaning": "taking genuine responsibility for harm caused"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0015-c5d6-e7f8-a9b0-c1d2e3f4a5b6",
+    "title": "Is fear more of a protector or a prison?",
+    "category": "Big Questions",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing two types of fear - the kind that keeps you safe and the kind that keeps you small.",
+      "Compare both views: fear is a vital evolutionary signal that protects us from real danger vs. most of the fears that shape our daily decisions are not about survival at all.",
+      "Ask yourself: can you identify a fear that has genuinely protected you versus one that has mostly held you back?",
+      "Try opening with: 'Fear is the most powerful emotion most of us feel on a daily basis - but are we using it, or is it using us?'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "fear",
+        "meaning": "an unpleasant feeling caused by perceived danger or threat"
+      },
+      {
+        "word": "caution",
+        "meaning": "careful attention to possible risk"
+      },
+      {
+        "word": "avoidance",
+        "meaning": "staying away from things that make you uncomfortable or anxious"
+      },
+      {
+        "word": "courage",
+        "meaning": "acting despite feeling afraid"
+      },
+      {
+        "word": "limitation",
+        "meaning": "something that restricts what you are able to do"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0016-d6e7-f8a9-b0c1-d2e3f4a5b6c7",
+    "title": "What do we owe to people we have never met?",
+    "category": "Big Questions",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing how your daily choices — what you buy, eat, or use — can affect people on the other side of the world.",
+      "Compare two views: we have genuine moral obligations to strangers, especially those who are suffering vs. our primary responsibilities are to people we know and to our own communities.",
+      "Ask yourself: have you ever changed a behaviour because you felt it affected someone you would never meet?",
+      "Try opening with: 'Every day, the choices you make ripple out in ways you will never see - but does that mean you are responsible for them?'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "obligation",
+        "meaning": "a duty or responsibility to do something"
+      },
+      {
+        "word": "empathy",
+        "meaning": "the ability to understand and share the feelings of others"
+      },
+      {
+        "word": "global responsibility",
+        "meaning": "the idea that our actions affect people far beyond our immediate community"
+      },
+      {
+        "word": "moral",
+        "meaning": "relating to what is right and wrong behaviour"
+      },
+      {
+        "word": "proximity",
+        "meaning": "closeness in distance or relationship"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0017-e7f8-a9b0-c1d2-e3f4a5b6c7d8",
+    "title": "Is nostalgia healthy or does it hold us back?",
+    "category": "Big Questions",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing the feeling of nostalgia - that warm, slightly sad longing for how things used to be.",
+      "Compare both views: nostalgia connects us to meaning, identity, and people we love vs. it can trap us in an idealised past that prevents us from engaging fully with the present.",
+      "Ask yourself: is there a period of your life you find yourself longing for? Is that longing helping you or holding you still?",
+      "Try opening with: 'There is something beautiful about looking back - but at some point, looking back can become a way of not looking forward...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "nostalgia",
+        "meaning": "a sentimental longing for the past, often idealised"
+      },
+      {
+        "word": "identity",
+        "meaning": "the characteristics and experiences that define who you are"
+      },
+      {
+        "word": "present",
+        "meaning": "the current moment, as opposed to the past or future"
+      },
+      {
+        "word": "idealise",
+        "meaning": "to think of something as better than it actually was"
+      },
+      {
+        "word": "attachment",
+        "meaning": "a strong emotional bond to a person, place, or time"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0018-f8a9-b0c1-d2e3-f4a5b6c7d8e9",
+    "title": "Is it ever right to break a rule if you believe the rule is wrong?",
+    "category": "Big Questions",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing a historical example where breaking a rule turned out to be the right thing to do.",
+      "Compare both views: rules exist to protect society and must be followed even when imperfect vs. moral progress has always depended on people who were willing to break unjust rules.",
+      "Ask yourself: can you think of a rule that currently exists that you believe is wrong? What would it take for you to disobey it?",
+      "Try opening with: 'We teach children to follow rules - but history is full of people we celebrate precisely because they refused to...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "civil disobedience",
+        "meaning": "the deliberate breaking of a law to protest something unjust"
+      },
+      {
+        "word": "conscience",
+        "meaning": "an inner sense of right and wrong that guides your actions"
+      },
+      {
+        "word": "authority",
+        "meaning": "the power to make decisions and enforce rules"
+      },
+      {
+        "word": "injustice",
+        "meaning": "a situation that is unfair or morally wrong"
+      },
+      {
+        "word": "moral courage",
+        "meaning": "the strength to act on your beliefs even when it is risky"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0019-a9b0-c1d2-e3f4-a5b6c7d8e9f0",
+    "title": "What would you want future generations to say about the way we lived?",
+    "category": "Big Questions",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by thinking about how future people might judge our era - the things we accepted, the things we ignored.",
+      "Compare two views: every generation makes decisions that later seem obvious in hindsight, so we should not judge too harshly vs. we have access to enough information now to make better choices and still do not.",
+      "Ask yourself: what is one thing happening in the world right now that you suspect future generations will find hard to understand?",
+      "Try opening with: 'In a hundred years, people will look back at the way we lived and shake their heads at some of it - but which parts?'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "legacy",
+        "meaning": "what is left behind for future people by the actions of those before them"
+      },
+      {
+        "word": "judgement",
+        "meaning": "an evaluation of whether something was right or wrong"
+      },
+      {
+        "word": "hindsight",
+        "meaning": "understanding a past event more clearly after it has happened"
+      },
+      {
+        "word": "moral progress",
+        "meaning": "improvements in how a society treats people over time"
+      },
+      {
+        "word": "accountability",
+        "meaning": "responsibility for your actions and their effects"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0020-b0c1-d2e3-f4a5-b6c7d8e9f0a1",
+    "title": "Can something be wrong even if it does not hurt anyone?",
+    "category": "Big Questions",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by describing an action that some people consider immoral but which appears to harm nobody.",
+      "Compare two views: morality is defined by harm - if no one is hurt, it cannot be wrong vs. some things are wrong regardless of harm, based on values like dignity or decency.",
+      "Ask yourself: do you believe harm is the only thing that makes something wrong, or are there other reasons?",
+      "Try opening with: 'The most basic rule we have for morality is simple: do not hurt people. But some of the most heated moral debates are about things that do not obviously hurt anyone at all...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "ethics",
+        "meaning": "the study of right and wrong behaviour"
+      },
+      {
+        "word": "harm",
+        "meaning": "damage or negative consequences caused to someone"
+      },
+      {
+        "word": "dignity",
+        "meaning": "a sense of worth and respect that belongs to every person"
+      },
+      {
+        "word": "taboo",
+        "meaning": "something considered socially unacceptable, even if no clear harm is involved"
+      },
+      {
+        "word": "moral intuition",
+        "meaning": "a gut feeling about whether something is right or wrong, without clear reasoning"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0021-c1d2-e3f4-a5b6-c7d8e9f0a1b2",
+    "title": "Is a long life with little joy better than a short life with great joy?",
+    "category": "Big Questions",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by asking what we actually mean when we say we want to live well.",
+      "Compare both views: a longer life gives more time for meaning, connection, and contribution vs. intensity and depth matter more than length, and a short vivid life can be more fully lived.",
+      "Ask yourself: if you knew you had ten years left, would you live differently - and why are you not living that way now?",
+      "Try opening with: 'We tend to think more life is always better - but the question of what makes a life worth living is far more interesting than just the number of years...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "quality of life",
+        "meaning": "how good or satisfying your daily existence is"
+      },
+      {
+        "word": "mortality",
+        "meaning": "the fact that all living things will eventually die"
+      },
+      {
+        "word": "purpose",
+        "meaning": "a sense of reason or direction that gives life meaning"
+      },
+      {
+        "word": "vivid",
+        "meaning": "bright, intense, and strongly felt"
+      },
+      {
+        "word": "fulfilment",
+        "meaning": "a deep satisfaction from living fully and in line with your values"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "bq-0022-d2e3-f4a5-b6c7-d8e9f0a1b2c3",
+    "title": "Is it possible to be completely independent of other people?",
+    "category": "Big Questions",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing what full independence would look like - and all the invisible systems and people you would have to live without.",
+      "Compare both views: independence is a virtue worth striving for and gives you resilience vs. humans are fundamentally social and interdependent, and pretending otherwise is a kind of self-deception.",
+      "Ask yourself: who are the people and systems your daily life quietly depends on that you rarely think about?",
+      "Try opening with: 'We celebrate independence as a great strength - but look closely at any life and you will find it is built on countless invisible connections...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "independence",
+        "meaning": "not needing or relying on others to live or make decisions"
+      },
+      {
+        "word": "interdependence",
+        "meaning": "a state where two or more things or people depend on each other"
+      },
+      {
+        "word": "community",
+        "meaning": "a group of people connected by shared place, values, or experience"
+      },
+      {
+        "word": "self-sufficiency",
+        "meaning": "the ability to provide everything you need without outside help"
+      },
+      {
+        "word": "vulnerability",
+        "meaning": "openness to the risk that comes with needing others"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0001-a1b2-c3d4-e5f6-a7b8c9d0e1f2",
+    "title": "Why do we know what is good for us but still not do it?",
+    "category": "Health & Lifestyle",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing the experience of knowing you should exercise, sleep, or eat better - and choosing not to anyway.",
+      "Compare two views: it is a willpower problem and can be solved with better habits vs. our environments, stress, and biology make it genuinely hard to act on what we know.",
+      "Ask yourself: when have you consistently done something healthy - what made it stick that time?",
+      "Try opening with: 'We are probably the most health-informed generation in history - and yet most of us still struggle with the basics...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "willpower",
+        "meaning": "the ability to control your impulses and do what you intend to do"
+      },
+      {
+        "word": "habit",
+        "meaning": "a behaviour done regularly and often automatically"
+      },
+      {
+        "word": "intention",
+        "meaning": "a plan or goal you have decided to pursue"
+      },
+      {
+        "word": "behaviour change",
+        "meaning": "deliberately altering what you do to achieve a different outcome"
+      },
+      {
+        "word": "environment",
+        "meaning": "the surroundings and conditions that influence your choices"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0002-b2c3-d4e5-f6a7-b8c9d0e1f2a3",
+    "title": "How much does sleep actually affect everything else in your life?",
+    "category": "Health & Lifestyle",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing what a day feels like after a great night of sleep versus a poor one.",
+      "Compare both views: sleep is the single most important thing you can do for your health and mental performance vs. sleep needs vary and many people function well on less.",
+      "Ask yourself: have you ever noticed how differently you feel - mentally, emotionally, physically - based on how well you slept?",
+      "Try opening with: 'We treat sleep as something to be managed around the things we actually want to do - but it may be more foundational than we realise...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "sleep deprivation",
+        "meaning": "a condition caused by not getting enough sleep"
+      },
+      {
+        "word": "cognitive function",
+        "meaning": "the mental abilities used for thinking, learning, and remembering"
+      },
+      {
+        "word": "recovery",
+        "meaning": "the process of restoring strength and function, often during rest"
+      },
+      {
+        "word": "circadian rhythm",
+        "meaning": "the body's internal clock that regulates sleep and wakefulness"
+      },
+      {
+        "word": "wellbeing",
+        "meaning": "a state of being healthy, comfortable, and content"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0003-c3d4-e5f6-a7b8-c9d0e1f2a3b4",
+    "title": "Is the way we talk about diet and food actually making us less healthy?",
+    "category": "Health & Lifestyle",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing how confusing the world of nutrition advice is - and how often it contradicts itself.",
+      "Compare both views: increased awareness of food and nutrition has improved public health vs. the obsession with clean eating and dietary rules has created anxiety and disordered relationships with food.",
+      "Ask yourself: do you eat with pleasure, or mostly with a sense of rules you are following or breaking?",
+      "Try opening with: 'We have more nutrition information than any generation before us - and yet our relationship with food seems more complicated and stressful than ever...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "nutrition",
+        "meaning": "the process of obtaining and using food for health and growth"
+      },
+      {
+        "word": "orthorexia",
+        "meaning": "an obsession with eating in a way considered pure or healthy, to a harmful degree"
+      },
+      {
+        "word": "diet culture",
+        "meaning": "a social system that values thinness and equates food choices with moral worth"
+      },
+      {
+        "word": "mindful eating",
+        "meaning": "paying full attention to the experience of eating without judgement"
+      },
+      {
+        "word": "moderation",
+        "meaning": "avoiding extremes and maintaining a balanced approach"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0004-d4e5-f6a7-b8c9-d0e1f2a3b4c5",
+    "title": "Why has exercise become so complicated when it used to be just movement?",
+    "category": "Health & Lifestyle",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing the gap between what exercise looks like in modern fitness culture and what it looked like for most of human history.",
+      "Compare both views: structured fitness programmes and understanding of exercise science have genuinely improved outcomes vs. the fitness industry has turned a natural human activity into an expensive and intimidating performance.",
+      "Ask yourself: what form of movement do you genuinely enjoy - and are you actually doing it?",
+      "Try opening with: 'Human beings evolved to move constantly - but somewhere along the way we turned movement into an industry, and for many people that has made it harder to start...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "physical activity",
+        "meaning": "any movement of the body that uses energy"
+      },
+      {
+        "word": "fitness industry",
+        "meaning": "the commercial sector that sells gym memberships, equipment, and programmes"
+      },
+      {
+        "word": "barrier",
+        "meaning": "something that makes it harder to do something"
+      },
+      {
+        "word": "consistency",
+        "meaning": "doing something regularly over a long period"
+      },
+      {
+        "word": "sustainable",
+        "meaning": "able to continue without burning out or stopping"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0005-e5f6-a7b8-c9d0-e1f2a3b4c5d6",
+    "title": "Is stress always harmful - or can some of it actually be good for you?",
+    "category": "Health & Lifestyle",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by distinguishing between the kind of stress that helps you perform and the kind that drains and damages you.",
+      "Compare both views: stress signals danger and harms your body and mind over time vs. moderate challenge and pressure build resilience and drive.",
+      "Ask yourself: is there a type of stress in your life that you think has actually made you stronger?",
+      "Try opening with: 'We treat stress as entirely negative and something to eliminate - but the science suggests the relationship is far more interesting than that...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "stress",
+        "meaning": "a feeling of mental or emotional strain caused by demanding circumstances"
+      },
+      {
+        "word": "resilience",
+        "meaning": "the ability to cope with and recover from difficult experiences"
+      },
+      {
+        "word": "chronic stress",
+        "meaning": "ongoing stress that persists over a long period"
+      },
+      {
+        "word": "performance",
+        "meaning": "how well you carry out a task or function"
+      },
+      {
+        "word": "nervous system",
+        "meaning": "the body's network for processing information and controlling responses"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0006-f6a7-b8c9-d0e1-f2a3b4c5d6e7",
+    "title": "Are we more addicted to our phones than we admit?",
+    "category": "Health & Lifestyle",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing the automatic behaviour of reaching for a phone - the moment of boredom, the instinct to check.",
+      "Compare both views: smartphones are useful tools and most people use them sensibly vs. the design of apps deliberately exploits psychological vulnerabilities to create compulsive use.",
+      "Ask yourself: have you ever tried to use your phone less for a day? How did that feel - and what does that tell you?",
+      "Try opening with: 'Most of us check our phones hundreds of times a day without noticing - and the companies that built them knew exactly what they were doing...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "addiction",
+        "meaning": "a compulsive need to do something despite knowing it may be harmful"
+      },
+      {
+        "word": "dopamine",
+        "meaning": "a brain chemical linked to pleasure and reward-seeking behaviour"
+      },
+      {
+        "word": "compulsive",
+        "meaning": "driven by a strong urge that is difficult to control"
+      },
+      {
+        "word": "digital detox",
+        "meaning": "a period of deliberately avoiding screens and devices"
+      },
+      {
+        "word": "attention",
+        "meaning": "the mental focus you give to something"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0007-a7b8-c9d0-e1f2-a3b4c5d6e7f8",
+    "title": "Why does spending time in nature make so many people feel better?",
+    "category": "Health & Lifestyle",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing that feeling of stepping outside into a park, forest, or open space after a long time indoors.",
+      "Compare both views: nature has measurable, documented effects on stress, mood, and health vs. the benefits are about rest and movement, and location matters less than we think.",
+      "Ask yourself: when was the last time you spent meaningful time outside - and how did you feel afterwards?",
+      "Try opening with: 'For most of human history, being outside was just called being alive - but now we have to remind ourselves to do it...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "restorative",
+        "meaning": "having the ability to restore health, strength, or wellbeing"
+      },
+      {
+        "word": "exposure",
+        "meaning": "being in contact with something, including the natural environment"
+      },
+      {
+        "word": "mental health",
+        "meaning": "the state of your emotional and psychological wellbeing"
+      },
+      {
+        "word": "solitude",
+        "meaning": "the state of being alone, often peacefully"
+      },
+      {
+        "word": "sensory",
+        "meaning": "relating to the physical senses - sight, sound, touch, smell, taste"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0008-b8c9-d0e1-f2a3-b4c5d6e7f8a9",
+    "title": "How does what you eat affect how you think and feel?",
+    "category": "Health & Lifestyle",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing the connection between gut health and brain health that researchers have been exploring.",
+      "Compare both views: what you eat has a profound effect on your mood, focus, and mental health vs. the gut-brain connection is overstated and most healthy eating advice is far simpler than the industry suggests.",
+      "Ask yourself: have you ever noticed a clear link between what you ate and how you felt mentally or emotionally?",
+      "Try opening with: 'We have always known that food affects the body - but the emerging evidence that it also shapes how we think and feel is far more surprising...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "gut microbiome",
+        "meaning": "the community of microorganisms living in the digestive system that affects health"
+      },
+      {
+        "word": "inflammation",
+        "meaning": "a bodily response to injury or poor health that can affect mood and cognition"
+      },
+      {
+        "word": "mood",
+        "meaning": "a temporary emotional state that affects your outlook and behaviour"
+      },
+      {
+        "word": "cognition",
+        "meaning": "the mental process of thinking, understanding, and learning"
+      },
+      {
+        "word": "nutrient",
+        "meaning": "a substance in food that the body needs to function properly"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0009-c9d0-e1f2-a3b4-c5d6e7f8a9b0",
+    "title": "Is rest something we have to earn - or something we all need?",
+    "category": "Health & Lifestyle",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing the cultural glorification of busyness - where being exhausted is worn as a badge of honour.",
+      "Compare both views: rest is a biological necessity, not a luxury, and we perform better when we build it in deliberately vs. rest needs to be earned through effort, and too much of it leads to laziness.",
+      "Ask yourself: do you ever feel guilty for resting? Where does that feeling come from?",
+      "Try opening with: 'We live in a culture that treats rest as something you earn - but there is a growing body of evidence that it is actually the thing that makes everything else possible...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "rest",
+        "meaning": "a period of inactivity that allows the body and mind to recover"
+      },
+      {
+        "word": "productivity",
+        "meaning": "how much useful work someone gets done in a given time"
+      },
+      {
+        "word": "burnout",
+        "meaning": "extreme exhaustion caused by sustained overwork and stress"
+      },
+      {
+        "word": "recovery",
+        "meaning": "returning to a normal state of health or strength after effort or illness"
+      },
+      {
+        "word": "guilt",
+        "meaning": "a feeling of having done something wrong, sometimes including relaxing"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0010-d0e1-f2a3-b4c5-d6e7f8a9b0c1",
+    "title": "Can social connection be as important to your health as diet and exercise?",
+    "category": "Health & Lifestyle",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by sharing the finding that loneliness has been linked to health outcomes as serious as smoking.",
+      "Compare two views: social connection is a fundamental human need with measurable physical effects vs. its health benefits are overstated and individual-level factors matter more.",
+      "Ask yourself: think about your own social life - do you feel genuinely connected to the people around you, or just busy?",
+      "Try opening with: 'Doctors talk about diet, exercise, and sleep - but there is growing evidence that who you spend time with may matter just as much...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "social connection",
+        "meaning": "meaningful relationships and interactions with other people"
+      },
+      {
+        "word": "loneliness",
+        "meaning": "a painful feeling caused by a lack of meaningful connection"
+      },
+      {
+        "word": "community",
+        "meaning": "a group of people you share belonging with"
+      },
+      {
+        "word": "health outcome",
+        "meaning": "a measurable result related to someone's physical or mental health"
+      },
+      {
+        "word": "isolation",
+        "meaning": "a state of being cut off from contact with others"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0011-e1f2-a3b4-c5d6-e7f8a9b0c1d2",
+    "title": "Why do so many people find it hard to ask for help?",
+    "category": "Health & Lifestyle",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing the gap between needing help and actually asking for it - especially with mental or emotional struggles.",
+      "Compare both views: asking for help is a sign of self-awareness and strength vs. deeply held beliefs about self-reliance make it genuinely difficult for many people.",
+      "Ask yourself: is there something in your life right now that you are managing alone when you could ask for support?",
+      "Try opening with: 'One of the most useful things you can do for your health and wellbeing is also one of the hardest things to actually do - ask for help...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "vulnerability",
+        "meaning": "the openness that comes with admitting you need something from others"
+      },
+      {
+        "word": "self-reliance",
+        "meaning": "depending on yourself rather than others for support"
+      },
+      {
+        "word": "stigma",
+        "meaning": "a mark of shame attached to asking for help, especially with mental health"
+      },
+      {
+        "word": "support",
+        "meaning": "help given to someone who is struggling"
+      },
+      {
+        "word": "barrier",
+        "meaning": "something that prevents you from doing something"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0012-f2a3-b4c5-d6e7-f8a9b0c1d2e3",
+    "title": "Is modern life making it harder to be physically healthy?",
+    "category": "Health & Lifestyle",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing how different the physical demands of daily life are today compared to previous generations.",
+      "Compare both views: modern technology and convenience have freed people from physical suffering and extended lives vs. sedentary work, processed food, and chronic stress have created new health crises.",
+      "Ask yourself: what is one thing about modern life that you suspect is damaging your health, even if it feels normal?",
+      "Try opening with: 'We live longer than any generation in history - and yet many of us feel less physically well than we believe we should...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "sedentary",
+        "meaning": "involving a lot of sitting and very little physical movement"
+      },
+      {
+        "word": "chronic disease",
+        "meaning": "a long-term health condition that develops gradually over time"
+      },
+      {
+        "word": "processed food",
+        "meaning": "food that has been significantly altered from its natural state"
+      },
+      {
+        "word": "lifestyle",
+        "meaning": "the way someone lives, including habits, choices, and routines"
+      },
+      {
+        "word": "convenience",
+        "meaning": "ease and comfort made possible by modern technology or services"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0013-a3b4-c5d6-e7f8-a9b0c1d2e3f4",
+    "title": "How important is having a daily routine to your mental health?",
+    "category": "Health & Lifestyle",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing what life feels like with a clear daily structure versus without one.",
+      "Compare both views: routines provide stability, reduce decision fatigue, and support mental health vs. rigid routines can become oppressive and some people thrive with flexibility.",
+      "Ask yourself: what would happen to your mood and energy if your routine completely disappeared for two weeks?",
+      "Try opening with: 'Some of the most mentally resilient people in the world swear by their morning routines - but is the structure itself what helps, or something else?'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "routine",
+        "meaning": "a regular sequence of actions performed at set times"
+      },
+      {
+        "word": "structure",
+        "meaning": "an organised framework that gives shape to how time is spent"
+      },
+      {
+        "word": "decision fatigue",
+        "meaning": "the declining quality of decisions made after a long session of choosing"
+      },
+      {
+        "word": "stability",
+        "meaning": "a state where things are consistent and unlikely to change suddenly"
+      },
+      {
+        "word": "flexibility",
+        "meaning": "the ability to adapt and change without being fixed to one approach"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0014-b4c5-d6e7-f8a9-b0c1d2e3f4a5",
+    "title": "Should we talk more openly about money and financial stress?",
+    "category": "Health & Lifestyle",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by noting how rarely people discuss their actual financial situation - salaries, debt, savings - compared to how much it affects daily life.",
+      "Compare both views: financial openness reduces shame and helps people make better decisions vs. money is personal and mixing it into conversations creates discomfort and judgement.",
+      "Ask yourself: do you know what your closest friends earn or owe? Does that lack of knowledge ever get in the way?",
+      "Try opening with: 'We will talk openly about almost anything today - health, relationships, mental struggles - but many people still find talking about money more uncomfortable than all of those combined...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "financial stress",
+        "meaning": "anxiety or pressure caused by money problems or uncertainty"
+      },
+      {
+        "word": "taboo",
+        "meaning": "something people avoid discussing because it feels socially unacceptable"
+      },
+      {
+        "word": "transparency",
+        "meaning": "being open and honest about something, even when it feels uncomfortable"
+      },
+      {
+        "word": "shame",
+        "meaning": "a painful feeling caused by believing you have failed or fallen short"
+      },
+      {
+        "word": "wellbeing",
+        "meaning": "the state of being physically, mentally, and financially comfortable"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0015-c5d6-e7f8-a9b0-c1d2e3f4a5b6",
+    "title": "Has the idea of a 'healthy body' become more harmful than helpful?",
+    "category": "Health & Lifestyle",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by describing the images, standards, and language we use when we talk about healthy bodies - and who gets to decide what that looks like.",
+      "Compare both views: health standards motivate people to improve their wellbeing vs. narrow definitions of a healthy body cause shame, exclusion, and disordered eating.",
+      "Ask yourself: do you think the way you view your own body was shaped more by health information or by cultural ideals?",
+      "Try opening with: 'Health is something almost everyone agrees is important - but the way we define it visually may be causing more harm than the habits it is trying to promote...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "body image",
+        "meaning": "how you see and feel about the appearance of your own body"
+      },
+      {
+        "word": "health standard",
+        "meaning": "a defined measure of what is considered physically healthy"
+      },
+      {
+        "word": "shame",
+        "meaning": "a painful feeling caused by feeling inadequate or judged"
+      },
+      {
+        "word": "inclusion",
+        "meaning": "making sure that all kinds of people are represented and valued"
+      },
+      {
+        "word": "cultural ideal",
+        "meaning": "an image of perfection promoted by a society at a particular time"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0016-d6e7-f8a9-b0c1-d2e3f4a5b6c7",
+    "title": "Do we underestimate how much our environment shapes our habits?",
+    "category": "Health & Lifestyle",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing a situation where changing your environment - removing a temptation, rearranging your space - changed your behaviour without any extra effort.",
+      "Compare both views: environment design is one of the most powerful tools for building better habits vs. blaming your environment is a way of avoiding personal responsibility.",
+      "Ask yourself: what is one thing in your physical environment that regularly pulls you toward a behaviour you wish you did less of?",
+      "Try opening with: 'We spend enormous energy trying to change our behaviour through willpower - but sometimes the smarter move is to change what we see when we walk into a room...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "environment design",
+        "meaning": "deliberately arranging your physical space to support certain behaviours"
+      },
+      {
+        "word": "default",
+        "meaning": "what happens automatically when no active choice is made"
+      },
+      {
+        "word": "cue",
+        "meaning": "a trigger in the environment that prompts a habitual behaviour"
+      },
+      {
+        "word": "friction",
+        "meaning": "resistance or difficulty that makes a behaviour harder to do"
+      },
+      {
+        "word": "behaviour",
+        "meaning": "the way a person acts in a particular situation"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0017-e7f8-a9b0-c1d2-e3f4a5b6c7d8",
+    "title": "Why do so many people struggle with loneliness even when surrounded by people?",
+    "category": "Health & Lifestyle",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing the difference between being physically alone and feeling truly lonely.",
+      "Compare two views: loneliness comes from a lack of meaningful connection, not the absence of people vs. modern life has structurally made it harder to form deep bonds, and it is not just a personal problem.",
+      "Ask yourself: do you have people in your life you could call at 2am if something went wrong? If not, what does that tell you?",
+      "Try opening with: 'Some of the loneliest people in the world are surrounded by people every single day - which tells us that loneliness is about something other than numbers...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "loneliness",
+        "meaning": "a painful feeling from lacking meaningful connection with others"
+      },
+      {
+        "word": "belonging",
+        "meaning": "a sense of being genuinely accepted and valued by a group"
+      },
+      {
+        "word": "superficial",
+        "meaning": "lacking depth or genuine meaning"
+      },
+      {
+        "word": "vulnerability",
+        "meaning": "openness to emotional risk in order to connect with others"
+      },
+      {
+        "word": "intimacy",
+        "meaning": "close, deep familiarity with another person"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0018-f8a9-b0c1-d2e3-f4a5b6c7d8e9",
+    "title": "Is the pressure to be productive all the time damaging us?",
+    "category": "Health & Lifestyle",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by describing the cultural obsession with optimising time, tracking output, and filling every hour with something useful.",
+      "Compare both views: high expectations of productivity drive achievement and meaning vs. treating life as a productivity project is exhausting and erodes the things that actually make life worth living.",
+      "Ask yourself: when you are doing nothing in particular, do you feel content - or anxious that you should be doing something?",
+      "Try opening with: 'We have built a culture where the first question people ask you is what you do, and where doing nothing feels almost illegal...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "productivity",
+        "meaning": "the amount of useful output produced in a given time"
+      },
+      {
+        "word": "hustle culture",
+        "meaning": "a social attitude that glorifies overwork and constant striving"
+      },
+      {
+        "word": "leisure",
+        "meaning": "free time used for rest and enjoyment rather than work"
+      },
+      {
+        "word": "burnout",
+        "meaning": "extreme mental and physical exhaustion caused by sustained overwork"
+      },
+      {
+        "word": "worth",
+        "meaning": "your value as a person, which in hustle culture is often linked to output"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0019-a9b0-c1d2-e3f4-a5b6c7d8e9f0",
+    "title": "Can changing a small habit genuinely change your life?",
+    "category": "Health & Lifestyle",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing a small habit someone changed - drinking water in the morning, walking for ten minutes, writing one sentence before bed - and what followed.",
+      "Compare both views: small habits build identity and momentum that leads to bigger change vs. significant life change requires significant action, and focusing on tiny habits is a way of avoiding that.",
+      "Ask yourself: is there a very small habit you could start tomorrow that you genuinely believe would improve your life?",
+      "Try opening with: 'We tend to wait for the right moment to make a big change - but some people argue the most powerful changes begin with something almost embarrassingly small...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "habit",
+        "meaning": "a behaviour done regularly, often without conscious thought"
+      },
+      {
+        "word": "identity",
+        "meaning": "how you see yourself, which shapes what you believe you can and will do"
+      },
+      {
+        "word": "momentum",
+        "meaning": "the force that keeps something moving once it has started"
+      },
+      {
+        "word": "compound effect",
+        "meaning": "the way small repeated actions build up into significant results over time"
+      },
+      {
+        "word": "consistency",
+        "meaning": "doing something regularly over time"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0020-b0c1-d2e3-f4a5-b6c7d8e9f0a1",
+    "title": "How do the people around you affect your health and habits?",
+    "category": "Health & Lifestyle",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing how research shows that habits like smoking, obesity, happiness, and exercise spread through social networks.",
+      "Compare both views: you are profoundly influenced by the people closest to you, whether you realise it or not vs. individual choice and biology matter more than social environment.",
+      "Ask yourself: think about your five closest relationships - in what ways have they shaped your habits or beliefs about health?",
+      "Try opening with: 'We like to think our health choices are entirely our own - but the evidence suggests the people we spend time with shape those choices in ways we rarely notice...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "social influence",
+        "meaning": "the effect that other people's behaviour or opinions have on your own"
+      },
+      {
+        "word": "norm",
+        "meaning": "a behaviour considered standard or expected within a group"
+      },
+      {
+        "word": "peer pressure",
+        "meaning": "the feeling of being influenced by your social group to behave in a certain way"
+      },
+      {
+        "word": "social environment",
+        "meaning": "the people and groups that surround you in daily life"
+      },
+      {
+        "word": "modelling",
+        "meaning": "copying or learning behaviours from people around you"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0021-c1d2-e3f4-a5b6-c7d8e9f0a1b2",
+    "title": "Is the way we approach ageing in our culture making it harder to grow older well?",
+    "category": "Health & Lifestyle",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by describing how ageing is portrayed in most advertising, entertainment, and public life - and what is notably absent.",
+      "Compare both views: our discomfort with ageing motivates people to stay healthy and active vs. treating ageing as a problem to be solved increases anxiety and reduces quality of life in later years.",
+      "Ask yourself: what is your honest relationship with the idea of getting older - and where did that feeling come from?",
+      "Try opening with: 'Most cultures throughout history revered their elders - but in ours, ageing is something to be delayed, hidden, and ideally defeated...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "ageing",
+        "meaning": "the process of growing older, with associated physical and mental changes"
+      },
+      {
+        "word": "ageism",
+        "meaning": "discrimination or prejudice against people because of their age"
+      },
+      {
+        "word": "cultural attitude",
+        "meaning": "the widely shared views a society holds about something"
+      },
+      {
+        "word": "longevity",
+        "meaning": "living for a long time"
+      },
+      {
+        "word": "wellbeing",
+        "meaning": "a state of being comfortable, healthy, and content across all stages of life"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "hl-0022-d2e3-f4a5-b6c7-d8e9f0a1b2c3",
+    "title": "What does it actually mean to take care of your mental health?",
+    "category": "Health & Lifestyle",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by noting that mental health is talked about widely now but often in vague ways - what does it actually look like day to day?",
+      "Compare both views: mental health requires the same deliberate attention as physical health, with specific habits and practices vs. the real drivers of mental health are structural - poverty, inequality, loneliness - not individual habits.",
+      "Ask yourself: what is one concrete thing you do - or could do - that genuinely supports your mental health?",
+      "Try opening with: 'We hear the phrase mental health a lot now - but most people are still not sure exactly what looking after it actually looks like in practice...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "mental health",
+        "meaning": "the state of your emotional, psychological, and social wellbeing"
+      },
+      {
+        "word": "practice",
+        "meaning": "a regular activity done deliberately to maintain or improve something"
+      },
+      {
+        "word": "awareness",
+        "meaning": "noticing and understanding your own thoughts, feelings, and reactions"
+      },
+      {
+        "word": "therapy",
+        "meaning": "professional support to help manage mental or emotional difficulties"
+      },
+      {
+        "word": "self-care",
+        "meaning": "deliberate actions taken to maintain your own wellbeing"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0001-a1b2-c3d4-e5f6-a7b8c9d0e1f2",
+    "title": "What makes a friendship last?",
+    "category": "Relationships & People",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing the difference between a friendship that has survived time and distance and one that faded away.",
+      "Compare two views: lasting friendships are built on shared history and effort vs. they survive because two people genuinely like who each other has become, not who they were.",
+      "Ask yourself: think of your oldest friendship - what has kept it alive when so many others have not?",
+      "Try opening with: 'Most of us make friends easily when we are young and surrounded by people - but keeping those friendships, especially as life changes, turns out to be one of the harder things we do...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "connection",
+        "meaning": "a meaningful relationship or bond between people"
+      },
+      {
+        "word": "reciprocity",
+        "meaning": "a mutual exchange where both people give and receive"
+      },
+      {
+        "word": "shared history",
+        "meaning": "experiences that two people have gone through together"
+      },
+      {
+        "word": "effort",
+        "meaning": "deliberate action taken to maintain something"
+      },
+      {
+        "word": "drift",
+        "meaning": "a gradual growing apart without a specific event causing it"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0002-b2c3-d4e5-f6a7-b8c9d0e1f2a3",
+    "title": "Is it possible to have a close friendship with someone very different from you?",
+    "category": "Relationships & People",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing what it is like to be close to someone whose background, values, or worldview differs significantly from yours.",
+      "Compare both views: difference makes friendships richer and more challenging in the best way vs. deep friendship requires enough shared values to weather real disagreements.",
+      "Ask yourself: is there a friend in your life you are very different from - and what has the friendship taught you?",
+      "Try opening with: 'We often gravitate toward people who are like us - but some of the most meaningful relationships come from finding common ground with someone you would not have expected to connect with...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "difference",
+        "meaning": "the quality of being unlike something or someone else"
+      },
+      {
+        "word": "empathy",
+        "meaning": "the ability to understand how someone else sees and feels things"
+      },
+      {
+        "word": "common ground",
+        "meaning": "shared beliefs or interests that allow for connection despite differences"
+      },
+      {
+        "word": "perspective",
+        "meaning": "a particular way of seeing and understanding the world"
+      },
+      {
+        "word": "tolerance",
+        "meaning": "the ability to accept and respect views or ways of life different from your own"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0003-c3d4-e5f6-a7b8-c9d0e1f2a3b4",
+    "title": "Why is conflict so hard to navigate in close relationships?",
+    "category": "Relationships & People",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing the way conflict in close relationships feels different from conflict with strangers.",
+      "Compare both views: conflict handled well strengthens relationships vs. even well-handled conflict leaves marks, and avoiding unnecessary disagreement is also a skill.",
+      "Ask yourself: in a relationship that matters to you, is there a recurring conflict that has never really been resolved?",
+      "Try opening with: 'The closer someone is to you, the more their words can hurt - and that means the most important conflicts in our lives are also the ones we are least equipped to handle...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "conflict",
+        "meaning": "a disagreement or struggle between people who see something differently"
+      },
+      {
+        "word": "resolution",
+        "meaning": "finding a way to settle a disagreement so both parties can move forward"
+      },
+      {
+        "word": "defensiveness",
+        "meaning": "responding to criticism or challenge by protecting yourself rather than listening"
+      },
+      {
+        "word": "repair",
+        "meaning": "an attempt to restore connection after conflict"
+      },
+      {
+        "word": "trigger",
+        "meaning": "something that causes a strong emotional reaction"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0004-d4e5-f6a7-b8c9-d0e1f2a3b4c5",
+    "title": "How do family relationships shape who we become?",
+    "category": "Relationships & People",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing the invisible influence of early family dynamics - how they shape what we expect from relationships.",
+      "Compare two views: family is the most profound shaping force in a person's life vs. we have agency to choose who we become and need not be defined by family patterns.",
+      "Ask yourself: can you identify one pattern in your family that you have either replicated or deliberately tried to break in your own life?",
+      "Try opening with: 'Long before we understood the world, we were learning from the first people in it - and most of us carry those lessons, for better or worse, for the rest of our lives...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "attachment",
+        "meaning": "the emotional bond formed between a child and their primary caregivers"
+      },
+      {
+        "word": "pattern",
+        "meaning": "a repeated way of behaving or relating that develops over time"
+      },
+      {
+        "word": "influence",
+        "meaning": "the power to shape how someone thinks or acts"
+      },
+      {
+        "word": "agency",
+        "meaning": "the capacity to make your own choices independently"
+      },
+      {
+        "word": "dynamic",
+        "meaning": "a pattern of interaction between people in a relationship"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0005-e5f6-a7b8-c9d0-e1f2a3b4c5d6",
+    "title": "What does it actually mean to love someone?",
+    "category": "Relationships & People",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by describing the different faces of love - romantic, parental, friendship, and the love for a place or idea.",
+      "Compare two views: love is fundamentally a feeling of intense attachment and care vs. love is primarily a series of choices and actions that do not require feeling to be real.",
+      "Ask yourself: have you ever loved someone in actions even when the feeling was hard to find?",
+      "Try opening with: 'Love is the most written about, sung about, and argued about thing in human history - and yet most of us find it surprisingly hard to define when someone asks us directly...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "attachment",
+        "meaning": "a deep emotional bond to another person"
+      },
+      {
+        "word": "commitment",
+        "meaning": "a firm decision to continue doing something, even when it is difficult"
+      },
+      {
+        "word": "intimacy",
+        "meaning": "close familiarity and connection with another person"
+      },
+      {
+        "word": "unconditional",
+        "meaning": "not depending on conditions or requirements being met"
+      },
+      {
+        "word": "reciprocal",
+        "meaning": "shared equally between two people"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0006-f6a7-b8c9-d0e1-f2a3b4c5d6e7",
+    "title": "Is it possible to remain close to people from your past as your life changes?",
+    "category": "Relationships & People",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing the experience of growing apart from someone you were once inseparable from.",
+      "Compare two views: long-term friendships require ongoing effort and can survive change with the right commitment vs. it is natural and healthy for relationships to evolve and not all of them are meant to last a lifetime.",
+      "Ask yourself: is there someone from your past you have lost touch with that you think about? What would it take to reconnect?",
+      "Try opening with: 'As life takes us in different directions, some of the people who meant the most to us quietly fade from daily contact - and many of us are not sure whether that is inevitable or just easier...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "distance",
+        "meaning": "the physical or emotional space between people"
+      },
+      {
+        "word": "evolve",
+        "meaning": "to change gradually over time"
+      },
+      {
+        "word": "nostalgia",
+        "meaning": "a warm feeling about people or times from the past"
+      },
+      {
+        "word": "reconnect",
+        "meaning": "to restore contact or closeness with someone you have lost touch with"
+      },
+      {
+        "word": "drift",
+        "meaning": "a gradual growing apart, often without a clear reason"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0007-a7b8-c9d0-e1f2-a3b4c5d6e7f8",
+    "title": "What does healthy communication in a relationship actually look like?",
+    "category": "Relationships & People",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by contrasting two conversations - one where both people feel heard and one where they leave feeling worse than before.",
+      "Compare two views: communication can be learned and improved with the right tools and intention vs. communication style is deeply shaped by personality and upbringing, and change is harder than it sounds.",
+      "Ask yourself: in your most important relationship, what is the one communication habit you would most want to change?",
+      "Try opening with: 'Most relationship problems, when you examine them closely, turn out to be communication problems in disguise - which sounds simple but turns out to be anything but...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "communication",
+        "meaning": "the exchange of information, feelings, and needs between people"
+      },
+      {
+        "word": "active listening",
+        "meaning": "fully focusing on what someone is saying rather than preparing your response"
+      },
+      {
+        "word": "tone",
+        "meaning": "the emotional quality of how something is said"
+      },
+      {
+        "word": "non-verbal",
+        "meaning": "communicating through body language, expression, or silence"
+      },
+      {
+        "word": "misunderstanding",
+        "meaning": "a failure to correctly interpret what someone meant"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0008-b8c9-d0e1-f2a3-b4c5d6e7f8a9",
+    "title": "How much do first impressions actually tell us about a person?",
+    "category": "Relationships & People",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing a time when a first impression turned out to be completely wrong - in either direction.",
+      "Compare two views: first impressions are rapid pattern recognition that captures something real vs. they are heavily biased by superficial factors and often deeply inaccurate.",
+      "Ask yourself: have you ever dismissed someone quickly and later regretted it - or trusted someone immediately and regretted that?",
+      "Try opening with: 'We form a first impression of a new person within seconds - and that impression can be surprisingly hard to update, even when we get to know them better...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "first impression",
+        "meaning": "the initial judgement formed about someone very quickly"
+      },
+      {
+        "word": "bias",
+        "meaning": "a tendency to make unfair judgements based on incomplete information"
+      },
+      {
+        "word": "assumption",
+        "meaning": "something believed to be true without direct evidence"
+      },
+      {
+        "word": "credibility",
+        "meaning": "how trustworthy and believable someone appears"
+      },
+      {
+        "word": "judgement",
+        "meaning": "an assessment or evaluation of someone or something"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0009-c9d0-e1f2-a3b4-c5d6e7f8a9b0",
+    "title": "Is trust something you give or something you earn?",
+    "category": "Relationships & People",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing two approaches - someone who starts every new relationship with full trust, and someone who gives it slowly.",
+      "Compare both views: extending trust generously creates the conditions for better relationships vs. trust must be earned through consistent behaviour before it is meaningful.",
+      "Ask yourself: which approach do you take - and has it ever led you astray?",
+      "Try opening with: 'Trust is the foundation of almost every meaningful relationship - but the question of whether you start with it or build toward it reveals something important about how you see people...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "trust",
+        "meaning": "a firm belief in the reliability and honesty of someone"
+      },
+      {
+        "word": "consistency",
+        "meaning": "behaving the same way over time, which builds reliability"
+      },
+      {
+        "word": "risk",
+        "meaning": "the possibility of being hurt or disappointed by trusting someone"
+      },
+      {
+        "word": "vulnerability",
+        "meaning": "the openness that comes with relying on another person"
+      },
+      {
+        "word": "betrayal",
+        "meaning": "an act that breaks someone's trust"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0010-d0e1-f2a3-b4c5-d6e7f8a9b0c1",
+    "title": "Can you truly be friends with someone you are jealous of?",
+    "category": "Relationships & People",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by acknowledging that jealousy in friendships is common but rarely discussed openly.",
+      "Compare both views: jealousy is a normal emotion that does not have to damage a friendship if it is acknowledged honestly vs. persistent jealousy quietly poisons closeness and genuine happiness for the other person.",
+      "Ask yourself: have you ever felt genuinely happy for a friend's success and also slightly stung by it at the same time?",
+      "Try opening with: 'Jealousy is one of the most uncomfortable emotions to admit to - especially toward someone you care about. But refusing to admit it might be more dangerous than the feeling itself...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "jealousy",
+        "meaning": "a feeling of unhappiness caused by wanting what someone else has"
+      },
+      {
+        "word": "envy",
+        "meaning": "resentment toward someone for their advantages or success"
+      },
+      {
+        "word": "authenticity",
+        "meaning": "being genuine and honest about your real feelings"
+      },
+      {
+        "word": "insecurity",
+        "meaning": "a lack of confidence in yourself, often triggered by comparison to others"
+      },
+      {
+        "word": "unconditional",
+        "meaning": "not depending on circumstances or what the other person achieves"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0011-e1f2-a3b4-c5d6-e7f8a9b0c1d2",
+    "title": "How do you know when a relationship has run its course?",
+    "category": "Relationships & People",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by describing the difference between a relationship going through a hard period and one that has genuinely reached its natural end.",
+      "Compare both views: relationships that matter are worth fighting for, even through extended difficulty vs. holding on past the point where both people are genuinely growing is a form of avoidance.",
+      "Ask yourself: have you ever stayed in a friendship or relationship longer than was good for either of you? What finally changed?",
+      "Try opening with: 'We talk a lot about building and maintaining relationships - but very little about how to recognise, with honesty and kindness, when one has come to an end...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "growth",
+        "meaning": "positive development that a relationship should ideally support"
+      },
+      {
+        "word": "stagnation",
+        "meaning": "a lack of growth, movement, or change"
+      },
+      {
+        "word": "letting go",
+        "meaning": "accepting the end of something and moving forward"
+      },
+      {
+        "word": "clarity",
+        "meaning": "a clear understanding of a situation without confusion"
+      },
+      {
+        "word": "grief",
+        "meaning": "the pain felt after losing something important"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0012-f2a3-b4c5-d6e7-f8a9b0c1d2e3",
+    "title": "Why do some people find it hard to accept love or kindness?",
+    "category": "Relationships & People",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing the experience of dismissing a compliment, deflecting care, or feeling uncomfortable when someone is generous toward you.",
+      "Compare two views: difficulty accepting love usually reflects low self-worth or past hurt vs. it is a cultural habit of modesty and independence that does not always indicate something deeper.",
+      "Ask yourself: when someone is genuinely kind or generous toward you, does it feel comfortable? If not, what gets in the way?",
+      "Try opening with: 'Most of us are better at giving than receiving - but the inability to accept care gracefully can quietly damage our closest relationships...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "self-worth",
+        "meaning": "how much value you believe you have as a person"
+      },
+      {
+        "word": "receiving",
+        "meaning": "accepting something given to you, including care, kindness, or compliments"
+      },
+      {
+        "word": "vulnerability",
+        "meaning": "the openness required to accept love or care from another person"
+      },
+      {
+        "word": "deflect",
+        "meaning": "to turn away or redirect something aimed at you"
+      },
+      {
+        "word": "attachment",
+        "meaning": "an emotional bond shaped by past experience"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0013-a3b4-c5d6-e7f8-a9b0c1d2e3f4",
+    "title": "Do people change - and can we believe them when they say they have?",
+    "category": "Relationships & People",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing the experience of someone asking to be given another chance after hurting you - and the uncertainty that comes with it.",
+      "Compare two views: genuine change is possible and people deserve to be judged on who they are now, not who they were vs. fundamental patterns are persistent, and words of change without long-term evidence are not enough.",
+      "Ask yourself: have you ever changed in a significant way? What made it possible? And what would have convinced you that it was real?",
+      "Try opening with: 'We want to believe that people can change - and there is evidence that they can. But deciding whether this particular person, at this particular moment, really has is one of the hardest things we do...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "change",
+        "meaning": "becoming different from how you were before"
+      },
+      {
+        "word": "pattern",
+        "meaning": "a repeated behaviour that develops over time"
+      },
+      {
+        "word": "trust",
+        "meaning": "confidence that someone is reliable and honest"
+      },
+      {
+        "word": "evidence",
+        "meaning": "information that shows whether something is true"
+      },
+      {
+        "word": "accountability",
+        "meaning": "taking genuine responsibility for past behaviour"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0014-b4c5-d6e7-f8a9-b0c1d2e3f4a5",
+    "title": "Is it possible to be completely honest in a close relationship?",
+    "category": "Relationships & People",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by describing the tension between full honesty and the kindness that makes relationships feel safe.",
+      "Compare both views: radical honesty creates the deepest trust and closeness vs. all lasting relationships involve some degree of tactful omission, and that is not dishonesty but care.",
+      "Ask yourself: is there something true you have never said to someone you love because you are protecting them - or yourself?",
+      "Try opening with: 'We say we want honesty in our relationships - but when we imagine telling or hearing the full truth, most of us have second thoughts...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "radical honesty",
+        "meaning": "the practice of saying exactly what you think, without softening it"
+      },
+      {
+        "word": "tact",
+        "meaning": "the skill of saying difficult things in a considerate way"
+      },
+      {
+        "word": "omission",
+        "meaning": "leaving something out, which can be a form of withholding truth"
+      },
+      {
+        "word": "intimacy",
+        "meaning": "deep closeness that requires openness and trust"
+      },
+      {
+        "word": "protection",
+        "meaning": "shielding someone from something that might hurt them"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0015-c5d6-e7f8-a9b0-c1d2e3f4a5b6",
+    "title": "What role does forgiveness play in moving forward after being hurt?",
+    "category": "Relationships & People",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by distinguishing between forgiving someone and excusing or forgetting what they did.",
+      "Compare two views: forgiveness is about releasing your own anger and grief rather than restoring the relationship vs. some hurts are too significant to forgive and accepting that is not bitterness - it is clarity.",
+      "Ask yourself: is there something you carry from a past relationship that you have not quite forgiven? What would it mean to let it go?",
+      "Try opening with: 'Forgiveness is often presented as the noble choice - but it is not always as simple as deciding to feel differently about something that genuinely hurt you...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "forgiveness",
+        "meaning": "releasing anger or resentment toward someone who caused harm"
+      },
+      {
+        "word": "resentment",
+        "meaning": "a lasting bitter feeling from being wronged"
+      },
+      {
+        "word": "healing",
+        "meaning": "recovering emotionally from something painful"
+      },
+      {
+        "word": "moving on",
+        "meaning": "continuing with your life after a difficult experience"
+      },
+      {
+        "word": "clarity",
+        "meaning": "a clear, honest understanding of a situation"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0016-d6e7-f8a9-b0c1-d2e3f4a5b6c7",
+    "title": "How do boundaries actually work in relationships - and why are they so hard to set?",
+    "category": "Relationships & People",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing what a boundary actually is in the context of a real relationship - not a wall, but a limit.",
+      "Compare two views: clear boundaries lead to healthier, more honest relationships vs. constantly naming and enforcing limits creates a transactional dynamic that undermines closeness.",
+      "Ask yourself: is there a relationship in your life where you do not have clear enough limits - and what has that cost you?",
+      "Try opening with: 'The word boundaries has become so common in conversations about relationships that it sometimes loses its meaning - but the practice of actually setting them remains one of the hardest things most people do...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "boundary",
+        "meaning": "a personal limit that defines what you are and are not willing to accept"
+      },
+      {
+        "word": "communication",
+        "meaning": "expressing what you need or feel clearly to another person"
+      },
+      {
+        "word": "guilt",
+        "meaning": "a feeling of having done something wrong, often felt when setting limits"
+      },
+      {
+        "word": "self-respect",
+        "meaning": "a belief in your own worth and right to be treated well"
+      },
+      {
+        "word": "resentment",
+        "meaning": "a bitter feeling from consistently not having your limits respected"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0017-e7f8-a9b0-c1d2-e3f4a5b6c7d8",
+    "title": "Can you be in love with someone and still choose to leave?",
+    "category": "Relationships & People",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by describing the experience of loving someone but knowing the relationship is not working or is not good for one or both of you.",
+      "Compare both views: love is the primary reason to stay - if it is real, the rest can be worked through vs. love is necessary but not sufficient, and choosing to leave someone you love can be an act of courage and clarity.",
+      "Ask yourself: have you ever stayed in something too long because love made it hard to see clearly?",
+      "Try opening with: 'We are raised on stories where love conquers all - but the adults in those stories never seem to be asked the harder question: what happens when love is not enough?'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "love",
+        "meaning": "a deep emotional bond and care for another person"
+      },
+      {
+        "word": "compatibility",
+        "meaning": "the ability of two people to exist together in a way that works for both"
+      },
+      {
+        "word": "sacrifice",
+        "meaning": "giving something up for the benefit of someone else"
+      },
+      {
+        "word": "clarity",
+        "meaning": "a clear, undistorted understanding of a situation"
+      },
+      {
+        "word": "courage",
+        "meaning": "the ability to act on what you know to be true, even when it is painful"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0018-f8a9-b0c1-d2e3-f4a5b6c7d8e9",
+    "title": "What makes someone genuinely easy to talk to?",
+    "category": "Relationships & People",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by describing the rare experience of feeling completely at ease with someone from very early in a conversation.",
+      "Compare two views: being easy to talk to is a skill anyone can develop vs. it is largely a personality trait and some people simply have a gift for it.",
+      "Ask yourself: who is the person in your life you find most effortless to talk to - and what specifically do they do that creates that feeling?",
+      "Try opening with: 'We all know someone who makes us feel immediately comfortable - as if we have known them far longer than we have. And it turns out that quality is worth studying closely...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "rapport",
+        "meaning": "a feeling of harmony and understanding between people"
+      },
+      {
+        "word": "openness",
+        "meaning": "a willingness to listen and share without judgement"
+      },
+      {
+        "word": "presence",
+        "meaning": "being fully focused on the person you are with"
+      },
+      {
+        "word": "curiosity",
+        "meaning": "a genuine interest in understanding another person"
+      },
+      {
+        "word": "non-judgement",
+        "meaning": "listening and responding without criticism or assessment"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0019-a9b0-c1d2-e3f4-a5b6c7d8e9f0",
+    "title": "How much do we really know about why we are attracted to certain people?",
+    "category": "Relationships & People",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing the experience of meeting someone and feeling an immediate pull - and how difficult it is to explain rationally.",
+      "Compare both views: attraction has clear psychological and biological patterns that can be understood vs. it remains one of the more mysterious human experiences and resists full explanation.",
+      "Ask yourself: looking back at the people you have been drawn to - is there a pattern? And is that pattern serving you?",
+      "Try opening with: 'We like to think we choose who we are attracted to based on good reasons - but the evidence suggests that something much stranger and less conscious is often driving it...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "attraction",
+        "meaning": "a feeling of being drawn toward someone romantically or socially"
+      },
+      {
+        "word": "pattern",
+        "meaning": "a recurring theme in the kinds of people you are drawn to"
+      },
+      {
+        "word": "unconscious",
+        "meaning": "happening below the level of conscious awareness"
+      },
+      {
+        "word": "familiarity",
+        "meaning": "a sense of knowing or comfort that comes from similarity to past experience"
+      },
+      {
+        "word": "chemistry",
+        "meaning": "an intangible sense of connection or electricity between two people"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0020-b0c1-d2e3-f4a5-b6c7d8e9f0a1",
+    "title": "What do we lose when we stop making new friends as adults?",
+    "category": "Relationships & People",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by noting how natural it is to make friends when you are young and how much harder it becomes in adulthood.",
+      "Compare two views: adult life makes new friendships genuinely more difficult and most people have to actively work to make them vs. people who say they cannot make new friends are simply not trying in the right ways.",
+      "Ask yourself: when was the last time you made a genuinely new friend - not just a colleague or neighbour, but someone you would choose?",
+      "Try opening with: 'Most of us make all our closest friends before we turn thirty - not because people become less interesting, but because something about how we live makes new closeness harder to build...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "vulnerability",
+        "meaning": "the openness required to start a new friendship"
+      },
+      {
+        "word": "proximity",
+        "meaning": "physical closeness, which historically drove friendship formation"
+      },
+      {
+        "word": "initiative",
+        "meaning": "taking the first step toward something without being asked"
+      },
+      {
+        "word": "connection",
+        "meaning": "a meaningful relationship or sense of closeness with another person"
+      },
+      {
+        "word": "loneliness",
+        "meaning": "a painful feeling from lacking meaningful connection"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0021-c1d2-e3f4-a5b6-c7d8e9f0a1b2",
+    "title": "Is it selfish to put your own needs before a relationship?",
+    "category": "Relationships & People",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing the tension between personal growth and the demands of a close relationship.",
+      "Compare both views: prioritising your own needs is the foundation of a healthy relationship - you cannot give from empty vs. relationships require compromise and sometimes genuine sacrifice, and always putting yourself first is not selflessness - it is self-centredness.",
+      "Ask yourself: is there something you want for yourself that you have held back because of a relationship? Was that the right call?",
+      "Try opening with: 'We are often told you cannot love others until you love yourself - but at what point does putting yourself first stop being healthy and start being harmful to the people who need you?'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "self-care",
+        "meaning": "deliberate attention to your own needs and wellbeing"
+      },
+      {
+        "word": "compromise",
+        "meaning": "giving something up so both people in a relationship can have their needs met"
+      },
+      {
+        "word": "sacrifice",
+        "meaning": "giving up something for the benefit of someone else"
+      },
+      {
+        "word": "resentment",
+        "meaning": "bitterness from consistently giving more than you receive"
+      },
+      {
+        "word": "autonomy",
+        "meaning": "the ability to make decisions about your own life"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "rp-0022-d2e3-f4a5-b6c7-d8e9f0a1b2c3",
+    "title": "What does healthy love look like compared to love that holds you back?",
+    "category": "Relationships & People",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by describing the difference between a relationship that makes you more yourself and one that quietly shrinks you.",
+      "Compare both views: healthy love is characterised by growth, freedom, and safety vs. distinguishing between healthy love and dependency is harder than it sounds, especially from the inside.",
+      "Ask yourself: does the most important relationship in your life make you feel more or less like yourself - and is that the right question?",
+      "Try opening with: 'We rarely ask whether a relationship is good for us while we are in it - but looking back, most people can identify clearly the ones that expanded them and the ones that slowly made them smaller...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "healthy relationship",
+        "meaning": "a connection based on mutual respect, trust, and individual freedom"
+      },
+      {
+        "word": "dependency",
+        "meaning": "relying on another person for your sense of worth or safety in an unhealthy way"
+      },
+      {
+        "word": "autonomy",
+        "meaning": "maintaining your own identity and choices within a relationship"
+      },
+      {
+        "word": "security",
+        "meaning": "a stable feeling of being accepted and safe in a relationship"
+      },
+      {
+        "word": "growth",
+        "meaning": "becoming more of who you are, supported by the relationship"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0001-a1b2-c3d4-e5f6-a7b8c9d0e1f2",
+    "title": "If you could change one thing about the world right now, what would it be and why?",
+    "category": "Imagine & What If",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by naming the change you would make - be specific rather than vague.",
+      "Think through what would happen next: what would improve, and what new challenges might your change create?",
+      "Ask yourself: why this change over all others? What does your answer reveal about what you value most?",
+      "Try opening with: 'If I had one change to make - and I had to use it wisely - I would choose...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "priority",
+        "meaning": "something considered more important than other things"
+      },
+      {
+        "word": "consequence",
+        "meaning": "a result that follows from an action or decision"
+      },
+      {
+        "word": "values",
+        "meaning": "the principles that guide what you consider most important"
+      },
+      {
+        "word": "impact",
+        "meaning": "the effect that an action has on others or the world"
+      },
+      {
+        "word": "trade-off",
+        "meaning": "a situation where gaining one thing requires giving something else up"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0002-b2c3-d4e5-f6a7-b8c9d0e1f2a3",
+    "title": "If you had to live in a different era, which would you choose - and why?",
+    "category": "Imagine & What If",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by naming the era - and being honest about which parts of it appeal and which you might be romanticising.",
+      "Compare what you would gain by living then versus what you would give up by leaving now.",
+      "Ask yourself: what is it about that time that draws you? Is there something about the present you are trying to leave behind?",
+      "Try opening with: 'I often think about what it would have felt like to live in... and I think I would have chosen it for reasons that say as much about now as they do about then...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "era",
+        "meaning": "a long and distinct period of history"
+      },
+      {
+        "word": "romanticise",
+        "meaning": "to think of something as more pleasant than it really was"
+      },
+      {
+        "word": "trade-off",
+        "meaning": "giving something up to gain something else"
+      },
+      {
+        "word": "privilege",
+        "meaning": "advantages that not everyone in that time would have had"
+      },
+      {
+        "word": "context",
+        "meaning": "the circumstances and conditions that surround something"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0003-c3d4-e5f6-a7b8-c9d0e1f2a3b4",
+    "title": "If you could know the exact date of your death, would you want to?",
+    "category": "Imagine & What If",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by imagining what you would do with that knowledge in the first few days after learning it.",
+      "Compare both views: knowing your end date would allow you to live more intentionally vs. the uncertainty of death is what keeps us engaged with daily life.",
+      "Ask yourself: would knowing change what you did with your time - and if so, why are you not living that way already?",
+      "Try opening with: 'We know we will all die. We just do not know when. And that uncertainty shapes almost everything - so what would happen if we took it away?'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "mortality",
+        "meaning": "the state of being human and subject to death"
+      },
+      {
+        "word": "intention",
+        "meaning": "a deliberate plan or purpose behind your actions"
+      },
+      {
+        "word": "uncertainty",
+        "meaning": "not knowing what will happen"
+      },
+      {
+        "word": "urgency",
+        "meaning": "the feeling that something needs to be done quickly or it will be lost"
+      },
+      {
+        "word": "meaning",
+        "meaning": "the sense of purpose or importance behind what you do"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0004-d4e5-f6a7-b8c9-d0e1f2a3b4c5",
+    "title": "If you could give every person in the world one skill, what would you choose?",
+    "category": "Imagine & What If",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by naming the skill - and being specific about what it actually involves.",
+      "Think about why that skill above all others - what problems would it solve, and what would the world look like if everyone had it?",
+      "Ask yourself: does the skill you chose reflect something you yourself wish you were better at?",
+      "Try opening with: 'If I could give every human being on Earth one skill, it would not be something practical like reading or coding - it would be...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "skill",
+        "meaning": "an ability developed through practice and effort"
+      },
+      {
+        "word": "empathy",
+        "meaning": "the ability to understand and share how someone else feels"
+      },
+      {
+        "word": "impact",
+        "meaning": "the effect that something has on other people or the world"
+      },
+      {
+        "word": "universal",
+        "meaning": "applying to all people everywhere"
+      },
+      {
+        "word": "priority",
+        "meaning": "something considered more important than everything else"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0005-e5f6-a7b8-c9d0-e1f2a3b4c5d6",
+    "title": "If money were no object for a year, how would you spend it - and what would that reveal about you?",
+    "category": "Imagine & What If",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by being honest - not just idealistic - about what you would actually do.",
+      "Compare the fantasy answer with the realistic one - and think about what the gap between them says.",
+      "Ask yourself: are any of the things you would do without money constraints actually achievable without them?",
+      "Try opening with: 'Most people have a quick answer to this question - but the more honest version is more interesting, and usually more revealing, than the first one...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "freedom",
+        "meaning": "the ability to act without restriction or financial worry"
+      },
+      {
+        "word": "values",
+        "meaning": "the things you consider most important in life"
+      },
+      {
+        "word": "constraint",
+        "meaning": "a limit that prevents you from doing something"
+      },
+      {
+        "word": "aspiration",
+        "meaning": "something you deeply want to achieve or experience"
+      },
+      {
+        "word": "reveal",
+        "meaning": "to show something about yourself that was not obvious before"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0006-f6a7-b8c9-d0e1-f2a3b4c5d6e7",
+    "title": "If you could speak to your older self at 80, what do you think they would say to you?",
+    "category": "Imagine & What If",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by imagining what your 80-year-old self would actually care about looking back.",
+      "Compare what you think matters now versus what you imagine will have mattered then.",
+      "Ask yourself: is there a fear or priority dominating your life right now that your older self would find worth less attention?",
+      "Try opening with: 'We can imagine our younger selves easily - but imagining ourselves old is harder. Yet the perspective of an older you might be the most useful voice in the room...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "hindsight",
+        "meaning": "the ability to understand a situation more clearly after it has passed"
+      },
+      {
+        "word": "regret",
+        "meaning": "a feeling of sadness about something you did or did not do"
+      },
+      {
+        "word": "wisdom",
+        "meaning": "knowledge and good judgement gained from experience"
+      },
+      {
+        "word": "perspective",
+        "meaning": "a way of seeing something that comes from your experience or position"
+      },
+      {
+        "word": "priority",
+        "meaning": "what matters most to you, especially over time"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0007-a7b8-c9d0-e1f2-a3b4c5d6e7f8",
+    "title": "If you could live in any city in the world, which would you choose and why?",
+    "category": "Imagine & What If",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by naming the city - and describing what specifically draws you to it.",
+      "Think through the practicalities: what would daily life look like, what would you gain, and what would you miss?",
+      "Ask yourself: does your choice tell you something about what is missing from where you currently live?",
+      "Try opening with: 'If I could wake up tomorrow and be a resident of any city in the world, I would choose... and the reasons say quite a lot about what I think a good life looks like...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "quality of life",
+        "meaning": "how good or satisfying your everyday existence is"
+      },
+      {
+        "word": "culture",
+        "meaning": "the shared values, habits, and identity of a place and its people"
+      },
+      {
+        "word": "belonging",
+        "meaning": "a sense of being accepted and in the right place"
+      },
+      {
+        "word": "trade-off",
+        "meaning": "gaining something by giving up something else"
+      },
+      {
+        "word": "ideal",
+        "meaning": "matching your perfect vision of how something should be"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0008-b8c9-d0e1-f2a3-b4c5d6e7f8a9",
+    "title": "If you could witness any moment in history, which would you choose?",
+    "category": "Imagine & What If",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by naming the moment - and being specific about what it was, where it happened, and who was there.",
+      "Think about why that moment above all others - what draws you to it? Is it curiosity, admiration, or wanting to understand something that still matters today?",
+      "Ask yourself: would you want to watch as an invisible observer, or would you want to be part of it?",
+      "Try opening with: 'History is full of moments we have read about and imagined - but if I could actually be there, I would choose...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "witness",
+        "meaning": "to see something happen directly"
+      },
+      {
+        "word": "turning point",
+        "meaning": "a moment where events changed direction significantly"
+      },
+      {
+        "word": "curiosity",
+        "meaning": "a strong desire to know or understand something"
+      },
+      {
+        "word": "context",
+        "meaning": "the surrounding circumstances that give a moment its full meaning"
+      },
+      {
+        "word": "significance",
+        "meaning": "the importance or meaning of an event"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0009-c9d0-e1f2-a3b4-c5d6e7f8a9b0",
+    "title": "What would you do if you knew you could not fail?",
+    "category": "Imagine & What If",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by naming the thing - and why the fear of failure is what has held you back from it.",
+      "Think about what this reveals: is your deepest ambition actually impossible, or just scary?",
+      "Ask yourself: what is the smallest version of that thing you could try without needing a guarantee of success?",
+      "Try opening with: 'There is something most of us want to try but have not - not because it is impossible, but because we are not confident enough to risk finding out that we cannot do it...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "ambition",
+        "meaning": "a strong desire to achieve something important"
+      },
+      {
+        "word": "fear",
+        "meaning": "an unpleasant feeling caused by the belief that something could go wrong"
+      },
+      {
+        "word": "risk",
+        "meaning": "the possibility of failing or being hurt by trying something"
+      },
+      {
+        "word": "potential",
+        "meaning": "the ability to achieve or develop something in the future"
+      },
+      {
+        "word": "courage",
+        "meaning": "acting despite the possibility of failure or rejection"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0010-d0e1-f2a3-b4c5-d6e7f8a9b0c1",
+    "title": "If animals could talk, which species do you think would have the most interesting things to say?",
+    "category": "Imagine & What If",
+    "difficulty": "beginner",
+    "guide": [
+      "Start with a light, specific answer - and then follow it with your reasoning.",
+      "Think about what that species experiences that humans do not - their senses, their world, their relationships.",
+      "Ask yourself: what would you most want to ask them - and what does that question reveal about your own curiosity?",
+      "Try opening with: 'If any animal could suddenly speak, most people pick the wrong one - here is who I would choose and why...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "perspective",
+        "meaning": "a way of seeing the world shaped by your experience"
+      },
+      {
+        "word": "consciousness",
+        "meaning": "awareness of yourself and your surroundings"
+      },
+      {
+        "word": "curiosity",
+        "meaning": "a desire to understand something more fully"
+      },
+      {
+        "word": "communication",
+        "meaning": "the exchange of information between living things"
+      },
+      {
+        "word": "instinct",
+        "meaning": "a natural behaviour pattern that does not require learning"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0011-e1f2-a3b4-c5d6-e7f8a9b0c1d2",
+    "title": "If you could design a school from scratch, what would it look like?",
+    "category": "Imagine & What If",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by describing one thing about your own education that you wish had been different.",
+      "Compare what schools currently prioritise versus what you think genuinely matters for a full life.",
+      "Ask yourself: what skill or knowledge do you use every day that you were never actually taught in school?",
+      "Try opening with: 'If I had total freedom to build a school from the ground up, the first thing I would remove is... and the first thing I would add is...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "curriculum",
+        "meaning": "the subjects and content taught in a school"
+      },
+      {
+        "word": "critical thinking",
+        "meaning": "the ability to analyse information and form your own reasoned judgements"
+      },
+      {
+        "word": "wellbeing",
+        "meaning": "a state of being comfortable, healthy, and content"
+      },
+      {
+        "word": "practical skills",
+        "meaning": "abilities that are useful in everyday real life"
+      },
+      {
+        "word": "curiosity",
+        "meaning": "a desire to explore and understand new things"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0012-f2a3-b4c5-d6e7-f8a9b0c1d2e3",
+    "title": "If you could guarantee your children or future generations one thing, what would it be?",
+    "category": "Imagine & What If",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by naming the guarantee - and being specific about what it means in practice.",
+      "Think about why this particular thing above all others - and what it says about what you fear they might not have.",
+      "Ask yourself: is this something the world already has the ability to provide? If so, what is stopping it?",
+      "Try opening with: 'If I could remove one uncertainty from the future of the people who come after me, I would choose...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "legacy",
+        "meaning": "what you leave behind for the people who come after you"
+      },
+      {
+        "word": "security",
+        "meaning": "a stable foundation that protects against risk or harm"
+      },
+      {
+        "word": "equity",
+        "meaning": "fairness in the distribution of opportunities and resources"
+      },
+      {
+        "word": "future",
+        "meaning": "the period of time that has not yet happened"
+      },
+      {
+        "word": "responsibility",
+        "meaning": "a duty to act in a way that benefits others"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0013-a3b4-c5d6-e7f8-a9b0c1d2e3f4",
+    "title": "If you could have a long, honest conversation with anyone alive or dead, who would it be?",
+    "category": "Imagine & What If",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by naming the person - and being specific about why this person above all others.",
+      "Think about what you would actually ask - and whether you are ready for the answers.",
+      "Ask yourself: what do you hope to learn from them that you have not been able to find elsewhere?",
+      "Try opening with: 'There is one person - living or dead - I have always wanted an hour with alone. Not to impress them. Just to understand something that only they could tell me...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "curiosity",
+        "meaning": "a genuine desire to understand something or someone more deeply"
+      },
+      {
+        "word": "insight",
+        "meaning": "a deep understanding that comes from experience or perspective"
+      },
+      {
+        "word": "influence",
+        "meaning": "the effect someone's life or ideas has had on the world"
+      },
+      {
+        "word": "candid",
+        "meaning": "honest and open, without pretence"
+      },
+      {
+        "word": "wisdom",
+        "meaning": "knowledge and good judgement gained through experience"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0014-b4c5-d6e7-f8a9-b0c1d2e3f4a5",
+    "title": "If you could remove one modern invention from existence, what would it be?",
+    "category": "Imagine & What If",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by naming the invention - and thinking through all the things it is connected to that would also disappear.",
+      "Compare what the world would gain from its absence versus what it would lose.",
+      "Ask yourself: is the problem really the invention itself, or how it has been used?",
+      "Try opening with: 'Most of us celebrate the inventions that have changed the world - but if I could go back and stop one from ever being made, it would be... and here is why the benefits do not outweigh the cost...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "invention",
+        "meaning": "something created for the first time, often through ingenuity"
+      },
+      {
+        "word": "unintended consequence",
+        "meaning": "an unexpected result that was not part of the original purpose"
+      },
+      {
+        "word": "dependency",
+        "meaning": "relying on something to the point where removing it causes disruption"
+      },
+      {
+        "word": "harm",
+        "meaning": "damage or negative consequences caused to people"
+      },
+      {
+        "word": "trade-off",
+        "meaning": "gaining one thing at the cost of losing something else"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0015-c5d6-e7f8-a9b0-c1d2e3f4a5b6",
+    "title": "If you could experience one year from another person's life, whose would you choose?",
+    "category": "Imagine & What If",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by naming the person and the year - and why that specific period.",
+      "Think about what you hope to understand from the inside that you could not understand from the outside.",
+      "Ask yourself: what does your choice say about what you admire, envy, or want to understand?",
+      "Try opening with: 'I would choose to experience one year of someone's life who I believe saw the world in a way I have never quite been able to access on my own...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "perspective",
+        "meaning": "a way of seeing the world that comes from your experience"
+      },
+      {
+        "word": "empathy",
+        "meaning": "the ability to understand how another person sees and feels"
+      },
+      {
+        "word": "admiration",
+        "meaning": "a feeling of deep respect or appreciation for someone"
+      },
+      {
+        "word": "lived experience",
+        "meaning": "the direct personal experience of a situation"
+      },
+      {
+        "word": "curiosity",
+        "meaning": "a strong desire to understand or explore something new"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0016-d6e7-f8a9-b0c1-d2e3f4a5b6c7",
+    "title": "If the internet disappeared tomorrow, what would change most about your life?",
+    "category": "Imagine & What If",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by listing all the things in your daily life that would immediately stop working.",
+      "Think beyond the obvious inconveniences - what would also improve?",
+      "Ask yourself: what does your answer tell you about how dependent you have become - and whether you are comfortable with that?",
+      "Try opening with: 'Most of us have never spent more than a few hours without internet access, which means we have no real idea how much of our life is built on top of it...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "dependency",
+        "meaning": "relying on something so heavily that losing it would be disruptive"
+      },
+      {
+        "word": "infrastructure",
+        "meaning": "the underlying systems that society depends on to function"
+      },
+      {
+        "word": "connection",
+        "meaning": "a link between people or systems"
+      },
+      {
+        "word": "convenience",
+        "meaning": "ease of access or use, often provided by technology"
+      },
+      {
+        "word": "adapt",
+        "meaning": "to change your behaviour in response to a new situation"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0017-e7f8-a9b0-c1d2-e3f4a5b6c7d8",
+    "title": "If you could teach the whole world one lesson from your own life, what would it be?",
+    "category": "Imagine & What If",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by naming the lesson - and the experience that taught it to you.",
+      "Think about why this lesson feels important enough to share with everyone - what universal truth does it point toward?",
+      "Ask yourself: how long did it take you to learn this - and are you still learning it?",
+      "Try opening with: 'If there is one thing I have learned from my own life that I believe would genuinely help most people, it is this...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "lesson",
+        "meaning": "something valuable learned from experience"
+      },
+      {
+        "word": "wisdom",
+        "meaning": "knowledge gained through experience that helps you make better decisions"
+      },
+      {
+        "word": "universal",
+        "meaning": "applying to all people regardless of background or circumstance"
+      },
+      {
+        "word": "insight",
+        "meaning": "a deep understanding of something that was not previously clear"
+      },
+      {
+        "word": "hindsight",
+        "meaning": "understanding a situation better after it has happened"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0018-f8a9-b0c1-d2e3-f4a5b6c7d8e9",
+    "title": "If humans had to leave Earth and could only bring ten things, what should be on the list?",
+    "category": "Imagine & What If",
+    "difficulty": "intermediate",
+    "guide": [
+      "Start by listing your initial ten - then challenge each one: is it truly essential, or just familiar?",
+      "Think about the difference between what is practically necessary and what is culturally or emotionally important.",
+      "Ask yourself: what does the process of choosing reveal about what you think makes humanity worth preserving?",
+      "Try opening with: 'This question sounds like a fun puzzle - but the more seriously you take it, the more it becomes a question about what matters most about being human...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "essential",
+        "meaning": "absolutely necessary; impossible to do without"
+      },
+      {
+        "word": "preservation",
+        "meaning": "keeping something alive or unchanged"
+      },
+      {
+        "word": "civilisation",
+        "meaning": "the organised life of a human society with culture, laws, and knowledge"
+      },
+      {
+        "word": "culture",
+        "meaning": "the shared values, art, and knowledge of a society"
+      },
+      {
+        "word": "priority",
+        "meaning": "something ranked above other things in importance"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0019-a9b0-c1d2-e3f4-a5b6c7d8e9f0",
+    "title": "If you could live your life with the knowledge you have now, what would you do differently?",
+    "category": "Imagine & What If",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by naming one or two specific decisions you would change - and why.",
+      "Be honest about the harder side: if you had known more, would you have taken the risks that led to the best things?",
+      "Ask yourself: is there wisdom you have gained the hard way that you could not have received any other way?",
+      "Try opening with: 'Every version of this answer involves a paradox - because the best things in your life are often the result of not knowing what you know now...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "hindsight",
+        "meaning": "understanding something more clearly after it has happened"
+      },
+      {
+        "word": "regret",
+        "meaning": "a painful feeling about a past choice or missed opportunity"
+      },
+      {
+        "word": "paradox",
+        "meaning": "a situation that seems contradictory but may be true"
+      },
+      {
+        "word": "wisdom",
+        "meaning": "knowledge and good judgement gained from experience"
+      },
+      {
+        "word": "decision",
+        "meaning": "a choice made between two or more options"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0020-b0c1-d2e3-f4a5-b6c7d8e9f0a1",
+    "title": "If you could make one law that everyone in the world had to follow, what would it be?",
+    "category": "Imagine & What If",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by naming the law - and thinking through all the complications of enforcing it globally.",
+      "Think about why this above all others - what problem does it solve that nothing else addresses?",
+      "Ask yourself: who would resist this law the most, and what does that tell you about the values behind it?",
+      "Try opening with: 'One global law. Every human being, every government, no exceptions. The moment you start thinking seriously about what it should be, you realise how much you reveal about yourself...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "law",
+        "meaning": "a rule backed by authority that all members of a society must follow"
+      },
+      {
+        "word": "enforcement",
+        "meaning": "making sure that a rule is actually followed"
+      },
+      {
+        "word": "universal",
+        "meaning": "applying to all people everywhere"
+      },
+      {
+        "word": "values",
+        "meaning": "the principles behind what you consider right and worth protecting"
+      },
+      {
+        "word": "resistance",
+        "meaning": "opposition to a rule or change"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0021-c1d2-e3f4-a5b6-c7d8e9f0a1b2",
+    "title": "If you could wake up tomorrow with one new ability, what would you choose - and why?",
+    "category": "Imagine & What If",
+    "difficulty": "beginner",
+    "guide": [
+      "Start by naming the ability - and being specific rather than vague.",
+      "Think through how you would actually use it in your daily life and what it would change.",
+      "Ask yourself: does your answer reveal more about what you lack or what you most deeply want?",
+      "Try opening with: 'If I could gain one ability overnight - not a superpower, but something genuinely useful - I would choose... and the reason is more honest than flattering...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "ability",
+        "meaning": "the power or skill to do something"
+      },
+      {
+        "word": "aspiration",
+        "meaning": "something you deeply desire to achieve or become"
+      },
+      {
+        "word": "practical",
+        "meaning": "useful in real everyday situations"
+      },
+      {
+        "word": "reveal",
+        "meaning": "to show something about yourself that was not obvious"
+      },
+      {
+        "word": "impact",
+        "meaning": "the effect that something has on your life or the lives of others"
+      }
+    ],
+    "isCustom": false
+  },
+  {
+    "id": "wi-0022-d2e3-f4a5-b6c7-d8e9f0a1b2c3",
+    "title": "If you could only keep three memories from your life, which would you choose?",
+    "category": "Imagine & What If",
+    "difficulty": "advanced",
+    "guide": [
+      "Start by sitting quietly with the question before answering - the first three memories that come are worth examining.",
+      "Think about what the three you choose have in common: are they moments of joy, connection, growth, or something else?",
+      "Ask yourself: what does your answer tell you about what has mattered most in your life so far?",
+      "Try opening with: 'This question only works if you take it seriously. Because the three you choose say something about who you really are - not who you think you should be...'"
+    ],
+    "vocabBoost": [
+      {
+        "word": "memory",
+        "meaning": "a mental record of something from the past that can be recalled"
+      },
+      {
+        "word": "significance",
+        "meaning": "the importance or meaning of something in your life"
+      },
+      {
+        "word": "identity",
+        "meaning": "the experiences and qualities that make you who you are"
+      },
+      {
+        "word": "nostalgia",
+        "meaning": "a warm or bittersweet feeling connected to a memory from the past"
+      },
+      {
+        "word": "reflection",
+        "meaning": "serious thought about your experiences and what they mean to you"
+      }
+    ],
+    "isCustom": false
   }
 ]
