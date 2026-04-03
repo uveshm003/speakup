@@ -40,6 +40,8 @@ import 'package:speakup/features/settings/domain/repositories/settings_repositor
 import 'package:speakup/features/settings/data/models/user_settings_hive.dart';
 import 'package:speakup/features/settings/presentation/screens/settings_screen.dart';
 import 'package:speakup/features/splash/presentation/screens/splash_screen.dart';
+import 'package:speakup/features/challenges/presentation/screens/challenges_screen.dart';
+import 'package:speakup/features/challenges/presentation/screens/challenge_detail_screen.dart';
 
 import 'app_routes.dart';
 import 'router_refresh.dart';
@@ -269,6 +271,18 @@ final GoRouter appRouter = GoRouter(
             ),
           ],
         ),
+        // ── 5th tab: Challenges ────────────────────────────────────────────
+        StatefulShellBranch(
+          routes: <RouteBase>[
+            GoRoute(
+              path: AppRoutes.challenges,
+              name: 'challenges',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return _fadeTabPage(state, const ChallengesScreen());
+              },
+            ),
+          ],
+        ),
       ],
     ),
     GoRoute(
@@ -315,6 +329,21 @@ final GoRouter appRouter = GoRouter(
           },
         ),
       ],
+    ),
+    // ── Challenge detail (push over bottom nav) ──────────────────────────
+    GoRoute(
+      path: AppRoutes.challengeDetail,
+      parentNavigatorKey: rootNavigatorKey,
+      pageBuilder: (BuildContext context, GoRouterState state) {
+        final Object? extra = state.extra;
+        if (extra is! ChallengeDetailArgs) {
+          return _slideForwardPage(
+            state,
+            const Scaffold(body: Center(child: Text('Challenge not found'))),
+          );
+        }
+        return _slideForwardPage(state, ChallengeDetailScreen(args: extra));
+      },
     ),
   ],
 );
