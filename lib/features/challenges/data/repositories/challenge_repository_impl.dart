@@ -23,8 +23,7 @@ class ChallengeRepositoryImpl implements ChallengeRepository {
         final String? raw = _box.get(key);
         if (raw == null) continue;
         try {
-          final Map<String, dynamic> map =
-              json.decode(raw) as Map<String, dynamic>;
+          final Map<String, dynamic> map = json.decode(raw) as Map<String, dynamic>;
           result[key] = ChallengeProgress.fromJson(map);
         } catch (_) {
           // Skip corrupted entries silently.
@@ -32,14 +31,12 @@ class ChallengeRepositoryImpl implements ChallengeRepository {
       }
       return Right<Failure, Map<String, ChallengeProgress>>(result);
     } catch (e) {
-      return Left<Failure, Map<String, ChallengeProgress>>(
-        CacheFailure(e.toString()),
-      );
+      return Left<Failure, Map<String, ChallengeProgress>>(CacheFailure(e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, void>> enrol(String challengeId) async {
+  Future<Either<Failure, void>> enrol(String challengeId, {Map<String, String>? dailyPromptIds}) async {
     try {
       if (_box.containsKey(challengeId)) {
         return const Right<Failure, void>(null); // already enrolled
@@ -47,6 +44,7 @@ class ChallengeRepositoryImpl implements ChallengeRepository {
       final ChallengeProgress progress = ChallengeProgress(
         challengeId: challengeId,
         enrolledAt: DateTime.now(),
+        dailyPromptIds: dailyPromptIds ?? const <String, String>{},
       );
       await _box.put(challengeId, json.encode(progress.toJson()));
       return const Right<Failure, void>(null);
@@ -56,26 +54,17 @@ class ChallengeRepositoryImpl implements ChallengeRepository {
   }
 
   @override
-  Future<Either<Failure, void>> markDayComplete(
-    String challengeId,
-    int day,
-    int totalDays,
-  ) async {
+  Future<Either<Failure, void>> markDayComplete(String challengeId, int day, int totalDays) async {
     try {
       final String? raw = _box.get(challengeId);
       if (raw == null) {
         return Left<Failure, void>(CacheFailure('Challenge not enrolled'));
       }
-      final ChallengeProgress existing = ChallengeProgress.fromJson(
-        json.decode(raw) as Map<String, dynamic>,
-      );
+      final ChallengeProgress existing = ChallengeProgress.fromJson(json.decode(raw) as Map<String, dynamic>);
       final List<int> updated = List<int>.from(existing.completedDays);
       if (!updated.contains(day)) updated.add(day);
       final bool done = updated.length >= totalDays;
-      final ChallengeProgress saved = existing.copyWith(
-        completedDays: updated,
-        isCompleted: done,
-      );
+      final ChallengeProgress saved = existing.copyWith(completedDays: updated, isCompleted: done);
       await _box.put(challengeId, json.encode(saved.toJson()));
       return const Right<Failure, void>(null);
     } catch (e) {

@@ -8,14 +8,10 @@ abstract interface class ChallengeRepository {
   Future<Either<Failure, Map<String, ChallengeProgress>>> getAllProgress();
 
   /// Persist enrolment for [challengeId].
-  Future<Either<Failure, void>> enrol(String challengeId);
+  Future<Either<Failure, void>> enrol(String challengeId, {Map<String, String>? dailyPromptIds});
 
   /// Mark the current day as complete for [challengeId].
-  Future<Either<Failure, void>> markDayComplete(
-    String challengeId,
-    int day,
-    int totalDays,
-  );
+  Future<Either<Failure, void>> markDayComplete(String challengeId, int day, int totalDays);
 
   /// Remove the challenge enrolment entirely.
   Future<Either<Failure, void>> abandon(String challengeId);

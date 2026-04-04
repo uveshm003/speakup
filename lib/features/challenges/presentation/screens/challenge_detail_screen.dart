@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:speakup/features/card_draw/domain/repositories/card_repository.dart';
+
 import 'package:speakup/config/router/app_routes.dart';
 import 'package:speakup/config/theme/app_radius.dart';
 import 'package:speakup/config/theme/app_spacing.dart';
@@ -40,19 +42,15 @@ class ChallengeDetailScreen extends StatelessWidget {
     final bool isEnrolled = progress != null;
 
     return Scaffold(
-      backgroundColor: isDark
-          ? theme.colorScheme.surface
-          : theme.colorScheme.surfaceContainerLowest,
+      backgroundColor: isDark ? theme.colorScheme.surface : theme.colorScheme.surfaceContainerLowest,
       body: CustomScrollView(
         slivers: <Widget>[
           // ── Hero header ──────────────────────────────────────────────────
           SliverAppBar(
             expandedHeight: 200,
             pinned: true,
-            backgroundColor:
-                isDark ? theme.colorScheme.surface : theme.colorScheme.primary,
-            foregroundColor:
-                isDark ? theme.colorScheme.onSurface : Colors.white,
+            backgroundColor: isDark ? theme.colorScheme.surface : theme.colorScheme.primary,
+            foregroundColor: isDark ? theme.colorScheme.onSurface : Colors.white,
             elevation: 0,
             flexibleSpace: FlexibleSpaceBar(
               collapseMode: CollapseMode.parallax,
@@ -61,10 +59,7 @@ class ChallengeDetailScreen extends StatelessWidget {
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: <Color>[
-                      def.accentColor,
-                      def.accentColor.withValues(alpha: 0.7),
-                    ],
+                    colors: <Color>[def.accentColor, def.accentColor.withValues(alpha: 0.7)],
                   ),
                 ),
                 child: Stack(
@@ -73,13 +68,7 @@ class ChallengeDetailScreen extends StatelessWidget {
                     Positioned(
                       right: -20,
                       bottom: -20,
-                      child: Opacity(
-                        opacity: 0.12,
-                        child: Text(
-                          def.emoji,
-                          style: const TextStyle(fontSize: 160),
-                        ),
-                      ),
+                      child: Opacity(opacity: 0.12, child: Text(def.emoji, style: const TextStyle(fontSize: 160))),
                     ),
                     // Title content
                     Positioned(
@@ -91,33 +80,20 @@ class ChallengeDetailScreen extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: AppSpacing.sm,
-                              vertical: 3,
-                            ),
+                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 3),
                             decoration: BoxDecoration(
                               color: Colors.white.withValues(alpha: 0.25),
-                              borderRadius:
-                                  BorderRadius.circular(AppRadius.full),
+                              borderRadius: BorderRadius.circular(AppRadius.full),
                             ),
                             child: Text(
                               '${def.durationDays}-Day Challenge',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 11,
-                                fontWeight: FontWeight.w700,
-                              ),
+                              style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w700),
                             ),
                           ),
                           const SizedBox(height: AppSpacing.sm),
                           Text(
                             def.title,
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 22,
-                              fontWeight: FontWeight.w800,
-                              color: Colors.white,
-                              height: 1.2,
-                            ),
+                            style: GoogleFonts.plusJakartaSans(fontSize: 22, fontWeight: FontWeight.w800, color: Colors.white, height: 1.2),
                           ),
                         ],
                       ),
@@ -130,20 +106,11 @@ class ChallengeDetailScreen extends StatelessWidget {
 
           // ── Body ──────────────────────────────────────────────────────────
           SliverPadding(
-            padding: const EdgeInsets.fromLTRB(
-              AppSpacing.lg, AppSpacing.xl,
-              AppSpacing.lg, AppSpacing.huge,
-            ),
+            padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.xl, AppSpacing.lg, AppSpacing.huge),
             sliver: SliverList(
               delegate: SliverChildListDelegate(<Widget>[
                 // Description
-                Text(
-                  def.subtitle,
-                  style: theme.textTheme.bodyLarge?.copyWith(
-                    color: theme.colorScheme.onSurfaceVariant,
-                    height: 1.55,
-                  ),
-                ),
+                Text(def.subtitle, style: theme.textTheme.bodyLarge?.copyWith(color: theme.colorScheme.onSurfaceVariant, height: 1.55)),
                 const SizedBox(height: AppSpacing.xl),
 
                 // Stats row
@@ -151,21 +118,14 @@ class ChallengeDetailScreen extends StatelessWidget {
                 const SizedBox(height: AppSpacing.xl),
 
                 // Progress section (if enrolled)
-                if (isEnrolled) ...<Widget>[
-                  _ProgressSection(def: def, progress: progress!),
-                  const SizedBox(height: AppSpacing.xl),
-                ],
+                if (isEnrolled) ...<Widget>[_ProgressSection(def: def, progress: progress!), const SizedBox(height: AppSpacing.xl)],
 
                 // Day timeline
                 _DayTimeline(def: def, progress: progress),
                 const SizedBox(height: AppSpacing.xxl),
 
                 // CTA
-                _CtaSection(
-                  def: def,
-                  progress: progress,
-                  isEnrolled: isEnrolled,
-                ),
+                _CtaSection(def: def, progress: progress, isEnrolled: isEnrolled),
               ]),
             ),
           ),
@@ -191,18 +151,11 @@ class _StatsRow extends StatelessWidget {
     Widget stat(String value, String label, IconData icon) {
       return Expanded(
         child: Container(
-          padding: const EdgeInsets.symmetric(
-            vertical: AppSpacing.md, horizontal: AppSpacing.sm,
-          ),
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.md, horizontal: AppSpacing.sm),
           decoration: BoxDecoration(
-            color: isDark
-                ? theme.colorScheme.surfaceContainerHighest
-                    .withValues(alpha: 0.35)
-                : theme.colorScheme.surface,
+            color: isDark ? theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.35) : theme.colorScheme.surface,
             borderRadius: BorderRadius.circular(AppRadius.lg),
-            border: Border.all(
-              color: def.accentColor.withValues(alpha: 0.25),
-            ),
+            border: Border.all(color: def.accentColor.withValues(alpha: 0.25)),
           ),
           child: Column(
             children: <Widget>[
@@ -210,18 +163,9 @@ class _StatsRow extends StatelessWidget {
               const SizedBox(height: AppSpacing.xs),
               Text(
                 value,
-                style: GoogleFonts.plusJakartaSans(
-                  fontWeight: FontWeight.w800,
-                  fontSize: 18,
-                  color: def.accentColor,
-                ),
+                style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w800, fontSize: 18, color: def.accentColor),
               ),
-              Text(
-                label,
-                style: theme.textTheme.labelSmall?.copyWith(
-                  color: theme.colorScheme.onSurfaceVariant,
-                ),
-              ),
+              Text(label, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
             ],
           ),
         ),
@@ -234,11 +178,7 @@ class _StatsRow extends StatelessWidget {
         const SizedBox(width: AppSpacing.sm),
         stat('${def.tasksPerDay}×', 'per day', Icons.repeat_rounded),
         const SizedBox(width: AppSpacing.sm),
-        stat(
-          def.category?.split(' ').first ?? 'Mixed',
-          'topic',
-          Icons.category_outlined,
-        ),
+        stat(def.category?.split(' ').first ?? 'Mixed', 'topic', Icons.category_outlined),
       ],
     );
   }
@@ -263,12 +203,7 @@ class _ProgressSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(AppSpacing.lg),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: <Color>[
-            def.accentColor.withValues(alpha: 0.12),
-            def.accentColor.withValues(alpha: 0.04),
-          ],
-        ),
+        gradient: LinearGradient(colors: <Color>[def.accentColor.withValues(alpha: 0.12), def.accentColor.withValues(alpha: 0.04)]),
         borderRadius: BorderRadius.circular(AppRadius.xl),
         border: Border.all(color: def.accentColor.withValues(alpha: 0.3)),
       ),
@@ -277,21 +212,11 @@ class _ProgressSection extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Text(
-                'Your Progress',
-                style: GoogleFonts.plusJakartaSans(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 14,
-                ),
-              ),
+              Text('Your Progress', style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 14)),
               const Spacer(),
               Text(
                 '$done / ${def.durationDays} days',
-                style: TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                  color: def.accentColor,
-                ),
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: def.accentColor),
               ),
             ],
           ),
@@ -301,19 +226,14 @@ class _ProgressSection extends StatelessWidget {
             child: LinearProgressIndicator(
               value: frac,
               minHeight: 10,
-              backgroundColor:
-                  isDark ? theme.colorScheme.surfaceContainerHighest : Colors.white,
+              backgroundColor: isDark ? theme.colorScheme.surfaceContainerHighest : Colors.white,
               color: def.accentColor,
             ),
           ),
           const SizedBox(height: AppSpacing.sm),
           Text(
-            frac >= 1.0
-                ? '🎉 Challenge completed!'
-                : '${((1 - frac) * def.durationDays).ceil()} days remaining',
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
+            frac >= 1.0 ? '🎉 Challenge completed!' : '${((1 - frac) * def.durationDays).ceil()} days remaining',
+            style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
           ),
         ],
       ),
@@ -339,13 +259,7 @@ class _DayTimeline extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          'Day-by-Day Plan',
-          style: GoogleFonts.plusJakartaSans(
-            fontWeight: FontWeight.w800,
-            fontSize: 16,
-          ),
-        ),
+        Text('Day-by-Day Plan', style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w800, fontSize: 16)),
         const SizedBox(height: AppSpacing.md),
         ...List<Widget>.generate(def.durationDays, (int i) {
           final bool isDone = done.contains(i);
@@ -359,10 +273,30 @@ class _DayTimeline extends StatelessWidget {
             accentColor: def.accentColor,
             category: def.category,
             theme: theme,
+            onTap: progress != null ? () => _startPracticeForDay(context, i, def, progress) : null,
           );
         }),
       ],
     );
+  }
+
+  Future<void> _startPracticeForDay(BuildContext context, int dayIndex, ChallengeDef def, ChallengeProgress? progress) async {
+    HapticFeedback.mediumImpact();
+    final String? promptId = progress?.dailyPromptIds[dayIndex.toString()];
+    if (promptId != null) {
+      final cardRepo = context.read<CardRepository>();
+      final result = await cardRepo.getByCardId(promptId);
+      result.fold((failure) => _startPracticeRandom(context, def), (card) => context.push(AppRoutes.timerSetup, extra: card));
+    } else {
+      _startPracticeRandom(context, def);
+    }
+  }
+
+  void _startPracticeRandom(BuildContext context, ChallengeDef def) {
+    final Map<String, String> params = <String, String>{};
+    if (def.category != null) params['category'] = def.category!;
+    final String uri = Uri(path: AppRoutes.categorySelect, queryParameters: params.isEmpty ? null : params).toString();
+    context.push(uri);
   }
 }
 
@@ -376,6 +310,7 @@ class _DayRow extends StatelessWidget {
     required this.accentColor,
     required this.category,
     required this.theme,
+    this.onTap,
   });
 
   final int day;
@@ -386,18 +321,18 @@ class _DayRow extends StatelessWidget {
   final Color accentColor;
   final String? category;
   final ThemeData theme;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    final Color lineColor =
-        isDone ? accentColor : theme.colorScheme.outlineVariant;
+    final Color lineColor = isDone ? accentColor : theme.colorScheme.outlineVariant;
     final Color dotColor = isDone
         ? accentColor
         : isToday
-            ? accentColor.withValues(alpha: 0.5)
-            : theme.colorScheme.outlineVariant;
+        ? accentColor.withValues(alpha: 0.5)
+        : theme.colorScheme.outlineVariant;
 
-    return IntrinsicHeight(
+    final Widget content = IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -412,22 +347,11 @@ class _DayRow extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: dotColor,
                     shape: BoxShape.circle,
-                    border: isToday && !isDone
-                        ? Border.all(color: accentColor, width: 2)
-                        : null,
+                    border: isToday && !isDone ? Border.all(color: accentColor, width: 2) : null,
                   ),
-                  child: isDone
-                      ? const Icon(Icons.check_rounded,
-                          size: 12, color: Colors.white)
-                      : null,
+                  child: isDone ? const Icon(Icons.check_rounded, size: 12, color: Colors.white) : null,
                 ),
-                if (!isLast)
-                  Expanded(
-                    child: Container(
-                      width: 2,
-                      color: lineColor.withValues(alpha: 0.3),
-                    ),
-                  ),
+                if (!isLast) Expanded(child: Container(width: 2, color: lineColor.withValues(alpha: 0.3))),
               ],
             ),
           ),
@@ -449,26 +373,18 @@ class _DayRow extends StatelessWidget {
                           color: isDone
                               ? accentColor
                               : isToday
-                                  ? theme.colorScheme.onSurface
-                                  : theme.colorScheme.onSurfaceVariant,
+                              ? theme.colorScheme.onSurface
+                              : theme.colorScheme.onSurfaceVariant,
                         ),
                       ),
                       if (isToday)
                         Container(
                           margin: const EdgeInsets.only(left: AppSpacing.xs),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 6, vertical: 1),
-                          decoration: BoxDecoration(
-                            color: accentColor,
-                            borderRadius: BorderRadius.circular(AppRadius.full),
-                          ),
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
+                          decoration: BoxDecoration(color: accentColor, borderRadius: BorderRadius.circular(AppRadius.full)),
                           child: const Text(
                             'TODAY',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 8,
-                              fontWeight: FontWeight.w800,
-                            ),
+                            style: TextStyle(color: Colors.white, fontSize: 8, fontWeight: FontWeight.w800),
                           ),
                         ),
                     ],
@@ -477,9 +393,7 @@ class _DayRow extends StatelessWidget {
                   Text(
                     '$tasksPerDay ${tasksPerDay > 1 ? 'sessions' : 'session'}'
                     '${category != null ? ' · $category' : ' · any category'}',
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: theme.colorScheme.onSurfaceVariant,
-                    ),
+                    style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
                   ),
                 ],
               ),
@@ -488,6 +402,15 @@ class _DayRow extends StatelessWidget {
         ],
       ),
     );
+
+    if (onTap != null) {
+      return InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(AppRadius.md),
+        child: Padding(padding: const EdgeInsets.symmetric(vertical: 4), child: content),
+      );
+    }
+    return Padding(padding: const EdgeInsets.symmetric(vertical: 4), child: content);
   }
 }
 
@@ -496,24 +419,31 @@ class _DayRow extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _CtaSection extends StatelessWidget {
-  const _CtaSection({
-    required this.def,
-    required this.progress,
-    required this.isEnrolled,
-  });
+  const _CtaSection({required this.def, required this.progress, required this.isEnrolled});
 
   final ChallengeDef def;
   final ChallengeProgress? progress;
   final bool isEnrolled;
 
-  void _startPractice(BuildContext context) {
+  Future<void> _startPractice(BuildContext context) async {
     HapticFeedback.mediumImpact();
+    // Default to the current day if available, otherwise just use day 0
+    final int dayIndex = progress?.currentDay ?? 0;
+    final String? promptId = progress?.dailyPromptIds[dayIndex.toString()];
+
+    if (promptId != null) {
+      final cardRepo = context.read<CardRepository>();
+      final result = await cardRepo.getByCardId(promptId);
+      result.fold((failure) => _startPracticeRandom(context), (card) => context.push(AppRoutes.timerSetup, extra: card));
+    } else {
+      _startPracticeRandom(context);
+    }
+  }
+
+  void _startPracticeRandom(BuildContext context) {
     final Map<String, String> params = <String, String>{};
     if (def.category != null) params['category'] = def.category!;
-    final String uri = Uri(
-      path: AppRoutes.categorySelect,
-      queryParameters: params.isEmpty ? null : params,
-    ).toString();
+    final String uri = Uri(path: AppRoutes.categorySelect, queryParameters: params.isEmpty ? null : params).toString();
     context.push(uri);
   }
 
@@ -522,12 +452,7 @@ class _CtaSection extends StatelessWidget {
     context.read<ChallengesBloc>().add(ChallengeEnrolRequested(def.id));
     ScaffoldMessenger.of(context)
       ..clearSnackBars()
-      ..showSnackBar(
-        SnackBar(
-          content: Text('Enrolled in ${def.title}! 🎉'),
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      ..showSnackBar(SnackBar(content: Text('Enrolled in ${def.title}! 🎉'), behavior: SnackBarBehavior.floating));
     context.pop();
   }
 
@@ -552,11 +477,7 @@ class _CtaSection extends StatelessWidget {
             const SizedBox(width: AppSpacing.sm),
             Text(
               "Today's session done! Come back tomorrow",
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
-                color: def.accentColor,
-                fontSize: 13,
-              ),
+              style: TextStyle(fontWeight: FontWeight.w700, color: def.accentColor, fontSize: 13),
             ),
           ],
         ),
@@ -564,47 +485,27 @@ class _CtaSection extends StatelessWidget {
     }
 
     return GestureDetector(
-      onTap: () =>
-          isEnrolled ? _startPractice(context) : _enrol(context),
+      onTap: () => isEnrolled ? _startPractice(context) : _enrol(context),
       child: Container(
         height: 56,
         width: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: <Color>[
-              def.accentColor,
-              def.accentColor.withValues(alpha: 0.85),
-            ],
+            colors: <Color>[def.accentColor, def.accentColor.withValues(alpha: 0.85)],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
           borderRadius: BorderRadius.circular(AppRadius.xl),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: def.accentColor.withValues(alpha: 0.35),
-              blurRadius: 16,
-              offset: const Offset(0, 6),
-            ),
-          ],
+          boxShadow: <BoxShadow>[BoxShadow(color: def.accentColor.withValues(alpha: 0.35), blurRadius: 16, offset: const Offset(0, 6))],
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Icon(
-              isEnrolled
-                  ? Icons.play_circle_outline_rounded
-                  : Icons.flag_rounded,
-              color: Colors.white,
-              size: 22,
-            ),
+            Icon(isEnrolled ? Icons.play_circle_outline_rounded : Icons.flag_rounded, color: Colors.white, size: 22),
             const SizedBox(width: AppSpacing.md),
             Text(
               isEnrolled ? "Start Today's Practice" : 'Join Challenge',
-              style: GoogleFonts.plusJakartaSans(
-                color: Colors.white,
-                fontWeight: FontWeight.w700,
-                fontSize: 16,
-              ),
+              style: GoogleFonts.plusJakartaSans(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),
             ),
           ],
         ),
