@@ -260,18 +260,7 @@ final GoRouter appRouter = GoRouter(
             ),
           ],
         ),
-        StatefulShellBranch(
-          routes: <RouteBase>[
-            GoRoute(
-              path: AppRoutes.settings,
-              name: 'settings',
-              pageBuilder: (BuildContext context, GoRouterState state) {
-                return _fadeTabPage(state, const SettingsScreen());
-              },
-            ),
-          ],
-        ),
-        // ── 5th tab: Challenges ────────────────────────────────────────────
+        // ── 4th tab: Challenges ────────────────────────────────────────────
         StatefulShellBranch(
           routes: <RouteBase>[
             GoRoute(
@@ -279,6 +268,18 @@ final GoRouter appRouter = GoRouter(
               name: 'challenges',
               pageBuilder: (BuildContext context, GoRouterState state) {
                 return _fadeTabPage(state, const ChallengesScreen());
+              },
+            ),
+          ],
+        ),
+        // ── 5th tab: Settings ──────────────────────────────────────────────
+        StatefulShellBranch(
+          routes: <RouteBase>[
+            GoRoute(
+              path: AppRoutes.settings,
+              name: 'settings',
+              pageBuilder: (BuildContext context, GoRouterState state) {
+                return _fadeTabPage(state, const SettingsScreen());
               },
             ),
           ],
@@ -337,10 +338,7 @@ final GoRouter appRouter = GoRouter(
       pageBuilder: (BuildContext context, GoRouterState state) {
         final Object? extra = state.extra;
         if (extra is! ChallengeDetailArgs) {
-          return _slideForwardPage(
-            state,
-            const Scaffold(body: Center(child: Text('Challenge not found'))),
-          );
+          return _slideForwardPage(state, const Scaffold(body: Center(child: Text('Challenge not found'))));
         }
         return _slideForwardPage(state, ChallengeDetailScreen(args: extra));
       },

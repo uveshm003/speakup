@@ -64,9 +64,8 @@ class SpeakUpApp extends StatelessWidget {
           ),
           BlocProvider<NavigationBloc>(create: (_) => NavigationBloc()),
           BlocProvider<ChallengesBloc>(
-            create: (BuildContext context) => ChallengesBloc(
-              challengeRepository: context.read<ChallengeRepository>(),
-            ),
+            create: (BuildContext context) =>
+                ChallengesBloc(challengeRepository: context.read<ChallengeRepository>(), cardRepository: context.read<CardRepository>()),
           ),
         ],
         child: BlocBuilder<ThemeBloc, ThemeBlocState>(
@@ -122,11 +121,7 @@ class _RepositoryProviders extends StatelessWidget {
           ),
           RepositoryProvider<CardRepository>(create: (_) => CardRepositoryImpl(store)),
           RepositoryProvider<CategoryRepository>(create: (_) => CategoryRepositoryImpl(store)),
-          RepositoryProvider<ChallengeRepository>(
-            create: (_) => ChallengeRepositoryImpl(
-              Hive.box<String>(AppConstants.hiveChallengesBoxName),
-            ),
-          ),
+          RepositoryProvider<ChallengeRepository>(create: (_) => ChallengeRepositoryImpl(Hive.box<String>(AppConstants.hiveChallengesBoxName))),
         ],
         child: child,
       );
@@ -145,11 +140,7 @@ class _RepositoryProviders extends StatelessWidget {
         ),
         RepositoryProvider<CardRepository>(create: (_) => const StubCardRepository()),
         RepositoryProvider<CategoryRepository>(create: (_) => const StubCategoryRepository()),
-        RepositoryProvider<ChallengeRepository>(
-          create: (_) => ChallengeRepositoryImpl(
-            Hive.box<String>(AppConstants.hiveChallengesBoxName),
-          ),
-        ),
+        RepositoryProvider<ChallengeRepository>(create: (_) => ChallengeRepositoryImpl(Hive.box<String>(AppConstants.hiveChallengesBoxName))),
       ],
       child: child,
     );
