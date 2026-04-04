@@ -111,12 +111,8 @@ class _BottomNavBar extends StatelessWidget {
       NavigationDestination(icon: const Icon(Icons.home_outlined), selectedIcon: const Icon(Icons.home_rounded), label: 'Home'),
       NavigationDestination(icon: const Icon(Icons.favorite_border_rounded), selectedIcon: const Icon(Icons.favorite_rounded), label: 'Favorites'),
       NavigationDestination(icon: const Icon(Icons.history_outlined), selectedIcon: const Icon(Icons.history_rounded), label: 'History'),
+      NavigationDestination(icon: const Icon(Icons.emoji_events_outlined), selectedIcon: const Icon(Icons.emoji_events_rounded), label: 'Challenges'),
       NavigationDestination(icon: const Icon(Icons.settings_outlined), selectedIcon: const Icon(Icons.settings_rounded), label: 'Settings'),
-      NavigationDestination(
-        icon: const Icon(Icons.emoji_events_outlined),
-        selectedIcon: const Icon(Icons.emoji_events_rounded),
-        label: 'Challenges',
-      ),
     ];
   }
 }
@@ -170,14 +166,14 @@ class _Sidebar extends StatelessWidget {
                         label: Text('History'),
                       ),
                       NavigationRailDestination(
-                        icon: Icon(Icons.settings_outlined),
-                        selectedIcon: Icon(Icons.settings_rounded),
-                        label: Text('Settings'),
-                      ),
-                      NavigationRailDestination(
                         icon: Icon(Icons.emoji_events_outlined),
                         selectedIcon: Icon(Icons.emoji_events_rounded),
                         label: Text('Challenges'),
+                      ),
+                      NavigationRailDestination(
+                        icon: Icon(Icons.settings_outlined),
+                        selectedIcon: Icon(Icons.settings_rounded),
+                        label: Text('Settings'),
                       ),
                     ],
                   ),
