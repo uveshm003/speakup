@@ -45,25 +45,19 @@ class _ActivePracticeBody extends StatefulWidget {
 
 class _ActivePracticeBodyState extends State<_ActivePracticeBody> with TickerProviderStateMixin, WidgetsBindingObserver {
   late final TabController _tabController;
-  late final DraggableScrollableController _sheetController;
-
-  double _sheetExtent = 0.1;
 
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _tabController = TabController(length: 2, vsync: this);
-    _tabController.addListener(_onTabChanged);
-    _sheetController = DraggableScrollableController();
-    _sheetController.addListener(_onSheetChanged);
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (!mounted) return;
-    final timerBloc = context.read<TimerBloc>();
-    final timerState = timerBloc.state;
+    final TimerBloc timerBloc = context.read<TimerBloc>();
+    final TimerState timerState = timerBloc.state;
     if (state == AppLifecycleState.paused || state == AppLifecycleState.hidden) {
       if (timerState.status == TimerStatus.running) {
         timerBloc.add(const TimerPaused());
@@ -77,26 +71,10 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody> with TickerPro
     }
   }
 
-  void _onTabChanged() {
-    if (_tabController.indexIsChanging) {
-      return;
-    }
-    setState(() {});
-  }
-
-  void _onSheetChanged() {
-    if (_sheetController.isAttached) {
-      setState(() => _sheetExtent = _sheetController.size);
-    }
-  }
-
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
-    _tabController.removeListener(_onTabChanged);
     _tabController.dispose();
-    _sheetController.removeListener(_onSheetChanged);
-    _sheetController.dispose();
     super.dispose();
   }
 
@@ -178,7 +156,7 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody> with TickerPro
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final bool isDark = theme.brightness == Brightness.dark;
-    final Color bg = isDark ? AppColorsDark.surface : AppColors.primaryLight;
+    final Color bg = isDark ? theme.colorScheme.surface : theme.colorScheme.surfaceContainerLowest;
     final Color onBg = theme.colorScheme.onSurface;
     final TopicCard card = widget.args.card;
 
@@ -210,167 +188,218 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody> with TickerPro
             final double progress = total <= 0 ? 0 : remaining / total.clamp(1, 999999);
             final Color ringColor = _ringColor(remaining, theme.brightness);
 
-            final double scrimT = ((_sheetExtent - 0.1) / 0.5).clamp(0.0, 1.0);
-
             return Scaffold(
               backgroundColor: bg,
-              body: Stack(
-                fit: StackFit.expand,
-                children: <Widget>[
-                  SafeArea(
-                    child: Column(
-                      children: <Widget>[
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
-                          child: Row(
-                            children: <Widget>[
-                              IconButton(
-                                icon: const Icon(Icons.arrow_back_rounded),
-                                color: onBg,
-                                onPressed: () async {
-                                  await _maybePop(context, state);
-                                },
-                              ),
-                              const Spacer(),
-                            ],
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
-                          child: Text(
-                            card.title,
-                            textAlign: TextAlign.center,
-                            maxLines: 3,
-                            overflow: TextOverflow.ellipsis,
-                            style: GoogleFonts.plusJakartaSans(fontSize: 26, fontWeight: FontWeight.w700, height: 1.2, color: onBg),
-                          ),
-                        ),
-                        const Spacer(),
-                        Stack(
-                          alignment: Alignment.center,
-                          children: <Widget>[
-                            SizedBox(
-                              width: 200,
-                              height: 200,
-                              child: CustomPaint(
-                                painter: _CountdownRingPainter(
-                                  progress: progress,
-                                  color: ringColor,
-                                  trackColor: theme.colorScheme.outlineVariant.withValues(alpha: 0.45),
+              body: SafeArea(
+                bottom: false,
+                child: Column(
+                  children: <Widget>[
+                    // TOP HALF: IMMERSIVE TIMER AREA
+                    Expanded(
+                      flex: 4,
+                      child: Column(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                IconButton(icon: const Icon(Icons.close_rounded), color: onBg, onPressed: () async => _maybePop(context, state)),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.surfaceContainerHighest,
+                                    borderRadius: BorderRadius.circular(AppRadius.full),
+                                  ),
+                                  child: Text(
+                                    'PRACTICING',
+                                    style: GoogleFonts.inter(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w800,
+                                      letterSpacing: 1.5,
+                                      color: theme.colorScheme.onSurfaceVariant,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                const SizedBox(width: 48), // Balance for back button
+                              ],
                             ),
-                            _PulsingTimerLabel(
-                              pulse: pulse,
-                              text: formatPracticeMmSs(remaining),
-                              style: GoogleFonts.plusJakartaSans(fontSize: 42, fontWeight: FontWeight.w700, color: onBg),
+                          ),
+                          const Spacer(),
+                          // TOPIC TITLE
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
+                            child: Text(
+                              card.title,
+                              textAlign: TextAlign.center,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.plusJakartaSans(fontSize: 22, fontWeight: FontWeight.w700, height: 1.2, color: onBg),
                             ),
-                            if (paused)
-                              ClipOval(
-                                child: Container(
-                                  width: 200,
-                                  height: 200,
-                                  color: Colors.black.withValues(alpha: 0.42),
-                                  alignment: Alignment.center,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Text(
-                                        'Paused',
-                                        style: GoogleFonts.plusJakartaSans(fontSize: 22, fontWeight: FontWeight.w700, color: Colors.white),
-                                      ),
-                                      const SizedBox(height: AppSpacing.md),
-                                      FilledButton(
-                                        onPressed: () {
-                                          context.read<TimerBloc>().add(const TimerResumed());
-                                        },
-                                        child: const Text('Resume'),
-                                      ),
-                                    ],
+                          ),
+                          const Spacer(),
+                          // TIMER VISUAL
+                          Stack(
+                            alignment: Alignment.center,
+                            children: <Widget>[
+                              SizedBox(
+                                width: 220,
+                                height: 220,
+                                child: CustomPaint(
+                                  painter: _CountdownRingPainter(
+                                    progress: progress,
+                                    color: ringColor,
+                                    trackColor: theme.colorScheme.outlineVariant.withValues(alpha: 0.25),
                                   ),
                                 ),
                               ),
-                          ],
-                        ),
-                        const Spacer(),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.lg),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              IconButton(
-                                iconSize: 32,
-                                style: IconButton.styleFrom(
-                                  backgroundColor: theme.colorScheme.primaryContainer,
-                                  foregroundColor: theme.colorScheme.onPrimaryContainer,
-                                ),
-                                onPressed: () {
-                                  final TimerBloc b = context.read<TimerBloc>();
-                                  if (paused) {
-                                    b.add(const TimerResumed());
-                                  } else {
-                                    b.add(const TimerPaused());
-                                  }
-                                },
-                                icon: Icon(paused ? Icons.play_arrow_rounded : Icons.pause_rounded),
+                              _PulsingTimerLabel(
+                                pulse: pulse,
+                                text: formatPracticeMmSs(remaining),
+                                style: GoogleFonts.plusJakartaSans(fontSize: 48, fontWeight: FontWeight.w800, color: onBg),
                               ),
-                              const SizedBox(width: AppSpacing.xxl),
-                              OutlinedButton(
-                                onPressed: () => _confirmStop(context),
-                                style: OutlinedButton.styleFrom(
-                                  foregroundColor: theme.colorScheme.error,
-                                  side: BorderSide(color: theme.colorScheme.error.withValues(alpha: 0.65)),
+                              if (paused)
+                                ClipOval(
+                                  child: Container(
+                                    width: 220,
+                                    height: 220,
+                                    color: Colors.black.withValues(alpha: 0.6),
+                                    alignment: Alignment.center,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: <Widget>[
+                                        Text(
+                                          'PAUSED',
+                                          style: GoogleFonts.plusJakartaSans(
+                                            fontSize: 20,
+                                            letterSpacing: 1.5,
+                                            fontWeight: FontWeight.w800,
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
-                                child: const Text('Stop'),
-                              ),
                             ],
                           ),
+                          const Spacer(),
+                          // CONTROLS
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                // Play / Pause
+                                Material(
+                                  color: paused
+                                      ? theme.colorScheme.primary
+                                      : (isDark ? theme.colorScheme.surfaceContainerHighest : theme.colorScheme.surfaceContainer),
+                                  borderRadius: BorderRadius.circular(AppRadius.full),
+                                  elevation: paused ? 4 : 0,
+                                  child: InkWell(
+                                    onTap: () {
+                                      final TimerBloc b = context.read<TimerBloc>();
+                                      if (paused) {
+                                        b.add(const TimerResumed());
+                                      } else {
+                                        b.add(const TimerPaused());
+                                      }
+                                    },
+                                    borderRadius: BorderRadius.circular(AppRadius.full),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl, vertical: AppSpacing.sm),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Icon(
+                                            paused ? Icons.play_arrow_rounded : Icons.pause_rounded,
+                                            color: paused ? theme.colorScheme.onPrimary : onBg,
+                                          ),
+                                          const SizedBox(width: 8),
+                                          Text(
+                                            paused ? 'Resume' : 'Pause',
+                                            style: GoogleFonts.inter(fontWeight: FontWeight.w700, color: paused ? theme.colorScheme.onPrimary : onBg),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: AppSpacing.lg),
+                                // Stop
+                                Material(
+                                  color: Colors.transparent,
+                                  shape: StadiumBorder(side: BorderSide(color: theme.colorScheme.error.withValues(alpha: 0.5))),
+                                  child: InkWell(
+                                    onTap: () => _confirmStop(context),
+                                    customBorder: const StadiumBorder(),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl, vertical: AppSpacing.sm),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Icon(Icons.stop_rounded, color: theme.colorScheme.error),
+                                          const SizedBox(width: 8),
+                                          Text(
+                                            'Stop',
+                                            style: GoogleFonts.inter(fontWeight: FontWeight.w700, color: theme.colorScheme.error),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    // BOTTOM HALF: HELPERS & INFORMATION
+                    Expanded(
+                      flex: 5,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: isDark ? theme.colorScheme.surfaceContainerHighest : theme.colorScheme.surfaceContainerLowest,
+                          borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
+                          boxShadow: <BoxShadow>[
+                            BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, -10)),
+                          ],
                         ),
-                        const SizedBox(height: 72),
-                      ],
-                    ),
-                  ),
-                  Positioned.fill(
-                    child: IgnorePointer(
-                      child: ColoredBox(color: Colors.black.withValues(alpha: 0.38 * scrimT)),
-                    ),
-                  ),
-                  DraggableScrollableSheet(
-                    controller: _sheetController,
-                    initialChildSize: 0.1,
-                    minChildSize: 0.1,
-                    maxChildSize: 0.6,
-                    builder: (BuildContext context, ScrollController scrollController) {
-                      return Material(
-                        color: theme.colorScheme.surface.withValues(alpha: 0.94),
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.lg)),
-                        clipBehavior: Clip.antiAlias,
                         child: Column(
                           children: <Widget>[
                             const SizedBox(height: AppSpacing.sm),
-                            Icon(Icons.horizontal_rule_rounded, color: theme.colorScheme.onSurfaceVariant),
-                            Text('Tap to peek', style: theme.textTheme.labelMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
-                            const Icon(Icons.keyboard_arrow_up_rounded),
+                            // Handle bar visual purely for aesthetic since it's no longer draggable
+                            Container(
+                              width: 40,
+                              height: 5,
+                              decoration: BoxDecoration(color: theme.colorScheme.outlineVariant, borderRadius: BorderRadius.circular(AppRadius.full)),
+                            ),
+                            const SizedBox(height: AppSpacing.sm),
                             TabBar(
                               controller: _tabController,
+                              labelStyle: GoogleFonts.inter(fontWeight: FontWeight.w700),
+                              unselectedLabelStyle: GoogleFonts.inter(fontWeight: FontWeight.w500),
                               tabs: const <Widget>[
                                 Tab(text: 'Mini Guide'),
                                 Tab(text: 'Vocabulary'),
                               ],
                             ),
                             Expanded(
-                              child: ListView(
-                                controller: scrollController,
-                                padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.sm, AppSpacing.xxl, AppSpacing.xxl),
-                                children: _tabController.index == 0 ? _guideChildren(card, theme) : _vocabChildren(card, theme),
+                              child: TabBarView(
+                                controller: _tabController,
+                                children: <Widget>[
+                                  ListView(padding: const EdgeInsets.all(AppSpacing.xxl), children: _guideChildren(card, theme)),
+                                  ListView(padding: const EdgeInsets.all(AppSpacing.xxl), children: _vocabChildren(card, theme)),
+                                ],
                               ),
                             ),
                           ],
                         ),
-                      );
-                    },
-                  ),
-                ],
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },
@@ -391,8 +420,11 @@ List<Widget> _guideChildren(TopicCard card, ThemeData theme) {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('• ', style: theme.textTheme.bodyLarge),
-              Expanded(child: Text(line, style: theme.textTheme.bodyLarge)),
+              Icon(Icons.check_circle_outline_rounded, size: 20, color: theme.colorScheme.primary),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Text(line, style: GoogleFonts.inter(fontSize: 15, height: 1.5, color: theme.colorScheme.onSurface)),
+              ),
             ],
           ),
         ),
@@ -405,14 +437,23 @@ List<Widget> _vocabChildren(TopicCard card, ThemeData theme) {
     return <Widget>[Text('No vocabulary listed.', style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant))];
   }
   return card.vocabBoost.map((VocabWord w) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+    return Container(
+      margin: const EdgeInsets.only(bottom: AppSpacing.md),
+      padding: const EdgeInsets.all(AppSpacing.lg),
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface,
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        border: Border.all(color: theme.colorScheme.outlineVariant.withValues(alpha: 0.5)),
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(w.word, style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700)),
+          Text(
+            w.word,
+            style: GoogleFonts.plusJakartaSans(fontSize: 16, fontWeight: FontWeight.w800, color: theme.colorScheme.primary),
+          ),
           const SizedBox(height: AppSpacing.xs),
-          Text(w.meaning, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
+          Text(w.meaning, style: GoogleFonts.inter(fontSize: 14, color: theme.colorScheme.onSurfaceVariant)),
         ],
       ),
     );
@@ -487,19 +528,19 @@ class _CountdownRingPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final Offset c = Offset(size.width / 2, size.height / 2);
-    final double r = size.shortestSide / 2 - 8;
+    final double r = size.shortestSide / 2 - 12; // slightly thicker
     final Paint track = Paint()
       ..color = trackColor
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 10;
+      ..strokeWidth = 14;
     canvas.drawCircle(c, r, track);
     final Paint fill = Paint()
       ..color = color
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 10
+      ..strokeWidth = 14
       ..strokeCap = StrokeCap.round;
-    final double sweep = progress * 6.283185307179586;
-    canvas.drawArc(Rect.fromCircle(center: c, radius: r), -1.5707963267948966, sweep, false, fill);
+    final double sweep = progress * 6.283185307179586; // 2 * pi
+    canvas.drawArc(Rect.fromCircle(center: c, radius: r), -1.5707963267948966, sweep, false, fill); // -pi/2 start
   }
 
   @override
