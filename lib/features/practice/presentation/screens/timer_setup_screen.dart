@@ -219,7 +219,7 @@ class _MiniCardPreview extends StatelessWidget {
             Expanded(
               child: Text(
                 card.title,
-                maxLines: 2,
+                maxLines: 4,
                 overflow: TextOverflow.ellipsis,
                 style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
               ),
