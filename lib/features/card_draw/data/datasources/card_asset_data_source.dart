@@ -24,7 +24,7 @@ class CardAssetDataSource {
   final SettingsRepository _settingsRepository;
 
   /// Increment this constant whenever cards.json gains new entries.
-  static const int _targetSeedVersion = 2;
+  static const int _targetSeedVersion = 4;
 
   Box<TopicCardEntity> get _box => _store.box<TopicCardEntity>();
 
