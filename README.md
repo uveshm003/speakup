@@ -66,13 +66,14 @@ A fully offline Flutter app for English communication practice through guided ca
 
 | Feature | Description |
 |---------|-------------|
-| 🃏 **Card Draw System** | Draw random topic cards from 7 built-in categories with a smooth 3D flip animation |
+| 🃏 **Card Draw System** | Draw random topic cards from 11 built-in categories with a smooth 3D flip animation |
 | 📖 **Mini Guide** | Every card includes 3–5 structured bullet points — context, arguments, and angles to think about before speaking |
 | 📚 **Vocabulary Boost** | 5 topic-relevant, intermediate-to-advanced English words with definitions per card — curated, not generic |
-| ⏱ **Practice Timer** | Preset durations (30s, 1m, 2m, 3m, 5m) or custom input. Countdown ring changes color as time runs out |
-| 👀 **Peek Drawer** | Slide-up overlay during active practice gives access to Mini Guide and Vocabulary without stopping the timer |
+| ⏱ **Practice Timer** | Preset durations (30s, 1m, 2m, 3m, 5m) or custom input. Immersive countdown ring changes color as time runs out |
+| 👀 **Split Practice View** | Beautifully integrated, scrollable bottom-tab view during active practice to give continuous access to Mini Guide and Vocabulary without structural constraints |
 | 📅 **Session History** | Every completed session is logged locally with card title, category, duration, and timestamp |
 | 🔥 **Streak Tracking** | Consecutive daily practice streak with a calendar heatmap view |
+| 🏆 **Challenges** | Enroll in spaced/repeated learning challenges with pre-assigned daily prompts |
 | ❤️ **Favorites** | Bookmark any card. Quickly re-draw from your saved favorites |
 | 🏷 **Difficulty Filtering** | Filter cards by Beginner, Intermediate, or Advanced before drawing |
 | ✏️ **Custom Categories** | Create your own topic decks with custom cards, optional guide bullets, and vocabulary — saved locally |
@@ -96,7 +97,7 @@ All platforms share a single codebase. Navigation adapts: bottom navigation bar 
 | **State Management** | `flutter_bloc` + `bloc` | Predictable, event-driven state across all features |
 | **Navigation** | `go_router` | Declarative routing with `ShellRoute` for persistent bottom nav |
 | **Structured Storage** | `objectbox` | High-performance local DB for cards, sessions, categories |
-| **Preferences** | `hive` + `hive_flutter` | Lightweight key-value store for user settings |
+| **Preferences** | `hive` + `hive_flutter` | Lightweight key-value store for user settings & challenge progress |
 | **Code Generation** | `build_runner` + `freezed` | Immutable models, union types, JSON serialization |
 | **DI** | `get_it` + `injectable` | Service locator for repositories and use cases |
 | **Fonts** | `google_fonts` | Plus Jakarta Sans (display) + Inter (body) |
@@ -108,7 +109,7 @@ All platforms share a single codebase. Navigation adapts: bottom navigation bar 
 
 ## 🏗 Architecture
 
-SpeakUp follows **Clean Architecture** with a **feature-first folder structure**. Each feature is self-contained and composed of three layers:
+SpeakUp follows **Feature-Driven Clean Architecture**. Each feature is self-contained and composed of three distinct layers:
 
 ```
 UI Event  →  BLoC  →  Use Case  →  Repository Interface  →  Repository Impl  →  ObjectBox / Hive / JSON Asset
@@ -130,42 +131,30 @@ UI Event  →  BLoC  →  Use Case  →  Repository Interface  →  Repository I
 lib/
 ├── config/
 │   ├── router/            # GoRouter configuration & route constants
-│   ├── theme/             # AppTheme, AppColors, AppTextStyles, AppSpacing
+│   ├── theme/             # AppTheme, AppColors, AppRadius, AppSpacing
 │   └── app.dart           # Root App widget, MultiBlocProvider setup
 ├── core/
 │   ├── constants/         # AppStrings, AppAssets, AppConstants
 │   ├── errors/            # Failure base classes
 │   ├── extensions/        # BuildContext, String, DateTime helpers
 │   ├── utils/             # ObjectBoxStore, Responsive, StreakCalculator
-│   └── widgets/           # AppButton, AppCard, DifficultyBadge, EmptyState...
+│   └── widgets/           # AppShell, AppButton, TopicCard UI
 ├── features/
-│   ├── home/
-│   ├── card_draw/
-│   ├── practice/
-│   ├── history/
-│   ├── favorites/
-│   ├── custom_categories/
-│   └── settings/
+│   ├── home/              # Dashboard & built-in categories
+│   ├── card_draw/         # Library, Shuffle algorithm, DTOs
+│   ├── practice/          # Timer Setup & Active Practice loop
+│   ├── challenges/        # Streak-based learning track features
+│   ├── history/           # Completed session logs & Heatmaps
+│   ├── favorites/         # Wishlist management
+│   ├── custom_categories/ # User-uploaded prompt entries 
+│   ├── navigation/        # Persistent AppShell handling
+│   ├── onboarding/        # First-time app tutorials
+│   ├── splash/            # Pre-load routing logic
+│   └── settings/          # Design token preferences & app cache management
 └── main.dart
 ```
 
-Each feature follows this internal structure:
-
-```
-feature/
-├── data/
-│   ├── models/            # ObjectBox @Entity classes
-│   ├── repositories/      # Repository implementations
-│   └── sources/           # Data sources (local DB, asset JSON)
-├── domain/
-│   ├── entities/          # Pure Dart domain models
-│   ├── repositories/      # Abstract repository interfaces
-│   └── usecases/          # Single-responsibility use case classes
-└── presentation/
-    ├── bloc/              # BLoC, Event, State files
-    ├── screens/           # Screen widgets
-    └── widgets/           # Feature-local UI components
-```
+For more details on the structural breakdown, refer to the [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) file.
 
 ---
 
@@ -250,8 +239,9 @@ flutter build linux --release
 | Category Select | `/home/category-select` | Choose category and difficulty filter before drawing |
 | Card Draw | `/home/card-draw` | 3D card flip animation revealing the topic. Swipe to re-draw |
 | Card Detail | `/home/card-detail` | Full topic view with expandable Mini Guide and Vocabulary Boost |
-| Timer Setup | `/home/timer-setup` | Choose practice duration with presets or custom input |
-| Active Practice | `/home/active-practice` | Fullscreen focus mode. Countdown ring + slide-up peek drawer |
+| Challenges | `/challenges` | Streak-based guided pathways with predefined prompts |
+| Timer Setup | `/home/timer-setup` | Premium duration selector with horizontal pills and custom inputs |
+| Active Practice | `/home/active-practice` | Fullscreen focus mode. Immersive countdown ring + embedded sticky helper tabs |
 | Session End | `/home/session-end` | Session summary, streak celebration, and next-action CTAs |
 | History | `/history` | Streak heatmap calendar + session log grouped by date |
 | Favorites | `/favorites` | Grid of bookmarked cards with quick draw |
@@ -268,7 +258,7 @@ flutter build linux --release
 class TopicCard {
   String cardId;           // UUID
   String title;            // The speaking topic / prompt
-  String category;         // One of 7 built-in categories, or custom
+  String category;         // One of 11 built-in categories, or custom
   Difficulty difficulty;   // beginner | intermediate | advanced
   List<String> guide;      // 3–5 structured bullet hints
   List<VocabWord> vocab;   // 4–6 word + meaning pairs
@@ -291,16 +281,13 @@ class PracticeSession {
 }
 ```
 
-### `UserSettings` *(Hive)*
+### `ChallengeProgress` *(Hive)*
 
 ```dart
-class UserSettings extends HiveObject {
-  int defaultTimerSeconds;     // default: 120
-  double textSizeScale;        // default: 1.0
-  bool hasSeenOnboarding;      // default: false
-  String themeModeRaw;         // 'system' | 'light' | 'dark'
-  int currentStreak;
-  DateTime? lastSessionDate;
+class ChallengeProgress {
+  String challengeId;      // UUID maps to Challenge course
+  int currentLevel;
+  Map<String, String> dailyPromptIds; // Dynamic prompts mapped contextually
 }
 ```
 
@@ -308,29 +295,7 @@ class UserSettings extends HiveObject {
 
 ## 🔄 State Management
 
-SpeakUp uses **flutter_bloc** throughout. Every screen is driven by a dedicated BLoC — no `setState()` is used in any screen with business logic. All BLoCs share the same structure:
-
-```dart
-// 1. Events — what the user or system triggers
-sealed class HomeEvent {}
-class HomeLoadRequested extends HomeEvent {}
-class HomeQuickDrawRequested extends HomeEvent {}
-
-// 2. State — what the UI reads from
-class HomeState extends Equatable {
-  final int streak;
-  final int todaySessions;
-  final HomeStatus status; // initial | loading | loaded | error
-  ...
-}
-
-// 3. BLoC — maps events to states via use cases
-class HomeBloc extends Bloc<HomeEvent, HomeState> {
-  HomeBloc(this._getStreak) : super(HomeState.initial()) {
-    on<HomeLoadRequested>(_onLoad);
-  }
-}
-```
+SpeakUp uses **flutter_bloc** throughout. Every screen is driven by a dedicated BLoC — no `setState()` is used in any screen with business logic.
 
 ### BLoC Inventory
 
@@ -339,12 +304,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 | `HomeBloc` | Streak, session count, recent categories |
 | `CategoryBloc` | Category list, difficulty filtering |
 | `CardDrawBloc` | Current card, flip state, favorite toggle |
+| `ChallengesBloc` | Challenge tracking, daily progression, prompt assignment |
 | `TimerBloc` | Countdown via `Stream.periodic`, pause/resume/stop |
 | `SessionEndBloc` | Session persistence, streak recalculation |
 | `HistoryBloc` | Session log, heatmap data |
 | `FavoritesBloc` | Favorites list, quick draw |
 | `CustomCategoryBloc` | CRUD for user categories |
-| `CustomCardBloc` | CRUD for cards within a category |
 | `SettingsBloc` | Read/write all user settings |
 | `ThemeBloc` | App-wide theme mode |
 
@@ -352,28 +317,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
 ## 🧭 Navigation
 
-Navigation uses **go_router** with a `ShellRoute` wrapping the four main tabs (Home, Favorites, History, Settings). The practice flow screens (Card Draw → Timer → Active Practice → Session End) push full-screen over the shell with no bottom nav visible.
+Navigation uses **go_router** with a `ShellRoute` wrapping the 5 main tabs (`Home`, `Favorites`, `History`, `Challenges`, `Settings`). The practice flow screens (Card Draw → Timer → Active Practice → Session End) push full-screen over the shell with no bottom nav visible.
 
-```dart
-final router = GoRouter(
-  redirect: (context, state) {
-    final seenOnboarding = settingsRepo.getSettings().hasSeenOnboarding;
-    if (!seenOnboarding) return AppRoutes.onboarding;
-    return null;
-  },
-  routes: [
-    GoRoute(path: AppRoutes.onboarding, ...),
-    ShellRoute(
-      builder: (context, state, child) => AppShell(child: child),
-      routes: [ /* Home, Favorites, History, Settings */ ],
-    ),
-    GoRoute(path: AppRoutes.cardDraw, ...),   // full-screen, outside shell
-    GoRoute(path: AppRoutes.activePractice, ...),
-  ],
-);
-```
-
-**Responsive navigation:** Bottom `NavigationBar` on mobile/tablet. Left `NavigationRail` sidebar on screens wider than 1024px, showing the app logo, nav labels, and app version.
+**Responsive navigation:** Bottom `NavigationBar` on mobile/tablet. Left `NavigationRail` sidebar on screens wider than 1024px.
 
 ---
 
@@ -382,74 +328,47 @@ final router = GoRouter(
 | Store | Used For | Why |
 |-------|----------|-----|
 | **ObjectBox** | `TopicCard`, `PracticeSession`, `CustomCategory` entities | High-performance reactive queries; indexed on `category` and `completedAt` |
-| **Hive** | `UserSettings` only | Lightweight key-value store for simple preference data |
+| **Hive** | `UserSettings`, `ChallengeProgress` | Lightweight key-value store for preferences and tracked progression models |
 | **JSON Asset** | Built-in card deck (`assets/data/cards.json`) | Bundled at build time; seeded into ObjectBox on first launch via a `cardsSeeded` Hive flag |
-
-- **Total storage footprint:** < 50 MB including the full bundled card deck and all user data
-- **No network calls:** SpeakUp is 100% offline — no analytics, no crash reporting, no cloud sync in the MVP
 
 ---
 
 ## 🃏 Built-in Card Deck
 
-SpeakUp ships with **70 curated topic cards** across 7 categories. Each card includes a Mini Guide and Vocabulary Boost authored specifically for that topic — not generated at runtime.
+SpeakUp ships with **110+ curated topic cards** across 11 categories. Each card includes a Mini Guide and Vocabulary Boost authored specifically for that topic — not generated at runtime.
 
-| Category | Cards | Topics Include |
-|----------|:-----:|---------------|
-| 💬 Opinion & Debate | 10 | Social media age limits, remote work vs office, free speech |
-| 📰 Current Affairs | 10 | AI in everyday life, climate responsibility, digital privacy |
-| 🌱 Personal Growth | 10 | Overcoming failure, building habits, dealing with criticism |
-| 💻 Technology | 10 | Smartphones and human connection, coding in schools, automation |
-| 🌍 Culture & Society | 10 | Beauty standards, second languages, generational differences |
-| 💼 Business & Work | 10 | What makes a great leader, gig economy, workplace communication |
-| 📖 Storytelling & Personal | 10 | Moments that changed you, someone who influenced you, life goals |
-
-**Difficulty distribution per category:** ~3 Beginner · ~4 Intermediate · ~3 Advanced
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository and create your branch from `main`
-2. Run `flutter analyze` — 0 errors and 0 warnings required before submitting
-3. Follow the existing Clean Architecture and BLoC patterns — no `setState()` in screens with BLoCs
-4. Do not introduce any network dependencies — SpeakUp must remain fully offline
-5. Open a Pull Request with a clear description of what changed and why
-
-### Code Style
-
-- Run `flutter format .` before committing
-- Follow Dart naming conventions: `camelCase` for variables/functions, `PascalCase` for classes
-- Keep BLoC events and states in separate files from the BLoC class
-- No `print()` statements — use a logger in debug mode only
+| Category | Topics Include |
+|----------|---------------|
+| 💬 Opinion & Debate | Social media age limits, remote work vs office, free speech |
+| 📰 Current Affairs | AI in everyday life, climate responsibility, digital privacy |
+| 🌱 Personal Growth | Overcoming failure, building habits, dealing with criticism |
+| 💻 Technology | Smartphones and human connection, coding in schools, automation |
+| 🌍 Culture & Society | Beauty standards, second languages, generational differences |
+| 💼 Business & Work | What makes a great leader, gig economy, workplace communication |
+| 📖 Storytelling & Personal | Moments that changed you, someone who influenced you, life goals |
+| 🤔 Big Questions | Existence, philosophy of happiness, moral thought experiments |
+| 🧘 Health & Lifestyle | Mental wellness, holistic diets, fitness disciplines |
+| 🤝 Relationships & People | Maintaining trust, navigating conflicts, psychology of friendship |
+| ✨ Imagine & What If | Time travel ethics, surviving mars, rewriting history |
 
 ---
 
 ## 🗺 Roadmap
 
 ### v1.0 — MVP *(Current)*
-- [x] 70 built-in cards across 7 categories with Mini Guide + Vocabulary Boost
-- [x] Card flip animation, category + difficulty filtering
-- [x] Practice timer with peek drawer (guide access mid-session)
+- [x] 110+ built-in cards across 11 categories with Mini Guide + Vocabulary
+- [x] Immersive Card flip animations & filtering 
+- [x] Guided Challenges Pathways integrated efficiently
+- [x] Premium Split View Practice timer design 
 - [x] Session history, streak tracking, calendar heatmap
-- [x] Custom categories and cards
+- [x] Custom categories and cards locally via ObjectBox
 - [x] Favorites, onboarding, dark/light/system theme
-- [x] All 6 Flutter platforms
+- [x] All 6 Flutter platforms supported
 
 ### v1.1 — Post-MVP
 - [ ] Voice recording with self-review playback
 - [ ] Daily practice reminders (push notifications)
-- [ ] Social sharing of streak milestones
 - [ ] Exportable session history (CSV)
-
-### v2.0 — Future
-- [ ] On-device AI topic card generation
-- [ ] Cloud sync across devices (optional, opt-in)
-- [ ] Community card packs — shared decks
-- [ ] AI pronunciation and fluency feedback
-- [ ] Multiplayer / partner practice mode
 
 ---
 
@@ -458,28 +377,10 @@ Contributions are welcome! Please follow these steps:
 ```
 MIT License
 
-Copyright (c) 2025 SpeakUp Contributors
+Copyright (c) 2026 SpeakUp Contributors
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Permission is hereby granted, free of charge...
 ```
-
----
 
 <div align="center">
 
