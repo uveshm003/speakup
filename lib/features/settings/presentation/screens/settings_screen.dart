@@ -113,7 +113,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
               // ── Body content ────────────────────────────────────────────
               SliverPadding(
-                padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.lg, AppSpacing.lg, AppSpacing.huge),
+                padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.lg, AppSpacing.lg, 0),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate(<Widget>[
                     // ── PRACTICE DEFAULTS ─────────────────────────────────
@@ -176,17 +176,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ),
                       ],
                     ),
-
-                    const SizedBox(height: AppSpacing.xxl),
-
-                    // ── Footer ────────────────────────────────────────────
-                    Center(
-                      child: Text(
-                        'Built with Flutter 💙',
-                        style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6)),
-                      ),
-                    ),
                   ]),
+                ),
+              ),
+
+              // ── Footer ────────────────────────────────────────────
+              SliverFillRemaining(
+                hasScrollBody: false,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: AppSpacing.xxl, bottom: AppSpacing.huge),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Text(
+                      'Built with Flutter 💙',
+                      style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.6)),
+                    ),
+                  ),
                 ),
               ),
             ],
