@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -78,20 +79,7 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody> with TickerPro
     super.dispose();
   }
 
-  Color _ringColor(int remaining, Brightness brightness) {
-    final Color primary = brightness == Brightness.dark ? AppColorsDark.primary : AppColors.primary;
-    const Color amber = AppColors.warning;
-    const Color red = AppColors.error;
-    if (remaining <= 10) {
-      final double t = remaining / 10.0;
-      return ColorTween(begin: amber, end: red).transform(1 - t)!;
-    }
-    if (remaining <= 30) {
-      final double t = (remaining - 10) / 20.0;
-      return ColorTween(begin: primary, end: amber).transform(1 - t)!;
-    }
-    return primary;
-  }
+
 
   Future<void> _confirmStop(BuildContext context) async {
     final bool? ok = await showDialog<bool>(
@@ -183,10 +171,9 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody> with TickerPro
             final int remaining = state.remaining;
             final bool running = state.status == TimerStatus.running;
             final bool paused = state.status == TimerStatus.paused;
-            final bool pulse = running && remaining < 10;
+            final bool pulse = running && remaining <= 15;
 
             final double progress = total <= 0 ? 0 : remaining / total.clamp(1, 999999);
-            final Color ringColor = _ringColor(remaining, theme.brightness);
 
             return Scaffold(
               backgroundColor: bg,
@@ -248,7 +235,9 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody> with TickerPro
                                 child: CustomPaint(
                                   painter: _CountdownRingPainter(
                                     progress: progress,
-                                    color: ringColor,
+                                    remaining: remaining,
+                                    isDark: isDark,
+                                    primaryColor: theme.colorScheme.primary,
                                     trackColor: theme.colorScheme.outlineVariant.withValues(alpha: 0.25),
                                   ),
                                 ),
@@ -287,68 +276,80 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody> with TickerPro
                           // CONTROLS
                           Padding(
                             padding: const EdgeInsets.only(bottom: AppSpacing.lg),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                // Play / Pause
-                                Material(
-                                  color: paused
-                                      ? theme.colorScheme.primary
-                                      : (isDark ? theme.colorScheme.surfaceContainerHighest : theme.colorScheme.surfaceContainer),
-                                  borderRadius: BorderRadius.circular(AppRadius.full),
-                                  elevation: paused ? 4 : 0,
-                                  child: InkWell(
-                                    onTap: () {
-                                      final TimerBloc b = context.read<TimerBloc>();
-                                      if (paused) {
-                                        b.add(const TimerResumed());
-                                      } else {
-                                        b.add(const TimerPaused());
-                                      }
-                                    },
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(AppRadius.full),
+                              child: BackdropFilter(
+                                filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
+                                  decoration: BoxDecoration(
+                                    color: (isDark ? Colors.white : Colors.black).withValues(alpha: 0.08),
                                     borderRadius: BorderRadius.circular(AppRadius.full),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl, vertical: AppSpacing.sm),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Icon(
-                                            paused ? Icons.play_arrow_rounded : Icons.pause_rounded,
-                                            color: paused ? theme.colorScheme.onPrimary : onBg,
+                                    border: Border.all(color: onBg.withValues(alpha: 0.12)),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: <Widget>[
+                                      // Play / Pause
+                                      Material(
+                                        color: paused ? theme.colorScheme.primary : Colors.transparent,
+                                        borderRadius: BorderRadius.circular(AppRadius.full),
+                                        child: InkWell(
+                                          onTap: () {
+                                            final TimerBloc b = context.read<TimerBloc>();
+                                            if (paused) {
+                                              b.add(const TimerResumed());
+                                            } else {
+                                              b.add(const TimerPaused());
+                                            }
+                                          },
+                                          borderRadius: BorderRadius.circular(AppRadius.full),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl, vertical: AppSpacing.sm),
+                                            child: Row(
+                                              children: <Widget>[
+                                                Icon(
+                                                  paused ? Icons.play_arrow_rounded : Icons.pause_rounded,
+                                                  color: paused ? theme.colorScheme.onPrimary : onBg,
+                                                ),
+                                                const SizedBox(width: 8),
+                                                Text(
+                                                  paused ? 'Resume' : 'Pause',
+                                                  style: GoogleFonts.inter(fontWeight: FontWeight.w700, color: paused ? theme.colorScheme.onPrimary : onBg),
+                                                ),
+                                              ],
+                                            ),
                                           ),
-                                          const SizedBox(width: 8),
-                                          Text(
-                                            paused ? 'Resume' : 'Pause',
-                                            style: GoogleFonts.inter(fontWeight: FontWeight.w700, color: paused ? theme.colorScheme.onPrimary : onBg),
-                                          ),
-                                        ],
+                                        ),
                                       ),
-                                    ),
+                                      const SizedBox(width: AppSpacing.sm),
+                                      // Stop
+                                      Material(
+                                        color: Colors.transparent,
+                                        borderRadius: BorderRadius.circular(AppRadius.full),
+                                        child: InkWell(
+                                          onTap: () => _confirmStop(context),
+                                          borderRadius: BorderRadius.circular(AppRadius.full),
+                                          child: Padding(
+                                            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl, vertical: AppSpacing.sm),
+                                            child: Row(
+                                              children: <Widget>[
+                                                Icon(Icons.stop_rounded, color: theme.colorScheme.error),
+                                                const SizedBox(width: 8),
+                                                Text(
+                                                  'Stop',
+                                                  style: GoogleFonts.inter(fontWeight: FontWeight.w700, color: theme.colorScheme.error),
+                                                ),
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
-                                const SizedBox(width: AppSpacing.lg),
-                                // Stop
-                                Material(
-                                  color: Colors.transparent,
-                                  shape: StadiumBorder(side: BorderSide(color: theme.colorScheme.error.withValues(alpha: 0.5))),
-                                  child: InkWell(
-                                    onTap: () => _confirmStop(context),
-                                    customBorder: const StadiumBorder(),
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl, vertical: AppSpacing.sm),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Icon(Icons.stop_rounded, color: theme.colorScheme.error),
-                                          const SizedBox(width: 8),
-                                          Text(
-                                            'Stop',
-                                            style: GoogleFonts.inter(fontWeight: FontWeight.w700, color: theme.colorScheme.error),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           ),
                         ],
@@ -378,6 +379,13 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody> with TickerPro
                             const SizedBox(height: AppSpacing.sm),
                             TabBar(
                               controller: _tabController,
+                              dividerColor: Colors.transparent,
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              indicatorPadding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
+                              indicator: BoxDecoration(
+                                color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.05),
+                                borderRadius: BorderRadius.circular(AppRadius.full),
+                              ),
                               labelStyle: GoogleFonts.inter(fontWeight: FontWeight.w700),
                               unselectedLabelStyle: GoogleFonts.inter(fontWeight: FontWeight.w500),
                               tabs: const <Widget>[
@@ -519,32 +527,63 @@ class _PulsingTimerLabelState extends State<_PulsingTimerLabel> with SingleTicke
 }
 
 class _CountdownRingPainter extends CustomPainter {
-  _CountdownRingPainter({required this.progress, required this.color, required this.trackColor});
+  _CountdownRingPainter({
+    required this.progress,
+    required this.remaining,
+    required this.isDark,
+    required this.primaryColor,
+    required this.trackColor,
+  });
 
   final double progress;
-  final Color color;
+  final int remaining;
+  final bool isDark;
+  final Color primaryColor;
   final Color trackColor;
 
   @override
   void paint(Canvas canvas, Size size) {
     final Offset c = Offset(size.width / 2, size.height / 2);
     final double r = size.shortestSide / 2 - 12; // slightly thicker
+
     final Paint track = Paint()
       ..color = trackColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = 14;
     canvas.drawCircle(c, r, track);
+
+    Color baseColor;
+    if (remaining <= 15) {
+      baseColor = AppColors.error;
+    } else if (remaining <= 30) {
+      baseColor = AppColors.warning;
+    } else {
+      baseColor = primaryColor;
+    }
+
+    final SweepGradient gradient = SweepGradient(
+      startAngle: -1.5707963267948966, // -pi/2
+      endAngle: 4.71238898038469, // 3 * pi / 2
+      colors: <Color>[
+        baseColor.withValues(alpha: 0.4),
+        baseColor,
+      ],
+      stops: const <double>[0.0, 1.0],
+    );
+
+    final Rect rect = Rect.fromCircle(center: c, radius: r);
     final Paint fill = Paint()
-      ..color = color
+      ..shader = gradient.createShader(rect)
       ..style = PaintingStyle.stroke
       ..strokeWidth = 14
       ..strokeCap = StrokeCap.round;
+
     final double sweep = progress * 6.283185307179586; // 2 * pi
-    canvas.drawArc(Rect.fromCircle(center: c, radius: r), -1.5707963267948966, sweep, false, fill); // -pi/2 start
+    canvas.drawArc(rect, -1.5707963267948966, sweep, false, fill); // -pi/2 start
   }
 
   @override
   bool shouldRepaint(covariant _CountdownRingPainter oldDelegate) {
-    return oldDelegate.progress != progress || oldDelegate.color != color || oldDelegate.trackColor != trackColor;
+    return oldDelegate.progress != progress || oldDelegate.remaining != remaining || oldDelegate.isDark != isDark;
   }
 }

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
+import 'package:speakup/config/router/app_routes.dart';
 import 'package:speakup/config/theme/app_colors.dart';
 import 'package:speakup/config/theme/app_layout.dart';
 import 'package:speakup/config/theme/app_radius.dart';
@@ -1048,23 +1050,30 @@ class _EmptyHistory extends StatelessWidget {
               style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant, height: 1.5),
             ),
             const SizedBox(height: AppSpacing.xl),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
-              decoration: BoxDecoration(
-                color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+            Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () => context.go(AppRoutes.home),
                 borderRadius: BorderRadius.circular(AppRadius.full),
-                border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.2)),
-              ),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Icon(Icons.arrow_back_rounded, size: 14, color: theme.colorScheme.primary.withValues(alpha: 0.75)),
-                  const SizedBox(width: AppSpacing.xs),
-                  Text(
-                    'Go practise!',
-                    style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w600, color: theme.colorScheme.primary),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.sm),
+                  decoration: BoxDecoration(
+                    color: theme.colorScheme.primaryContainer.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(AppRadius.full),
+                    border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.2)),
                   ),
-                ],
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      Icon(Icons.arrow_back_rounded, size: 14, color: theme.colorScheme.primary.withValues(alpha: 0.75)),
+                      const SizedBox(width: AppSpacing.xs),
+                      Text(
+                        'Go practise!',
+                        style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w600, color: theme.colorScheme.primary),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],
