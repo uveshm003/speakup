@@ -144,7 +144,7 @@ class _Sidebar extends StatelessWidget {
                   padding: const EdgeInsets.only(left: AppSpacing.sm, bottom: AppSpacing.xl),
                   child: Text(
                     'SpeakUp',
-                    style: GoogleFonts.plusJakartaSans(fontSize: 22, fontWeight: FontWeight.w800, color: theme.colorScheme.primary),
+                    style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 22, fontWeight: FontWeight.w800, color: theme.colorScheme.primary),
                   ),
                 ),
                 Expanded(
