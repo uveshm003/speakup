@@ -30,6 +30,8 @@ dependencies:
   google_fonts: ^6.3.0
   fpdart: ^1.1.1
   package_info_plus: ^8.1.2
+  record: ^6.2.0
+  just_audio: ^0.10.5
 
 dev_dependencies:
   flutter_test:
