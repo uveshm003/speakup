@@ -9,7 +9,8 @@
 import 'dart:typed_data';
 
 import 'package:flat_buffers/flat_buffers.dart' as fb;
-import 'package:objectbox/internal.dart' as obx_int; // generated code can access "internal" functionality
+import 'package:objectbox/internal.dart'
+    as obx_int; // generated code can access "internal" functionality
 import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
@@ -25,7 +26,12 @@ final _entities = <obx_int.ModelEntity>[
     lastPropertyId: const obx_int.IdUid(5, 5363078101718647647),
     flags: 0,
     properties: <obx_int.ModelProperty>[
-      obx_int.ModelProperty(id: const obx_int.IdUid(1, 2766497964249915091), name: 'id', type: 6, flags: 1),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 2766497964249915091),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
       obx_int.ModelProperty(
         id: const obx_int.IdUid(2, 2669151000379710813),
         name: 'categoryId',
@@ -33,20 +39,46 @@ final _entities = <obx_int.ModelEntity>[
         flags: 2080,
         indexId: const obx_int.IdUid(1, 9222948346877948181),
       ),
-      obx_int.ModelProperty(id: const obx_int.IdUid(3, 3941976873558355656), name: 'name', type: 9, flags: 0),
-      obx_int.ModelProperty(id: const obx_int.IdUid(4, 6700977375201004493), name: 'iconEmoji', type: 9, flags: 0),
-      obx_int.ModelProperty(id: const obx_int.IdUid(5, 5363078101718647647), name: 'createdAt', type: 10, flags: 0),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 3941976873558355656),
+        name: 'name',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 6700977375201004493),
+        name: 'iconEmoji',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 5363078101718647647),
+        name: 'createdAt',
+        type: 10,
+        flags: 0,
+      ),
     ],
     relations: <obx_int.ModelRelation>[],
-    backlinks: <obx_int.ModelBacklink>[obx_int.ModelBacklink(name: 'cards', srcEntity: 'TopicCardEntity', srcField: 'customCategory')],
+    backlinks: <obx_int.ModelBacklink>[
+      obx_int.ModelBacklink(
+        name: 'cards',
+        srcEntity: 'TopicCardEntity',
+        srcField: 'customCategory',
+      ),
+    ],
   ),
   obx_int.ModelEntity(
     id: const obx_int.IdUid(3, 974969171287862965),
     name: 'PracticeSessionEntity',
-    lastPropertyId: const obx_int.IdUid(8, 8072886828325200849),
+    lastPropertyId: const obx_int.IdUid(9, 2148059888407844438),
     flags: 0,
     properties: <obx_int.ModelProperty>[
-      obx_int.ModelProperty(id: const obx_int.IdUid(1, 377476718960749455), name: 'id', type: 6, flags: 1),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 377476718960749455),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
       obx_int.ModelProperty(
         id: const obx_int.IdUid(2, 7435866734338730424),
         name: 'sessionId',
@@ -54,8 +86,18 @@ final _entities = <obx_int.ModelEntity>[
         flags: 2080,
         indexId: const obx_int.IdUid(2, 7377871823936964227),
       ),
-      obx_int.ModelProperty(id: const obx_int.IdUid(3, 6940626790623733040), name: 'cardId', type: 9, flags: 0),
-      obx_int.ModelProperty(id: const obx_int.IdUid(4, 7218148758608428894), name: 'cardTitle', type: 9, flags: 0),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 6940626790623733040),
+        name: 'cardId',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(4, 7218148758608428894),
+        name: 'cardTitle',
+        type: 9,
+        flags: 0,
+      ),
       obx_int.ModelProperty(
         id: const obx_int.IdUid(5, 6818238693194862684),
         name: 'category',
@@ -63,14 +105,30 @@ final _entities = <obx_int.ModelEntity>[
         flags: 2048,
         indexId: const obx_int.IdUid(5, 33781707284594946),
       ),
-      obx_int.ModelProperty(id: const obx_int.IdUid(6, 3551168850071315000), name: 'durationSeconds', type: 6, flags: 0),
-      obx_int.ModelProperty(id: const obx_int.IdUid(7, 2848190549496386803), name: 'wasCompleted', type: 1, flags: 0),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 3551168850071315000),
+        name: 'durationSeconds',
+        type: 6,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 2848190549496386803),
+        name: 'wasCompleted',
+        type: 1,
+        flags: 0,
+      ),
       obx_int.ModelProperty(
         id: const obx_int.IdUid(8, 8072886828325200849),
         name: 'completedAt',
         type: 10,
         flags: 8,
         indexId: const obx_int.IdUid(6, 387520588437224330),
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(9, 2148059888407844438),
+        name: 'recordingPath',
+        type: 9,
+        flags: 0,
       ),
     ],
     relations: <obx_int.ModelRelation>[],
@@ -82,7 +140,12 @@ final _entities = <obx_int.ModelEntity>[
     lastPropertyId: const obx_int.IdUid(11, 507744649082267577),
     flags: 0,
     properties: <obx_int.ModelProperty>[
-      obx_int.ModelProperty(id: const obx_int.IdUid(1, 6813211587976227466), name: 'id', type: 6, flags: 1),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(1, 6813211587976227466),
+        name: 'id',
+        type: 6,
+        flags: 1,
+      ),
       obx_int.ModelProperty(
         id: const obx_int.IdUid(2, 935253998529132188),
         name: 'cardId',
@@ -90,7 +153,12 @@ final _entities = <obx_int.ModelEntity>[
         flags: 2080,
         indexId: const obx_int.IdUid(3, 2765883135833707808),
       ),
-      obx_int.ModelProperty(id: const obx_int.IdUid(3, 1119146294334806083), name: 'title', type: 9, flags: 0),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(3, 1119146294334806083),
+        name: 'title',
+        type: 9,
+        flags: 0,
+      ),
       obx_int.ModelProperty(
         id: const obx_int.IdUid(4, 2874398136570892190),
         name: 'category',
@@ -98,12 +166,42 @@ final _entities = <obx_int.ModelEntity>[
         flags: 2048,
         indexId: const obx_int.IdUid(7, 350953893598916744),
       ),
-      obx_int.ModelProperty(id: const obx_int.IdUid(5, 6147200757941060950), name: 'difficultyRaw', type: 9, flags: 0),
-      obx_int.ModelProperty(id: const obx_int.IdUid(6, 5661433891812073573), name: 'guideJson', type: 9, flags: 0),
-      obx_int.ModelProperty(id: const obx_int.IdUid(7, 7337413104489274019), name: 'vocabJson', type: 9, flags: 0),
-      obx_int.ModelProperty(id: const obx_int.IdUid(8, 8631359680137731513), name: 'isCustom', type: 1, flags: 0),
-      obx_int.ModelProperty(id: const obx_int.IdUid(9, 6556868853110766774), name: 'isFavorite', type: 1, flags: 0),
-      obx_int.ModelProperty(id: const obx_int.IdUid(10, 2241820544297207504), name: 'createdAt', type: 10, flags: 0),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(5, 6147200757941060950),
+        name: 'difficultyRaw',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(6, 5661433891812073573),
+        name: 'guideJson',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(7, 7337413104489274019),
+        name: 'vocabJson',
+        type: 9,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(8, 8631359680137731513),
+        name: 'isCustom',
+        type: 1,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(9, 6556868853110766774),
+        name: 'isFavorite',
+        type: 1,
+        flags: 0,
+      ),
+      obx_int.ModelProperty(
+        id: const obx_int.IdUid(10, 2241820544297207504),
+        name: 'createdAt',
+        type: 10,
+        flags: 0,
+      ),
       obx_int.ModelProperty(
         id: const obx_int.IdUid(11, 507744649082267577),
         name: 'customCategoryId',
@@ -180,7 +278,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
       model: _entities[0],
       toOneRelations: (CustomCategoryEntity object) => [],
       toManyRelations: (CustomCategoryEntity object) => {
-        obx_int.RelInfo<TopicCardEntity>.toOneBacklink(11, object.id, (TopicCardEntity srcObject) => srcObject.customCategory): object.cards,
+        obx_int.RelInfo<TopicCardEntity>.toOneBacklink(
+          11,
+          object.id,
+          (TopicCardEntity srcObject) => srcObject.customCategory,
+        ): object.cards,
       },
       getId: (CustomCategoryEntity object) => object.id,
       setId: (CustomCategoryEntity object, int id) {
@@ -202,11 +304,25 @@ obx_int.ModelDefinition getObjectBoxModel() {
       objectFromFB: (obx.Store store, ByteData fbData) {
         final buffer = fb.BufferContext(fbData);
         final rootOffset = buffer.derefObject(0);
-        final idParam = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-        final categoryIdParam = const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 6, '');
-        final nameParam = const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 8, '');
-        final iconEmojiParam = const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 10, '');
-        final createdAtParam = DateTime.fromMillisecondsSinceEpoch(const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0), isUtc: true);
+        final idParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          4,
+          0,
+        );
+        final categoryIdParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 6, '');
+        final nameParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 8, '');
+        final iconEmojiParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 10, '');
+        final createdAtParam = DateTime.fromMillisecondsSinceEpoch(
+          const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0),
+          isUtc: true,
+        );
         final object = CustomCategoryEntity(
           id: idParam,
           categoryId: categoryIdParam,
@@ -217,7 +333,11 @@ obx_int.ModelDefinition getObjectBoxModel() {
         obx_int.InternalToManyAccess.setRelInfo<CustomCategoryEntity>(
           object.cards,
           store,
-          obx_int.RelInfo<TopicCardEntity>.toOneBacklink(11, object.id, (TopicCardEntity srcObject) => srcObject.customCategory),
+          obx_int.RelInfo<TopicCardEntity>.toOneBacklink(
+            11,
+            object.id,
+            (TopicCardEntity srcObject) => srcObject.customCategory,
+          ),
         );
         return object;
       },
@@ -235,7 +355,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
         final cardIdOffset = fbb.writeString(object.cardId);
         final cardTitleOffset = fbb.writeString(object.cardTitle);
         final categoryOffset = fbb.writeString(object.category);
-        fbb.startTable(9);
+        final recordingPathOffset = object.recordingPath == null
+            ? null
+            : fbb.writeString(object.recordingPath!);
+        fbb.startTable(10);
         fbb.addInt64(0, object.id);
         fbb.addOffset(1, sessionIdOffset);
         fbb.addOffset(2, cardIdOffset);
@@ -244,20 +367,50 @@ obx_int.ModelDefinition getObjectBoxModel() {
         fbb.addInt64(5, object.durationSeconds);
         fbb.addBool(6, object.wasCompleted);
         fbb.addInt64(7, object.completedAt.millisecondsSinceEpoch);
+        fbb.addOffset(8, recordingPathOffset);
         fbb.finish(fbb.endTable());
         return object.id;
       },
       objectFromFB: (obx.Store store, ByteData fbData) {
         final buffer = fb.BufferContext(fbData);
         final rootOffset = buffer.derefObject(0);
-        final idParam = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-        final sessionIdParam = const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 6, '');
-        final cardIdParam = const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 8, '');
-        final cardTitleParam = const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 10, '');
-        final categoryParam = const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 12, '');
-        final durationSecondsParam = const fb.Int64Reader().vTableGet(buffer, rootOffset, 14, 0);
-        final wasCompletedParam = const fb.BoolReader().vTableGet(buffer, rootOffset, 16, false);
-        final completedAtParam = DateTime.fromMillisecondsSinceEpoch(const fb.Int64Reader().vTableGet(buffer, rootOffset, 18, 0), isUtc: true);
+        final idParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          4,
+          0,
+        );
+        final sessionIdParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 6, '');
+        final cardIdParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 8, '');
+        final cardTitleParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 10, '');
+        final categoryParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 12, '');
+        final durationSecondsParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          14,
+          0,
+        );
+        final wasCompletedParam = const fb.BoolReader().vTableGet(
+          buffer,
+          rootOffset,
+          16,
+          false,
+        );
+        final completedAtParam = DateTime.fromMillisecondsSinceEpoch(
+          const fb.Int64Reader().vTableGet(buffer, rootOffset, 18, 0),
+          isUtc: true,
+        );
+        final recordingPathParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGetNullable(buffer, rootOffset, 20);
         final object = PracticeSessionEntity(
           id: idParam,
           sessionId: sessionIdParam,
@@ -267,6 +420,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
           durationSeconds: durationSecondsParam,
           wasCompleted: wasCompletedParam,
           completedAt: completedAtParam,
+          recordingPath: recordingPathParam,
         );
 
         return object;
@@ -305,16 +459,46 @@ obx_int.ModelDefinition getObjectBoxModel() {
       objectFromFB: (obx.Store store, ByteData fbData) {
         final buffer = fb.BufferContext(fbData);
         final rootOffset = buffer.derefObject(0);
-        final idParam = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0);
-        final cardIdParam = const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 6, '');
-        final titleParam = const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 8, '');
-        final categoryParam = const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 10, '');
-        final difficultyRawParam = const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 12, '');
-        final guideJsonParam = const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 14, '');
-        final vocabJsonParam = const fb.StringReader(asciiOptimization: true).vTableGet(buffer, rootOffset, 16, '');
-        final isCustomParam = const fb.BoolReader().vTableGet(buffer, rootOffset, 18, false);
-        final isFavoriteParam = const fb.BoolReader().vTableGet(buffer, rootOffset, 20, false);
-        final createdAtParam = DateTime.fromMillisecondsSinceEpoch(const fb.Int64Reader().vTableGet(buffer, rootOffset, 22, 0), isUtc: true);
+        final idParam = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          4,
+          0,
+        );
+        final cardIdParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 6, '');
+        final titleParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 8, '');
+        final categoryParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 10, '');
+        final difficultyRawParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 12, '');
+        final guideJsonParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 14, '');
+        final vocabJsonParam = const fb.StringReader(
+          asciiOptimization: true,
+        ).vTableGet(buffer, rootOffset, 16, '');
+        final isCustomParam = const fb.BoolReader().vTableGet(
+          buffer,
+          rootOffset,
+          18,
+          false,
+        );
+        final isFavoriteParam = const fb.BoolReader().vTableGet(
+          buffer,
+          rootOffset,
+          20,
+          false,
+        );
+        final createdAtParam = DateTime.fromMillisecondsSinceEpoch(
+          const fb.Int64Reader().vTableGet(buffer, rootOffset, 22, 0),
+          isUtc: true,
+        );
         final object = TopicCardEntity(
           id: idParam,
           cardId: cardIdParam,
@@ -327,7 +511,12 @@ obx_int.ModelDefinition getObjectBoxModel() {
           isFavorite: isFavoriteParam,
           createdAt: createdAtParam,
         );
-        object.customCategory.targetId = const fb.Int64Reader().vTableGet(buffer, rootOffset, 24, 0);
+        object.customCategory.targetId = const fb.Int64Reader().vTableGet(
+          buffer,
+          rootOffset,
+          24,
+          0,
+        );
         object.customCategory.attach(store);
         return object;
       },
@@ -340,83 +529,141 @@ obx_int.ModelDefinition getObjectBoxModel() {
 /// [CustomCategoryEntity] entity fields to define ObjectBox queries.
 class CustomCategoryEntity_ {
   /// See [CustomCategoryEntity.id].
-  static final id = obx.QueryIntegerProperty<CustomCategoryEntity>(_entities[0].properties[0]);
+  static final id = obx.QueryIntegerProperty<CustomCategoryEntity>(
+    _entities[0].properties[0],
+  );
 
   /// See [CustomCategoryEntity.categoryId].
-  static final categoryId = obx.QueryStringProperty<CustomCategoryEntity>(_entities[0].properties[1]);
+  static final categoryId = obx.QueryStringProperty<CustomCategoryEntity>(
+    _entities[0].properties[1],
+  );
 
   /// See [CustomCategoryEntity.name].
-  static final name = obx.QueryStringProperty<CustomCategoryEntity>(_entities[0].properties[2]);
+  static final name = obx.QueryStringProperty<CustomCategoryEntity>(
+    _entities[0].properties[2],
+  );
 
   /// See [CustomCategoryEntity.iconEmoji].
-  static final iconEmoji = obx.QueryStringProperty<CustomCategoryEntity>(_entities[0].properties[3]);
+  static final iconEmoji = obx.QueryStringProperty<CustomCategoryEntity>(
+    _entities[0].properties[3],
+  );
 
   /// See [CustomCategoryEntity.createdAt].
-  static final createdAt = obx.QueryDateProperty<CustomCategoryEntity>(_entities[0].properties[4]);
+  static final createdAt = obx.QueryDateProperty<CustomCategoryEntity>(
+    _entities[0].properties[4],
+  );
 
   /// see [CustomCategoryEntity.cards]
-  static final cards = obx.QueryBacklinkToMany<TopicCardEntity, CustomCategoryEntity>(TopicCardEntity_.customCategory);
+  static final cards =
+      obx.QueryBacklinkToMany<TopicCardEntity, CustomCategoryEntity>(
+        TopicCardEntity_.customCategory,
+      );
 }
 
 /// [PracticeSessionEntity] entity fields to define ObjectBox queries.
 class PracticeSessionEntity_ {
   /// See [PracticeSessionEntity.id].
-  static final id = obx.QueryIntegerProperty<PracticeSessionEntity>(_entities[1].properties[0]);
+  static final id = obx.QueryIntegerProperty<PracticeSessionEntity>(
+    _entities[1].properties[0],
+  );
 
   /// See [PracticeSessionEntity.sessionId].
-  static final sessionId = obx.QueryStringProperty<PracticeSessionEntity>(_entities[1].properties[1]);
+  static final sessionId = obx.QueryStringProperty<PracticeSessionEntity>(
+    _entities[1].properties[1],
+  );
 
   /// See [PracticeSessionEntity.cardId].
-  static final cardId = obx.QueryStringProperty<PracticeSessionEntity>(_entities[1].properties[2]);
+  static final cardId = obx.QueryStringProperty<PracticeSessionEntity>(
+    _entities[1].properties[2],
+  );
 
   /// See [PracticeSessionEntity.cardTitle].
-  static final cardTitle = obx.QueryStringProperty<PracticeSessionEntity>(_entities[1].properties[3]);
+  static final cardTitle = obx.QueryStringProperty<PracticeSessionEntity>(
+    _entities[1].properties[3],
+  );
 
   /// See [PracticeSessionEntity.category].
-  static final category = obx.QueryStringProperty<PracticeSessionEntity>(_entities[1].properties[4]);
+  static final category = obx.QueryStringProperty<PracticeSessionEntity>(
+    _entities[1].properties[4],
+  );
 
   /// See [PracticeSessionEntity.durationSeconds].
-  static final durationSeconds = obx.QueryIntegerProperty<PracticeSessionEntity>(_entities[1].properties[5]);
+  static final durationSeconds =
+      obx.QueryIntegerProperty<PracticeSessionEntity>(
+        _entities[1].properties[5],
+      );
 
   /// See [PracticeSessionEntity.wasCompleted].
-  static final wasCompleted = obx.QueryBooleanProperty<PracticeSessionEntity>(_entities[1].properties[6]);
+  static final wasCompleted = obx.QueryBooleanProperty<PracticeSessionEntity>(
+    _entities[1].properties[6],
+  );
 
   /// See [PracticeSessionEntity.completedAt].
-  static final completedAt = obx.QueryDateProperty<PracticeSessionEntity>(_entities[1].properties[7]);
+  static final completedAt = obx.QueryDateProperty<PracticeSessionEntity>(
+    _entities[1].properties[7],
+  );
+
+  /// See [PracticeSessionEntity.recordingPath].
+  static final recordingPath = obx.QueryStringProperty<PracticeSessionEntity>(
+    _entities[1].properties[8],
+  );
 }
 
 /// [TopicCardEntity] entity fields to define ObjectBox queries.
 class TopicCardEntity_ {
   /// See [TopicCardEntity.id].
-  static final id = obx.QueryIntegerProperty<TopicCardEntity>(_entities[2].properties[0]);
+  static final id = obx.QueryIntegerProperty<TopicCardEntity>(
+    _entities[2].properties[0],
+  );
 
   /// See [TopicCardEntity.cardId].
-  static final cardId = obx.QueryStringProperty<TopicCardEntity>(_entities[2].properties[1]);
+  static final cardId = obx.QueryStringProperty<TopicCardEntity>(
+    _entities[2].properties[1],
+  );
 
   /// See [TopicCardEntity.title].
-  static final title = obx.QueryStringProperty<TopicCardEntity>(_entities[2].properties[2]);
+  static final title = obx.QueryStringProperty<TopicCardEntity>(
+    _entities[2].properties[2],
+  );
 
   /// See [TopicCardEntity.category].
-  static final category = obx.QueryStringProperty<TopicCardEntity>(_entities[2].properties[3]);
+  static final category = obx.QueryStringProperty<TopicCardEntity>(
+    _entities[2].properties[3],
+  );
 
   /// See [TopicCardEntity.difficultyRaw].
-  static final difficultyRaw = obx.QueryStringProperty<TopicCardEntity>(_entities[2].properties[4]);
+  static final difficultyRaw = obx.QueryStringProperty<TopicCardEntity>(
+    _entities[2].properties[4],
+  );
 
   /// See [TopicCardEntity.guideJson].
-  static final guideJson = obx.QueryStringProperty<TopicCardEntity>(_entities[2].properties[5]);
+  static final guideJson = obx.QueryStringProperty<TopicCardEntity>(
+    _entities[2].properties[5],
+  );
 
   /// See [TopicCardEntity.vocabJson].
-  static final vocabJson = obx.QueryStringProperty<TopicCardEntity>(_entities[2].properties[6]);
+  static final vocabJson = obx.QueryStringProperty<TopicCardEntity>(
+    _entities[2].properties[6],
+  );
 
   /// See [TopicCardEntity.isCustom].
-  static final isCustom = obx.QueryBooleanProperty<TopicCardEntity>(_entities[2].properties[7]);
+  static final isCustom = obx.QueryBooleanProperty<TopicCardEntity>(
+    _entities[2].properties[7],
+  );
 
   /// See [TopicCardEntity.isFavorite].
-  static final isFavorite = obx.QueryBooleanProperty<TopicCardEntity>(_entities[2].properties[8]);
+  static final isFavorite = obx.QueryBooleanProperty<TopicCardEntity>(
+    _entities[2].properties[8],
+  );
 
   /// See [TopicCardEntity.createdAt].
-  static final createdAt = obx.QueryDateProperty<TopicCardEntity>(_entities[2].properties[9]);
+  static final createdAt = obx.QueryDateProperty<TopicCardEntity>(
+    _entities[2].properties[9],
+  );
 
   /// See [TopicCardEntity.customCategory].
-  static final customCategory = obx.QueryRelationToOne<TopicCardEntity, CustomCategoryEntity>(_entities[2].properties[10]);
+  static final customCategory =
+      obx.QueryRelationToOne<TopicCardEntity, CustomCategoryEntity>(
+        _entities[2].properties[10],
+      );
 }

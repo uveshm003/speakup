@@ -11,6 +11,7 @@ class PracticeSessionEntity {
     required this.durationSeconds,
     required this.wasCompleted,
     required this.completedAt,
+    this.recordingPath,
   });
 
   @Id()
@@ -27,4 +28,7 @@ class PracticeSessionEntity {
   @Index()
   @Property(type: PropertyType.dateUtc)
   DateTime completedAt;
+
+  /// Absolute file path to the .m4a audio recording. Null when no recording was made.
+  String? recordingPath;
 }

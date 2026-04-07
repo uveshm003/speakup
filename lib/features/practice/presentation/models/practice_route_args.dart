@@ -10,9 +10,17 @@ class ActivePracticeArgs {
 
 /// [GoRouter] extra for `/home/session-end`.
 class SessionEndRouteArgs {
-  const SessionEndRouteArgs({required this.card, required this.elapsedSeconds, required this.wasCompleted});
+  const SessionEndRouteArgs({
+    required this.card,
+    required this.elapsedSeconds,
+    required this.wasCompleted,
+    this.recordingPath,
+  });
 
   final TopicCard card;
   final int elapsedSeconds;
   final bool wasCompleted;
+
+  /// Absolute path to the .m4a recording saved during this session, or null.
+  final String? recordingPath;
 }

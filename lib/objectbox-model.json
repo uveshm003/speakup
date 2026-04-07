@@ -41,7 +41,7 @@
     },
     {
       "id": "3:974969171287862965",
-      "lastPropertyId": "8:8072886828325200849",
+      "lastPropertyId": "9:2148059888407844438",
       "name": "PracticeSessionEntity",
       "properties": [
         {
@@ -90,6 +90,11 @@
           "indexId": "6:387520588437224330",
           "type": 10,
           "flags": 8
+        },
+        {
+          "id": "9:2148059888407844438",
+          "name": "recordingPath",
+          "type": 9
         }
       ],
       "relations": []

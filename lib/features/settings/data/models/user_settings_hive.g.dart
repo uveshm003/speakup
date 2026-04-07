@@ -13,7 +13,9 @@ class UserSettingsHiveAdapter extends TypeAdapter<UserSettingsHive> {
   @override
   UserSettingsHive read(BinaryReader reader) {
     final numOfFields = reader.readByte();
-    final fields = <int, dynamic>{for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read()};
+    final fields = <int, dynamic>{
+      for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
+    };
     return UserSettingsHive(
       defaultTimerSeconds: (fields[0] as num).toInt(),
       textSizeScale: (fields[1] as num).toDouble(),
@@ -22,7 +24,7 @@ class UserSettingsHiveAdapter extends TypeAdapter<UserSettingsHive> {
       lastSessionDate: fields[4] as DateTime?,
       currentStreak: (fields[5] as num).toInt(),
       cardsSeeded: fields[6] as bool,
-      cardsSeedVersion: (fields[7] as num?)?.toInt() ?? 0,
+      cardsSeedVersion: (fields[7] as num).toInt(),
     );
   }
 
@@ -53,5 +55,8 @@ class UserSettingsHiveAdapter extends TypeAdapter<UserSettingsHive> {
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is UserSettingsHiveAdapter && runtimeType == other.runtimeType && typeId == other.typeId;
+      identical(this, other) ||
+      other is UserSettingsHiveAdapter &&
+          runtimeType == other.runtimeType &&
+          typeId == other.typeId;
 }
