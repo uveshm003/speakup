@@ -9,6 +9,7 @@ class PracticeSession extends Equatable {
     required this.durationSeconds,
     required this.wasCompleted,
     required this.completedAt,
+    this.recordingPath,
   });
 
   final String sessionId;
@@ -19,6 +20,9 @@ class PracticeSession extends Equatable {
   final bool wasCompleted;
   final DateTime completedAt;
 
+  /// Absolute path to the .m4a recording file, or null if no recording was made.
+  final String? recordingPath;
+
   @override
-  List<Object?> get props => <Object?>[sessionId, cardId, cardTitle, category, durationSeconds, wasCompleted, completedAt];
+  List<Object?> get props => <Object?>[sessionId, cardId, cardTitle, category, durationSeconds, wasCompleted, completedAt, recordingPath];
 }

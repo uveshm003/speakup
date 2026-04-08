@@ -10,6 +10,7 @@ PracticeSession practiceSessionFromEntity(PracticeSessionEntity e) {
     durationSeconds: e.durationSeconds,
     wasCompleted: e.wasCompleted,
     completedAt: e.completedAt,
+    recordingPath: e.recordingPath,
   );
 }
 
@@ -23,5 +24,6 @@ PracticeSessionEntity practiceSessionToEntity(PracticeSession s, {int id = 0}) {
     durationSeconds: s.durationSeconds,
     wasCompleted: s.wasCompleted,
     completedAt: s.completedAt,
+    recordingPath: s.recordingPath,
   );
 }

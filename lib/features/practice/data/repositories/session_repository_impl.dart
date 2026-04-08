@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fpdart/fpdart.dart';
 
 import 'package:speakup/core/errors/failures.dart';
@@ -69,7 +71,19 @@ class SessionRepositoryImpl implements SessionRepository {
         if (e == null) {
           return Left<Failure, void>(CacheFailure('Session not found: $sessionId'));
         }
+        // Delete the associated recording file if one exists
+        final String? recordingPath = e.recordingPath;
         _box.remove(e.id);
+        if (recordingPath != null) {
+          try {
+            final File file = File(recordingPath);
+            if (await file.exists()) {
+              await file.delete();
+            }
+          } catch (_) {
+            // Silently ignore file deletion failures — DB record is already gone
+          }
+        }
         return const Right<Failure, void>(null);
       } finally {
         q.close();
