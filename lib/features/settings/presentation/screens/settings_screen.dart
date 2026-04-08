@@ -101,7 +101,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   titlePadding: const EdgeInsetsDirectional.fromSTEB(AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.lg),
                   title: Text(
                     'Settings',
-                    style: GoogleFonts.plusJakartaSans(
+                    style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
                       fontWeight: FontWeight.w800,
                       fontSize: 22,
                       color: isDark ? theme.colorScheme.onSurface : Colors.white,

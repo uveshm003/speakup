@@ -165,7 +165,8 @@ class _SuccessView extends StatelessWidget {
                       Text(
                         '${state.streak}',
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.plusJakartaSans(
+                        style: TextStyle(
+                          fontFamily: 'Plus Jakarta Sans',
                           fontSize: 36,
                           fontWeight: FontWeight.w800,
                         ),

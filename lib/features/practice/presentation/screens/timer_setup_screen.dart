@@ -425,7 +425,7 @@ class _HeroCardPreview extends StatelessWidget {
             card.title,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
-            style: GoogleFonts.plusJakartaSans(
+            style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
               fontSize: 22,
               height: 1.25,
               fontWeight: FontWeight.w800,
@@ -474,7 +474,7 @@ class _TimerPreviewRing extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 formatPracticeMmSs(seconds),
-                style: GoogleFonts.plusJakartaSans(
+                style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
                   fontSize: 40,
                   fontWeight: FontWeight.w800,
                   color: Theme.of(context).colorScheme.onSurface,

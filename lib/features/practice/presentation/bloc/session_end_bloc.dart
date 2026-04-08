@@ -36,6 +36,7 @@ class SessionEndBloc extends Bloc<SessionEndEvent, SessionEndState> {
       durationSeconds: _args.elapsedSeconds,
       wasCompleted: _args.wasCompleted,
       completedAt: DateTime.now(),
+      recordingPath: _args.recordingPath,
     );
 
     final saveResult = await _sessionRepository.saveSession(session);
