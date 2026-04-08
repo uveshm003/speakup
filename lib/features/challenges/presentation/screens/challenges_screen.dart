@@ -3,10 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 import 'package:speakup/config/router/app_routes.dart';
 import 'package:speakup/config/theme/app_radius.dart';
 import 'package:speakup/config/theme/app_spacing.dart';
+import 'package:speakup/core/widgets/recording_player_sheet.dart';
+import 'package:speakup/features/card_draw/presentation/utils/category_accent.dart';
 import 'package:speakup/features/challenges/domain/built_in_challenges.dart';
 import 'package:speakup/features/challenges/domain/entities/challenge_def.dart';
 import 'package:speakup/features/challenges/domain/entities/challenge_progress.dart';
@@ -14,6 +17,8 @@ import 'package:speakup/features/challenges/presentation/bloc/challenges_bloc.da
 import 'package:speakup/features/challenges/presentation/bloc/challenges_event.dart';
 import 'package:speakup/features/challenges/presentation/bloc/challenges_state.dart';
 import 'package:speakup/features/challenges/presentation/screens/challenge_detail_screen.dart';
+import 'package:speakup/features/practice/domain/entities/practice_session.dart';
+import 'package:speakup/features/practice/domain/repositories/session_repository.dart';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Root screen
@@ -59,6 +64,10 @@ class ChallengesScreen extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.lg, AppSpacing.lg, AppSpacing.huge),
                 sliver: SliverList(
                   delegate: SliverChildListDelegate(<Widget>[
+                    // ── Recent Recordings ──────────────────────────────────
+                    _RecentRecordingsSection(),
+                    const SizedBox(height: AppSpacing.xl),
+
                     // Active challenges
                     if (active.isNotEmpty) ...<Widget>[
                       _SectionLabel(label: 'In Progress'),
@@ -183,7 +192,7 @@ class _ChallengesAppBar extends StatelessWidget {
           children: <Widget>[
             Text(
               'Challenges',
-              style: GoogleFonts.plusJakartaSans(
+              style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
                 fontWeight: FontWeight.w800,
                 fontSize: 20,
                 color: isDark ? theme.colorScheme.onSurface : Colors.white,
@@ -227,7 +236,7 @@ class _SectionLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       label,
-      style: GoogleFonts.plusJakartaSans(fontSize: 16, fontWeight: FontWeight.w800, color: Theme.of(context).colorScheme.onSurface),
+      style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 16, fontWeight: FontWeight.w800, color: Theme.of(context).colorScheme.onSurface),
     );
   }
 }
@@ -544,7 +553,7 @@ class _EmptyState extends StatelessWidget {
         children: <Widget>[
           const Text('🏆', style: TextStyle(fontSize: 56)),
           const SizedBox(height: AppSpacing.lg),
-          Text('No challenges yet', style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w800, fontSize: 18)),
+          Text('No challenges yet', style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w800, fontSize: 18)),
           const SizedBox(height: AppSpacing.sm),
           Text(
             'Pick a challenge below and start your journey.',
@@ -552,6 +561,129 @@ class _EmptyState extends StatelessWidget {
             style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant),
           ),
         ],
+      ),
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Recent Recordings section
+// ─────────────────────────────────────────────────────────────────────────────
+
+class _RecentRecordingsSection extends StatefulWidget {
+  @override
+  State<_RecentRecordingsSection> createState() => _RecentRecordingsSectionState();
+}
+
+class _RecentRecordingsSectionState extends State<_RecentRecordingsSection> {
+  late Future<List<PracticeSession>> _future;
+
+  @override
+  void initState() {
+    super.initState();
+    final SessionRepository repo = context.read<SessionRepository>();
+    _future = repo.getAllSessions().then((result) {
+      return result.fold(
+        (failure) => <PracticeSession>[],
+        (sessions) => sessions.where((s) => s.recordingPath != null && s.recordingPath!.isNotEmpty).take(5).toList(),
+      );
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<List<PracticeSession>>(
+      future: _future,
+      builder: (BuildContext context, AsyncSnapshot<List<PracticeSession>> snap) {
+        if (!snap.hasData || snap.data!.isEmpty) return const SizedBox.shrink();
+        final List<PracticeSession> recordings = snap.data!;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            _SectionLabel(label: '🎙 Recent Recordings'),
+            const SizedBox(height: AppSpacing.md),
+            ...recordings.map((PracticeSession s) => Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+              child: _RecordingListTile(session: s),
+            )),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _RecordingListTile extends StatelessWidget {
+  const _RecordingListTile({required this.session});
+  final PracticeSession session;
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final Color accent = accentColorForCategory(session.category);
+    final String date = DateFormat('MMM d').format(session.completedAt);
+
+    return Material(
+      color: theme.colorScheme.surfaceContainerLow,
+      borderRadius: BorderRadius.circular(AppRadius.lg),
+      child: InkWell(
+        onTap: () {
+          showModalBottomSheet<void>(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            builder: (_) => RecordingPlayerSheet(session: session),
+          );
+        },
+        borderRadius: BorderRadius.circular(AppRadius.lg),
+        child: Container(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppRadius.lg),
+            border: Border.all(color: accent.withValues(alpha: 0.2)),
+          ),
+          child: Row(
+            children: <Widget>[
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(color: accent.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(AppRadius.md)),
+                child: Icon(Icons.mic_rounded, color: accent, size: 20),
+              ),
+              const SizedBox(width: AppSpacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      session.cardTitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      '${session.category} · $date',
+                      style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: AppSpacing.sm),
+              Container(
+                width: 36,
+                height: 36,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: accent,
+                  boxShadow: <BoxShadow>[BoxShadow(color: accent.withValues(alpha: 0.3), blurRadius: 8, offset: const Offset(0, 2))],
+                ),
+                child: const Icon(Icons.play_arrow_rounded, color: Colors.white, size: 20),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

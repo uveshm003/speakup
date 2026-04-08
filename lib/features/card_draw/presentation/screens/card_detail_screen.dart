@@ -276,7 +276,7 @@ class _DetailCardPreview extends StatelessWidget {
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
-                    style: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.w800, height: 1.2),
+                    style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 20, fontWeight: FontWeight.w800, height: 1.2),
                   ),
                 ],
               ),

@@ -265,7 +265,7 @@ class _CardFront extends StatelessWidget {
                   const SizedBox(height: AppSpacing.lg),
                   Text(
                     'SpeakUp',
-                    style: GoogleFonts.plusJakartaSans(
+                    style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
                       fontSize: 32,
                       fontWeight: FontWeight.w800,
                       color: theme.colorScheme.onPrimary,
@@ -558,7 +558,7 @@ class _TitleText extends StatelessWidget {
             child: Text(
               title,
               textAlign: TextAlign.center,
-              style: GoogleFonts.plusJakartaSans(fontSize: fontSize, fontWeight: FontWeight.w800, height: 1.35, color: theme.colorScheme.onSurface),
+              style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: fontSize, fontWeight: FontWeight.w800, height: 1.35, color: theme.colorScheme.onSurface),
             ),
           ),
         );
