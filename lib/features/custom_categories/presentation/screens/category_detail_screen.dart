@@ -109,7 +109,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                             widget.category.name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: GoogleFonts.plusJakartaSans(
+                            style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
                               fontWeight: FontWeight.w800,
                               fontSize: 20,
                               color: isDark ? theme.colorScheme.onSurface : Colors.white,
@@ -401,7 +401,7 @@ class _EmptyCards extends StatelessWidget {
               child: Icon(Icons.style_outlined, size: 44, color: theme.colorScheme.primary),
             ),
             const SizedBox(height: AppSpacing.xl),
-            Text('No cards yet', style: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.w800)),
+            Text('No cards yet', style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 20, fontWeight: FontWeight.w800)),
             const SizedBox(height: AppSpacing.md),
             Text(
               'Add your first topic card to start practicing in this category.',

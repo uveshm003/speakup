@@ -262,7 +262,7 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text(_isEdit ? 'Edit Card' : 'New Card', style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w800, fontSize: 17)),
+                  Text(_isEdit ? 'Edit Card' : 'New Card', style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w800, fontSize: 17)),
                   Text(
                     widget.args.category.name,
                     style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),

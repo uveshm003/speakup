@@ -86,7 +86,7 @@ class _MyCategoriesScreenState extends State<MyCategoriesScreen> {
                     titlePadding: const EdgeInsetsDirectional.fromSTEB(AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.lg),
                     title: Text(
                       'My Categories',
-                      style: GoogleFonts.plusJakartaSans(
+                      style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
                         fontWeight: FontWeight.w800,
                         fontSize: 22,
                         color: isDark ? theme.colorScheme.onSurface : Colors.white,
@@ -252,7 +252,7 @@ class _StatItem extends StatelessWidget {
           children: <Widget>[
             Text(
               value,
-              style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w800, fontSize: 18, color: theme.colorScheme.primary),
+              style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w800, fontSize: 18, color: theme.colorScheme.primary),
             ),
             Text(label, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
           ],
@@ -471,7 +471,7 @@ class _EmptyState extends StatelessWidget {
             Text(
               'No categories yet',
               textAlign: TextAlign.center,
-              style: GoogleFonts.plusJakartaSans(fontSize: 22, fontWeight: FontWeight.w800),
+              style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 22, fontWeight: FontWeight.w800),
             ),
             const SizedBox(height: AppSpacing.md),
             Text(

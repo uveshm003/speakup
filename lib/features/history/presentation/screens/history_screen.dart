@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -9,6 +10,7 @@ import 'package:speakup/config/theme/app_colors.dart';
 import 'package:speakup/config/theme/app_layout.dart';
 import 'package:speakup/config/theme/app_radius.dart';
 import 'package:speakup/config/theme/app_spacing.dart';
+import 'package:speakup/core/widgets/recording_player_sheet.dart';
 import 'package:speakup/core/widgets/shimmer_widget.dart';
 import 'package:speakup/features/card_draw/presentation/utils/category_accent.dart';
 import 'package:speakup/features/history/presentation/bloc/history_bloc.dart';
@@ -28,7 +30,8 @@ class HistoryScreen extends StatefulWidget {
   State<HistoryScreen> createState() => _HistoryScreenState();
 }
 
-class _HistoryScreenState extends State<HistoryScreen> with SingleTickerProviderStateMixin {
+class _HistoryScreenState extends State<HistoryScreen>
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   bool _calendarExpanded = false;
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
@@ -38,12 +41,42 @@ class _HistoryScreenState extends State<HistoryScreen> with SingleTickerProvider
   @override
   void initState() {
     super.initState();
-    _headerAnimController = AnimationController(vsync: this, duration: const Duration(milliseconds: 600))..forward();
+    WidgetsBinding.instance.addObserver(this);
+    _headerAnimController =
+        AnimationController(vsync: this, duration: const Duration(milliseconds: 600))
+          ..forward();
     _headerFade = CurvedAnimation(parent: _headerAnimController, curve: Curves.easeOut);
+    // Listen to router so we pick up new sessions when returning from practice
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      GoRouter.of(context).routerDelegate.addListener(_onRouteChanged);
+    });
+  }
+
+  void _onRouteChanged() {
+    // Re-fetch whenever we land back on the history path
+    if (!mounted) return;
+    final String location = GoRouter.of(context).routerDelegate.currentConfiguration.uri.toString();
+    if (location == AppRoutes.history || location == AppRoutes.home) {
+      context.read<HistoryBloc>().add(const HistoryLoadRequested());
+    }
   }
 
   @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    // Reload when app comes back to foreground (e.g. returning from permissions)
+    if (state == AppLifecycleState.resumed && mounted) {
+      context.read<HistoryBloc>().add(const HistoryLoadRequested());
+    }
+  }
+
+
+  @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    // Safe removal — GoRouter may already be disposed
+    try {
+      GoRouter.of(context).routerDelegate.removeListener(_onRouteChanged);
+    } catch (_) {}
     _searchController.dispose();
     _headerAnimController.dispose();
     super.dispose();
@@ -70,31 +103,25 @@ class _HistoryScreenState extends State<HistoryScreen> with SingleTickerProvider
         body: SafeArea(
           child: BlocBuilder<HistoryBloc, HistoryState>(
             builder: (BuildContext context, HistoryState state) {
-              // ── Loading ────────────────────────────────────────────────────
               if (state.status == HistoryStatus.loading && state.allSessions.isEmpty) {
                 return _LoadingSkeleton(pad: pad);
               }
 
-              // ── Error ──────────────────────────────────────────────────────
               if (state.status == HistoryStatus.failure && state.allSessions.isEmpty) {
                 return _ErrorState(message: state.errorMessage ?? 'Could not load history', pad: pad);
               }
 
-              // derive filtered sessions for the list
               final List<PracticeSession> filtered = _applySearch(state.logSessions, _searchQuery);
 
               return CustomScrollView(
                 physics: const BouncingScrollPhysics(),
                 slivers: <Widget>[
-                  // ── Immersive Stats Header ─────────────────────────────────
                   SliverToBoxAdapter(
                     child: FadeTransition(
                       opacity: _headerFade,
                       child: _StatsHeader(state: state, pad: pad),
                     ),
                   ),
-
-                  // ── Activity section ──────────────────────────────────────
                   SliverPadding(
                     padding: EdgeInsets.fromLTRB(pad.left, AppSpacing.xl, pad.right, 0),
                     sliver: SliverToBoxAdapter(
@@ -105,16 +132,12 @@ class _HistoryScreenState extends State<HistoryScreen> with SingleTickerProvider
                       ),
                     ),
                   ),
-
-                  // ── Search bar ────────────────────────────────────────────
                   SliverPadding(
                     padding: EdgeInsets.fromLTRB(pad.left, AppSpacing.lg, pad.right, AppSpacing.sm),
                     sliver: SliverToBoxAdapter(
                       child: _SearchBar(controller: _searchController, onChanged: (String q) => setState(() => _searchQuery = q)),
                     ),
                   ),
-
-                  // ── Sessions list / empty ─────────────────────────────────
                   if (filtered.isEmpty && state.logSessions.isEmpty)
                     const SliverFillRemaining(hasScrollBody: false, child: _EmptyHistory())
                   else if (filtered.isEmpty)
@@ -130,7 +153,6 @@ class _HistoryScreenState extends State<HistoryScreen> with SingleTickerProvider
     );
   }
 
-  /// Filter sessions by search query (card title or category).
   List<PracticeSession> _applySearch(List<PracticeSession> sessions, String q) {
     if (q.trim().isEmpty) return sessions;
     final String lower = q.toLowerCase();
@@ -148,11 +170,9 @@ class _LoadingSkeleton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color base = Theme.of(context).colorScheme.surfaceContainerHighest;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        // Fake header banner
         ShimmerWidget(width: double.infinity, height: 160, borderRadius: BorderRadius.zero),
         Expanded(child: ShimmerListPlaceholder(itemCount: 6, itemHeight: 80)),
       ],
@@ -189,7 +209,7 @@ class _ErrorState extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Immersive stats header — tonal gradient banner with 3 stat chips
+// Immersive stats header
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _StatsHeader extends StatelessWidget {
@@ -204,7 +224,6 @@ class _StatsHeader extends StatelessWidget {
     final Color primaryContainer = theme.colorScheme.primaryContainer;
     final bool dark = theme.brightness == Brightness.dark;
 
-    // Gradient: primary at top left → surface at bottom right
     final LinearGradient grad = LinearGradient(
       begin: Alignment.topLeft,
       end: Alignment.bottomRight,
@@ -219,7 +238,6 @@ class _StatsHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          // Title row
           Row(
             children: <Widget>[
               Expanded(
@@ -232,7 +250,6 @@ class _StatsHeader extends StatelessWidget {
                   ],
                 ),
               ),
-              // Icon badge
               Container(
                 width: 44,
                 height: 44,
@@ -245,10 +262,7 @@ class _StatsHeader extends StatelessWidget {
               ),
             ],
           ),
-
           const SizedBox(height: AppSpacing.xl),
-
-          // Stat chips row
           Row(
             children: <Widget>[
               _StatChip(
@@ -294,7 +308,6 @@ class _StatChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-
     return Expanded(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.md, horizontal: AppSpacing.sm),
@@ -313,10 +326,7 @@ class _StatChip extends StatelessWidget {
               child: Icon(icon, size: 16, color: iconColor),
             ),
             const SizedBox(height: AppSpacing.xs + 2),
-            Text(
-              value,
-              style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.w800, color: accentColor, height: 1.1),
-            ),
+            Text(value, style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 18, fontWeight: FontWeight.w800, color: accentColor, height: 1.1)),
             const SizedBox(height: 2),
             Text(label, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant, letterSpacing: 0.2)),
           ],
@@ -362,7 +372,7 @@ class _SearchBar extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Activity section — compact week heatmap strip + toggleable monthly calendar
+// Activity section
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _ActivitySection extends StatelessWidget {
@@ -375,7 +385,6 @@ class _ActivitySection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-
     return Container(
       decoration: BoxDecoration(
         color: theme.colorScheme.surfaceContainerLow,
@@ -386,7 +395,6 @@ class _ActivitySection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          // ── Heading row ─────────────────────────────────────────────────
           Row(
             children: <Widget>[
               Icon(Icons.bar_chart_rounded, size: 16, color: theme.colorScheme.primary),
@@ -397,19 +405,12 @@ class _ActivitySection extends StatelessWidget {
             ],
           ),
           const SizedBox(height: AppSpacing.md),
-
-          // ── 7-day strip ──────────────────────────────────────────────────
           _WeekStrip(counts: counts),
-
-          // ── Full monthly calendar ────────────────────────────────────────
           AnimatedSize(
             duration: const Duration(milliseconds: 320),
             curve: Curves.easeInOut,
             child: expanded
-                ? Padding(
-                    padding: const EdgeInsets.only(top: AppSpacing.xl),
-                    child: _MonthPageView(counts: counts),
-                  )
+                ? Padding(padding: const EdgeInsets.only(top: AppSpacing.xl), child: _MonthPageView(counts: counts))
                 : const SizedBox.shrink(),
           ),
         ],
@@ -617,25 +618,14 @@ class _MonthGrid extends StatelessWidget {
         const SizedBox(height: AppSpacing.sm),
         Row(
           children: dow
-              .map(
-                (String d) => Expanded(
-                  child: Center(
-                    child: Text(d, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
-                  ),
-                ),
-              )
+              .map((String d) => Expanded(child: Center(child: Text(d, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)))))
               .toList(),
         ),
         const SizedBox(height: AppSpacing.xs),
         GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 7,
-            mainAxisSpacing: 4,
-            crossAxisSpacing: 4,
-            childAspectRatio: 1,
-          ),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 7, mainAxisSpacing: 4, crossAxisSpacing: 4, childAspectRatio: 1),
           itemCount: 35,
           itemBuilder: (BuildContext context, int i) {
             final DateTime cell = gridStart.add(Duration(days: i));
@@ -653,7 +643,6 @@ class _MonthGrid extends StatelessWidget {
               fill = primary;
             }
             final bool isToday = DateTime(cell.year, cell.month, cell.day) == todayNorm;
-
             return DecoratedBox(
               decoration: BoxDecoration(
                 color: inMonth ? fill : Colors.transparent,
@@ -680,7 +669,7 @@ class _MonthGrid extends StatelessWidget {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Timeline slivers builder — vertical timeline with date nodes
+// Timeline slivers builder
 // ─────────────────────────────────────────────────────────────────────────────
 
 List<Widget> _buildTimelineSlivers(BuildContext context, List<PracticeSession> sessions, EdgeInsets pad) {
@@ -700,27 +689,28 @@ List<Widget> _buildTimelineSlivers(BuildContext context, List<PracticeSession> s
     final List<PracticeSession> list = byDay[day]!;
     final bool isLast = dayIdx == days.length - 1;
 
-    // Render all sessions for this day as timeline cards
     out.add(
       SliverPadding(
         padding: EdgeInsets.fromLTRB(pad.left, 0, pad.right, 0),
         sliver: SliverList(
-          delegate: SliverChildBuilderDelegate((BuildContext context, int i) {
-            final bool isFirstInDay = i == 0;
-            final bool isLastInDay = i == list.length - 1;
-            return _TimelineSessionCard(
-              session: list[i],
-              dayLabel: isFirstInDay ? _dayHeaderLabel(day, today) : null,
-              isLastCard: isLast && isLastInDay,
-              onDelete: () => context.read<HistoryBloc>().add(SessionDeleted(list[i].sessionId)),
-            );
-          }, childCount: list.length),
+          delegate: SliverChildBuilderDelegate(
+            (BuildContext context, int i) {
+              final bool isFirstInDay = i == 0;
+              final bool isLastInDay = i == list.length - 1;
+              return _TimelineSessionCard(
+                session: list[i],
+                dayLabel: isFirstInDay ? _dayHeaderLabel(day, today) : null,
+                isLastCard: isLast && isLastInDay,
+                onDelete: () => context.read<HistoryBloc>().add(SessionDeleted(list[i].sessionId)),
+              );
+            },
+            childCount: list.length,
+          ),
         ),
       ),
     );
   }
 
-  // Bottom breathing room
   out.add(const SliverPadding(padding: EdgeInsets.only(bottom: AppSpacing.huge)));
   return out;
 }
@@ -733,7 +723,7 @@ String _dayHeaderLabel(DateTime day, DateTime today) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Timeline session card — left timeline spine with date badge
+// Timeline session card
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _TimelineSessionCard extends StatelessWidget {
@@ -751,8 +741,6 @@ class _TimelineSessionCard extends StatelessWidget {
     final String emoji = emojiForCategory(session.category);
     final String time = DateFormat.jm().format(session.completedAt);
     final bool completed = session.wasCompleted;
-
-    // Spine color: the vertical line connecting cards
     final Color spineColor = theme.colorScheme.outlineVariant.withValues(alpha: 0.4);
 
     return Padding(
@@ -760,17 +748,12 @@ class _TimelineSessionCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          // ── Left timeline axis (spine + dot) ──────────────────────────
           SizedBox(
             width: 52,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                // Date badge — only for first card in day
-                if (dayLabel != null) ...<Widget>[_DateBadge(label: dayLabel!, theme: theme), const SizedBox(height: AppSpacing.xs)] else
-                  const SizedBox(height: AppSpacing.xs + 4),
-
-                // Spine dot
+                if (dayLabel != null) ...<Widget>[_DateBadge(label: dayLabel!, theme: theme), const SizedBox(height: AppSpacing.xs)] else const SizedBox(height: AppSpacing.xs + 4),
                 Container(
                   width: 10,
                   height: 10,
@@ -780,16 +763,11 @@ class _TimelineSessionCard extends StatelessWidget {
                     boxShadow: <BoxShadow>[BoxShadow(color: accent.withValues(alpha: 0.35), blurRadius: 6, spreadRadius: 1)],
                   ),
                 ),
-
-                // Spine line going down (hidden for last card)
                 if (!isLastCard) Container(width: 1.5, height: 56, color: spineColor, margin: const EdgeInsets.only(top: 4)),
               ],
             ),
           ),
-
           const SizedBox(width: AppSpacing.sm),
-
-          // ── Session card ───────────────────────────────────────────────
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(bottom: AppSpacing.sm, top: 0),
@@ -852,6 +830,7 @@ class _SessionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    final bool hasRecording = session.recordingPath != null && session.recordingPath!.isNotEmpty;
 
     return Dismissible(
       key: ValueKey<String>(session.sessionId),
@@ -865,10 +844,7 @@ class _SessionCard extends StatelessWidget {
           children: <Widget>[
             Icon(Icons.delete_outline_rounded, color: theme.colorScheme.error, size: 20),
             const SizedBox(width: AppSpacing.xs),
-            Text(
-              'Delete',
-              style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.error, fontWeight: FontWeight.w600),
-            ),
+            Text('Delete', style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.error, fontWeight: FontWeight.w600)),
           ],
         ),
       ),
@@ -876,7 +852,6 @@ class _SessionCard extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: Container(
-          // Align card top with the spine dot when there's a date label
           margin: EdgeInsets.only(top: hasTopLabel ? 0 : 0),
           decoration: BoxDecoration(
             color: theme.colorScheme.surfaceContainerLow,
@@ -886,23 +861,20 @@ class _SessionCard extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(AppRadius.lg),
             child: InkWell(
-              onTap: () {},
+              onTap: hasRecording ? () => _openPlayer(context) : null,
               borderRadius: BorderRadius.circular(AppRadius.lg),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  // Accent top strip
                   Container(
                     height: 3,
                     decoration: BoxDecoration(gradient: LinearGradient(colors: <Color>[accent, accent.withValues(alpha: 0.3)])),
                   ),
-
                   Padding(
                     padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.sm, AppSpacing.md, AppSpacing.sm),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        // Emoji avatar
                         Container(
                           width: 42,
                           height: 42,
@@ -911,8 +883,6 @@ class _SessionCard extends StatelessWidget {
                           child: Text(emoji, style: const TextStyle(fontSize: 20)),
                         ),
                         const SizedBox(width: AppSpacing.md),
-
-                        // Title + meta
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -926,13 +896,9 @@ class _SessionCard extends StatelessWidget {
                               const SizedBox(height: 3),
                               Row(
                                 children: <Widget>[
-                                  // Category pill
                                   Container(
                                     padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs + 2, vertical: 2),
-                                    decoration: BoxDecoration(
-                                      color: accent.withValues(alpha: 0.1),
-                                      borderRadius: BorderRadius.circular(AppRadius.xs),
-                                    ),
+                                    decoration: BoxDecoration(color: accent.withValues(alpha: 0.1), borderRadius: BorderRadius.circular(AppRadius.xs)),
                                     child: Text(
                                       session.category,
                                       maxLines: 1,
@@ -941,23 +907,16 @@ class _SessionCard extends StatelessWidget {
                                     ),
                                   ),
                                   const SizedBox(width: AppSpacing.xs),
-                                  Text(
-                                    '· $time',
-                                    style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7)),
-                                  ),
+                                  Text('· $time', style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.7))),
                                 ],
                               ),
                             ],
                           ),
                         ),
-
                         const SizedBox(width: AppSpacing.sm),
-
-                        // Right metadata column
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: <Widget>[
-                            // Duration badge
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 3),
                               decoration: BoxDecoration(
@@ -970,7 +929,6 @@ class _SessionCard extends StatelessWidget {
                               ),
                             ),
                             const SizedBox(height: AppSpacing.xs),
-                            // Completion status
                             Row(
                               mainAxisSize: MainAxisSize.min,
                               children: <Widget>[
@@ -982,14 +940,33 @@ class _SessionCard extends StatelessWidget {
                                 const SizedBox(width: AppSpacing.xs),
                                 Text(
                                   completed ? 'Done' : 'Partial',
-                                  style: GoogleFonts.inter(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600,
-                                    color: completed ? AppColors.success : AppColors.warning,
-                                  ),
+                                  style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w600, color: completed ? AppColors.success : AppColors.warning),
                                 ),
                               ],
                             ),
+                            // Play recording button
+                            if (hasRecording) ...<Widget>[
+                              const SizedBox(height: AppSpacing.xs),
+                              GestureDetector(
+                                onTap: () => _openPlayer(context),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xs + 2, vertical: 2),
+                                  decoration: BoxDecoration(
+                                    color: theme.colorScheme.primary.withValues(alpha: 0.12),
+                                    borderRadius: BorderRadius.circular(AppRadius.xs),
+                                    border: Border.all(color: theme.colorScheme.primary.withValues(alpha: 0.25)),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: <Widget>[
+                                      Icon(Icons.play_arrow_rounded, size: 12, color: theme.colorScheme.primary),
+                                      const SizedBox(width: 2),
+                                      Text('Play', style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w700, color: theme.colorScheme.primary)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
                           ],
                         ),
                       ],
@@ -1003,9 +980,16 @@ class _SessionCard extends StatelessWidget {
       ),
     );
   }
-}
 
-// ─────────────────────────────────────────────────────────────────────────────
+  void _openPlayer(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => RecordingPlayerSheet(session: session),
+    );
+  }
+}
 // Empty state
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -1021,7 +1005,6 @@ class _EmptyHistory extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            // Layered icon decoration
             Stack(
               alignment: Alignment.center,
               children: <Widget>[
@@ -1039,10 +1022,7 @@ class _EmptyHistory extends StatelessWidget {
               ],
             ),
             const SizedBox(height: AppSpacing.xl),
-            Text(
-              'No sessions yet',
-              style: GoogleFonts.newsreader(fontSize: 22, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
-            ),
+            Text('No sessions yet', style: GoogleFonts.newsreader(fontSize: 22, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface)),
             const SizedBox(height: AppSpacing.sm),
             Text(
               'Complete your first practice session\nand your journey will appear here.',
@@ -1067,10 +1047,7 @@ class _EmptyHistory extends StatelessWidget {
                     children: <Widget>[
                       Icon(Icons.arrow_back_rounded, size: 14, color: theme.colorScheme.primary.withValues(alpha: 0.75)),
                       const SizedBox(width: AppSpacing.xs),
-                      Text(
-                        'Go practise!',
-                        style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w600, color: theme.colorScheme.primary),
-                      ),
+                      Text('Go practise!', style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w600, color: theme.colorScheme.primary)),
                     ],
                   ),
                 ),
@@ -1102,11 +1079,7 @@ class _NoSearchResults extends StatelessWidget {
           children: <Widget>[
             Icon(Icons.search_off_rounded, size: 48, color: theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.5)),
             const SizedBox(height: AppSpacing.md),
-            Text(
-              'No results for "$query"',
-              style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
-              textAlign: TextAlign.center,
-            ),
+            Text('No results for "$query"', style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600), textAlign: TextAlign.center),
             const SizedBox(height: AppSpacing.sm),
             Text('Try a different card title or category.', style: theme.textTheme.bodySmall, textAlign: TextAlign.center),
           ],
