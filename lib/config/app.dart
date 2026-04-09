@@ -29,6 +29,7 @@ import 'package:speakup/features/settings/data/repositories/settings_repository_
 import 'package:speakup/features/settings/domain/repositories/settings_repository.dart';
 import 'package:speakup/features/settings/presentation/bloc/settings_bloc.dart';
 import 'package:speakup/features/settings/presentation/bloc/settings_state.dart';
+import 'package:speakup/core/services/db_management_service.dart';
 import 'package:speakup/features/challenges/data/repositories/challenge_repository_impl.dart';
 import 'package:speakup/features/challenges/domain/repositories/challenge_repository.dart';
 import 'package:speakup/features/challenges/presentation/bloc/challenges_bloc.dart';
@@ -53,6 +54,7 @@ class SpeakUpApp extends StatelessWidget {
               settingsRepository: context.read<SettingsRepository>(),
               sessionRepository: context.read<SessionRepository>(),
               historyBloc: context.read<HistoryBloc>(),
+              dbManagementService: context.read<DbManagementService?>(),
             ),
           ),
           BlocProvider<HomeBloc>(
@@ -113,6 +115,7 @@ class _RepositoryProviders extends StatelessWidget {
     try {
       final store = ObjectBoxStore.store;
       final SessionRepository sessionRepo = SessionRepositoryImpl(store);
+      final DbManagementService dbService = DbManagementService(store: store);
       return MultiRepositoryProvider(
         providers: <RepositoryProvider<dynamic>>[
           RepositoryProvider<SessionRepository>.value(value: sessionRepo),
@@ -122,6 +125,7 @@ class _RepositoryProviders extends StatelessWidget {
           RepositoryProvider<CardRepository>(create: (_) => CardRepositoryImpl(store)),
           RepositoryProvider<CategoryRepository>(create: (_) => CategoryRepositoryImpl(store)),
           RepositoryProvider<ChallengeRepository>(create: (_) => ChallengeRepositoryImpl(Hive.box<String>(AppConstants.hiveChallengesBoxName))),
+          RepositoryProvider<DbManagementService>.value(value: dbService),
         ],
         child: child,
       );
