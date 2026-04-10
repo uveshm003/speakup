@@ -3,6 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:speakup/core/errors/failures.dart';
 import 'package:speakup/features/card_draw/domain/entities/difficulty.dart';
 import 'package:speakup/features/card_draw/domain/entities/topic_card.dart';
+import 'package:speakup/features/card_draw/domain/entities/vocab_word.dart';
 import 'package:speakup/features/card_draw/domain/repositories/card_repository.dart';
 import 'package:speakup/features/custom_categories/domain/entities/custom_category.dart';
 import 'package:speakup/features/custom_categories/domain/repositories/category_repository.dart';
@@ -42,6 +43,10 @@ class StubCardRepository implements CardRepository {
 
   @override
   Future<Either<Failure, void>> deleteCustomCard(String cardId) async => const Left<Failure, void>(CacheFailure('Cards unavailable'));
+
+  @override
+  Future<Either<Failure, TopicCard>> updateCardContent({required String cardId, required List<String> guide, required List<VocabWord> vocab}) async =>
+      const Left<Failure, TopicCard>(CacheFailure('Cards unavailable'));
 }
 
 /// Used when ObjectBox is unavailable (e.g. web or tests without a store).
