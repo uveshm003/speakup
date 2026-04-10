@@ -13,7 +13,11 @@ class AppTheme {
   static TextTheme _buildTextTheme() {
     final serif = GoogleFonts.newsreader;
 
-    final sans = GoogleFonts.inter;
+    // Use TextStyle directly: Inter files are bundled as Inter-400.ttf etc.
+    // GoogleFonts.inter would look for Inter-Regular.ttf which doesn't exist.
+    TextStyle sans({double? fontSize, FontWeight? fontWeight, double? letterSpacing, Color? color, double? height}) {
+      return TextStyle(fontFamily: 'Inter', fontSize: fontSize, fontWeight: fontWeight, letterSpacing: letterSpacing, color: color, height: height);
+    }
 
     return TextTheme(
       displayLarge: serif(fontSize: 57, fontWeight: FontWeight.w400, letterSpacing: -0.25, color: AppColorsNew.onSurface),
@@ -153,7 +157,7 @@ class AppTheme {
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           foregroundColor: AppColorsNew.primary,
-          textStyle: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.1),
+          textStyle: const TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.1),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(24)),
         ),
       ),
@@ -194,9 +198,9 @@ class AppTheme {
         ),
         // Focused fill shifts to surfaceContainerLowest
         focusColor: AppColorsNew.surfaceContainerLowest,
-        hintStyle: GoogleFonts.inter(color: AppColorsNew.onSurfaceVariant, fontSize: 14, fontWeight: FontWeight.w400),
-        labelStyle: GoogleFonts.inter(color: AppColorsNew.onSurfaceVariant, fontSize: 14),
-        floatingLabelStyle: GoogleFonts.inter(color: AppColorsNew.primary, fontSize: 12, fontWeight: FontWeight.w500),
+        hintStyle: const TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.w400),
+        labelStyle: const TextStyle(fontFamily: 'Inter', fontSize: 14),
+        floatingLabelStyle: const TextStyle(fontFamily: 'Inter', fontSize: 12, fontWeight: FontWeight.w500, color: AppColorsNew.primary),
       ),
 
       // ── Bottom Navigation Bar (glassmorphism backing) ─────────────────────
@@ -207,7 +211,8 @@ class AppTheme {
         indicatorColor: AppColorsNew.primaryContainer.withOpacity(0.3),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           final active = states.contains(WidgetState.selected);
-          return GoogleFonts.inter(
+          return TextStyle(
+            fontFamily: 'Inter',
             fontSize: 12,
             fontWeight: active ? FontWeight.w600 : FontWeight.w400,
             color: active ? AppColorsNew.primary : AppColorsNew.onSurfaceVariant,
@@ -232,7 +237,7 @@ class AppTheme {
       chipTheme: ChipThemeData(
         backgroundColor: AppColorsNew.surfaceContainerLow,
         selectedColor: AppColorsNew.primaryContainer,
-        labelStyle: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w500),
+        labelStyle: const TextStyle(fontFamily: 'Inter', fontSize: 13, fontWeight: FontWeight.w500),
         side: BorderSide.none,
         shape: const StadiumBorder(),
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -250,13 +255,13 @@ class AppTheme {
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
         titleTextStyle: GoogleFonts.newsreader(fontSize: 24, fontWeight: FontWeight.w500, color: AppColorsNew.onSurface),
-        contentTextStyle: GoogleFonts.inter(fontSize: 14, color: AppColorsNew.onSurfaceVariant),
+        contentTextStyle: const TextStyle(fontFamily: 'Inter', fontSize: 14, color: AppColorsNew.onSurfaceVariant),
       ),
 
       // ── Snack Bar ────────────────────────────────────────────────────────
       snackBarTheme: SnackBarThemeData(
         backgroundColor: AppColorsNew.inverseSurface,
-        contentTextStyle: GoogleFonts.inter(color: AppColorsNew.onInverseSurface, fontSize: 14),
+        contentTextStyle: const TextStyle(fontFamily: 'Inter', fontSize: 14, color: AppColorsNew.onInverseSurface),
         actionTextColor: AppColorsNew.inversePrimary,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         behavior: SnackBarBehavior.floating,
@@ -266,8 +271,8 @@ class AppTheme {
       // ── List Tile ────────────────────────────────────────────────────────
       listTileTheme: ListTileThemeData(
         contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 4),
-        titleTextStyle: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w500, color: AppColorsNew.onSurface),
-        subtitleTextStyle: GoogleFonts.inter(fontSize: 13, color: AppColorsNew.onSurfaceVariant),
+        titleTextStyle: const TextStyle(fontFamily: 'Inter', fontSize: 16, fontWeight: FontWeight.w500, color: AppColorsNew.onSurface),
+        subtitleTextStyle: const TextStyle(fontFamily: 'Inter', fontSize: 13, color: AppColorsNew.onSurfaceVariant),
         tileColor: Colors.transparent,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
@@ -340,8 +345,8 @@ class AppTheme {
         elevation: 0,
         selectedItemColor: AppColorsDark.primary,
         unselectedItemColor: AppColorsDark.textMuted,
-        selectedLabelStyle: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w600),
-        unselectedLabelStyle: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w500),
+        selectedLabelStyle: const TextStyle(fontFamily: 'Inter', fontSize: 12, fontWeight: FontWeight.w600),
+        unselectedLabelStyle: const TextStyle(fontFamily: 'Inter', fontSize: 12, fontWeight: FontWeight.w500),
         showUnselectedLabels: true,
       ),
       cardTheme: CardThemeData(
@@ -357,7 +362,7 @@ class AppTheme {
         filled: true,
         fillColor: AppColorsDark.cardBackground,
         contentPadding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
-        hintStyle: GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.w400, color: AppColorsDark.textMuted),
+        hintStyle: const TextStyle(fontFamily: 'Inter', fontSize: 15, fontWeight: FontWeight.w400, color: AppColorsDark.textMuted),
         border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadius.md), borderSide: BorderSide.none),
         enabledBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadius.md), borderSide: BorderSide.none),
         focusedBorder: OutlineInputBorder(
@@ -384,7 +389,7 @@ class AppTheme {
           minimumSize: const Size(0, 48),
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl, vertical: AppSpacing.sm),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.full)),
-          textStyle: GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.w600),
+          textStyle: const TextStyle(fontFamily: 'Inter', fontSize: 15, fontWeight: FontWeight.w600),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
@@ -393,7 +398,7 @@ class AppTheme {
           splashFactory: NoSplash.splashFactory,
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.md)),
-          textStyle: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600),
+          textStyle: const TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.w600),
         ),
       ),
       chipTheme: ChipThemeData(
@@ -405,15 +410,15 @@ class AppTheme {
         }),
         side: const BorderSide(color: AppColorsDark.border),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.full)),
-        labelStyle: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w500, color: AppColorsDark.textPrimary),
-        secondaryLabelStyle: GoogleFonts.inter(fontSize: 12, color: AppColorsDark.textSecondary),
+        labelStyle: const TextStyle(fontFamily: 'Inter', fontSize: 13, fontWeight: FontWeight.w500, color: AppColorsDark.textPrimary),
+        secondaryLabelStyle: const TextStyle(fontFamily: 'Inter', fontSize: 12, color: AppColorsDark.textSecondary),
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
         showCheckmark: false,
         brightness: Brightness.dark,
       ),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: const Color(0xFF2A2A32),
-        contentTextStyle: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w500, color: Colors.white),
+        contentTextStyle: const TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.w500, color: Colors.white),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.md)),
         behavior: SnackBarBehavior.floating,
         elevation: 0,
