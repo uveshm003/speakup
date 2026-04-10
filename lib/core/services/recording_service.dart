@@ -40,14 +40,7 @@ class RecordingService {
 
       _currentPath = '$recordingsDir/$sessionId.m4a';
 
-      await _recorder.start(
-        const RecordConfig(
-          encoder: AudioEncoder.aacLc,
-          bitRate: 128000,
-          sampleRate: 44100,
-        ),
-        path: _currentPath!,
-      );
+      await _recorder.start(const RecordConfig(encoder: AudioEncoder.aacLc, bitRate: 128000, sampleRate: 44100), path: _currentPath!);
 
       _isRecording = true;
       return true;
