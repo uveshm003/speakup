@@ -17,6 +17,7 @@ import 'package:speakup/features/card_draw/presentation/bloc/card_draw_bloc.dart
 import 'package:speakup/features/card_draw/presentation/bloc/card_draw_event.dart';
 import 'package:speakup/features/card_draw/presentation/bloc/card_draw_state.dart';
 import 'package:speakup/features/card_draw/presentation/utils/category_accent.dart';
+import 'package:speakup/features/card_draw/presentation/widgets/edit_guide_vocab_sheet.dart';
 
 /// Full topic card: guide + vocabulary. Optional [drawBloc] when opened from draw flow.
 class CardDetailScreen extends StatefulWidget {
@@ -59,6 +60,21 @@ class _CardDetailScreenState extends State<CardDetailScreen> {
         setState(() => _card = c);
       }
     });
+  }
+
+  Future<void> _openEditSheet() async {
+    final CardRepository repo = context.read<CardRepository>();
+    final TopicCard? updated = await showModalBottomSheet<TopicCard>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      showDragHandle: true,
+      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadius.xl))),
+      builder: (_) => EditGuideVocabSheet(card: _card, repo: repo),
+    );
+    if (updated != null && mounted) {
+      setState(() => _card = updated);
+    }
   }
 
   String _difficultyLabel(Difficulty d) {
@@ -128,10 +144,15 @@ class _CardDetailScreenState extends State<CardDetailScreen> {
       ),
     );
 
+    // Prominent edit banner — shown inline so it's never hidden in overflow menus
+    final Widget editBanner = _EditContentBanner(accent: accent, onTap: _openEditSheet);
+
     return Scaffold(
       appBar: AppBar(
         title: Text(_card.category, maxLines: 1, overflow: TextOverflow.ellipsis),
         actions: <Widget>[
+          // Edit guide/vocab button
+          IconButton(tooltip: 'Edit Guide & Vocabulary', onPressed: _openEditSheet, icon: const Icon(Icons.edit_note_rounded)),
           TweenAnimationBuilder<double>(
             tween: Tween<double>(begin: 1.0, end: _favAnimating ? 1.4 : 1.0),
             duration: const Duration(milliseconds: 400),
@@ -173,6 +194,8 @@ class _CardDetailScreenState extends State<CardDetailScreen> {
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: <Widget>[
                           heroCard,
+                          const SizedBox(height: AppSpacing.md),
+                          editBanner,
                           const SizedBox(height: AppSpacing.lg),
                           Text(
                             _card.category,
@@ -209,7 +232,9 @@ class _CardDetailScreenState extends State<CardDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
                         heroCard,
-                        const SizedBox(height: AppSpacing.xl),
+                        const SizedBox(height: AppSpacing.md),
+                        editBanner,
+                        const SizedBox(height: AppSpacing.lg),
                         guideSection,
                         const SizedBox(height: AppSpacing.lg),
                         vocabSection,
@@ -445,6 +470,107 @@ class _CollapsibleVocabSection extends StatelessWidget {
               : const SizedBox.shrink(),
         ),
       ],
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Prominent inline edit banner
+// ─────────────────────────────────────────────────────────────────────────────
+
+/// A glanceable action banner rendered directly in the card body so users
+/// immediately see they can customise guide bullets and vocabulary.
+class _EditContentBanner extends StatefulWidget {
+  const _EditContentBanner({required this.accent, required this.onTap});
+
+  final Color accent;
+  final VoidCallback onTap;
+
+  @override
+  State<_EditContentBanner> createState() => _EditContentBannerState();
+}
+
+class _EditContentBannerState extends State<_EditContentBanner> with SingleTickerProviderStateMixin {
+  late final AnimationController _pulse;
+  late final Animation<double> _glow;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulse = AnimationController(vsync: this, duration: const Duration(milliseconds: 1800))..repeat(reverse: true);
+    _glow = Tween<double>(begin: 0.08, end: 0.22).animate(CurvedAnimation(parent: _pulse, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _pulse.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool isDark = theme.brightness == Brightness.dark;
+
+    return AnimatedBuilder(
+      animation: _glow,
+      builder: (BuildContext context, Widget? child) {
+        return Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(AppRadius.lg),
+          child: InkWell(
+            onTap: widget.onTap,
+            borderRadius: BorderRadius.circular(AppRadius.lg),
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+              decoration: BoxDecoration(
+                color: isDark ? widget.accent.withValues(alpha: 0.08) : widget.accent.withValues(alpha: 0.05),
+                borderRadius: BorderRadius.circular(AppRadius.lg),
+                border: Border.all(color: widget.accent.withValues(alpha: _glow.value), width: 1.5),
+                boxShadow: <BoxShadow>[BoxShadow(color: widget.accent.withValues(alpha: _glow.value * 0.5), blurRadius: 12, spreadRadius: 0)],
+              ),
+              child: child,
+            ),
+          ),
+        );
+      },
+      child: Row(
+        children: <Widget>[
+          // Icon badge
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(color: widget.accent.withValues(alpha: 0.15), borderRadius: BorderRadius.circular(AppRadius.md)),
+            child: Icon(Icons.edit_note_rounded, color: widget.accent, size: 22),
+          ),
+          const SizedBox(width: AppSpacing.md),
+          // Text
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  'Edit Guide & Vocabulary',
+                  style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w700, fontSize: 13.5, color: widget.accent),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  'Customise bullet points and vocab words for this card',
+                  style: TextStyle(
+                    fontFamily: 'Inter',
+                    fontSize: 12,
+                    fontWeight: FontWeight.w400,
+                    color: widget.accent.withValues(alpha: 0.75),
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          Icon(Icons.arrow_forward_ios_rounded, size: 14, color: widget.accent.withValues(alpha: 0.7)),
+        ],
+      ),
     );
   }
 }
