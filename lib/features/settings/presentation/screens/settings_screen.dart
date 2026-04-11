@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,6 +55,113 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  // ── DB actions ────────────────────────────────────────────────────────────
+
+  Future<void> _onExport() async {
+    context.read<SettingsBloc>().add(const DatabaseExportRequested());
+  }
+
+  Future<void> _onRestore() async {
+    final FilePickerResult? result = await FilePicker.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['json'],
+      dialogTitle: 'Choose SpeakUp backup',
+    );
+    if (result == null || result.files.isEmpty) return;
+    final String? path = result.files.first.path;
+    if (path == null || !mounted) return;
+    context.read<SettingsBloc>().add(DatabaseRestoreRequested(path));
+  }
+
+  Future<void> _onDeleteAll() async {
+    final bool confirmed = await _showDeleteConfirmDialog();
+    if (confirmed && mounted) {
+      context.read<SettingsBloc>().add(const DatabaseDeleteRequested());
+    }
+  }
+
+  Future<bool> _showDeleteConfirmDialog() async {
+    final ThemeData theme = Theme.of(context);
+    final TextEditingController ctrl = TextEditingController();
+    bool confirmed = false;
+
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext dialogCtx) {
+        return StatefulBuilder(
+          builder: (BuildContext ctx, StateSetter setState) {
+            return AlertDialog(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.xl)),
+              icon: Container(
+                width: 56,
+                height: 56,
+                decoration: BoxDecoration(color: theme.colorScheme.errorContainer.withValues(alpha: 0.6), shape: BoxShape.circle),
+                child: Icon(Icons.delete_forever_rounded, color: theme.colorScheme.error, size: 28),
+              ),
+              title: Text(
+                'Delete All Data?',
+                style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w800),
+                textAlign: TextAlign.center,
+              ),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: <Widget>[
+                  Text(
+                    'This will permanently delete all your custom cards, categories, practice history, and reset settings. Built-in cards will be restored on next launch.',
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant, height: 1.5),
+                  ),
+                  const SizedBox(height: AppSpacing.xl),
+                  Text('Type DELETE to confirm', style: theme.textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w700, letterSpacing: 0.5)),
+                  const SizedBox(height: AppSpacing.sm),
+                  TextField(
+                    controller: ctrl,
+                    autofocus: true,
+                    textCapitalization: TextCapitalization.characters,
+                    onChanged: (_) => setState(() {}),
+                    decoration: InputDecoration(
+                      hintText: 'DELETE',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.md),
+                        borderSide: BorderSide(color: theme.colorScheme.error),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.md),
+                        borderSide: BorderSide(color: theme.colorScheme.error, width: 2),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(AppRadius.md),
+                        borderSide: BorderSide(color: theme.colorScheme.outline),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(onPressed: () => Navigator.of(dialogCtx).pop(), child: const Text('Cancel')),
+                FilledButton(
+                  style: FilledButton.styleFrom(backgroundColor: theme.colorScheme.error, foregroundColor: theme.colorScheme.onError),
+                  onPressed: ctrl.text == 'DELETE'
+                      ? () {
+                          confirmed = true;
+                          Navigator.of(dialogCtx).pop();
+                        }
+                      : null,
+                  child: const Text('Delete Everything', style: TextStyle(fontWeight: FontWeight.w700)),
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+
+    ctrl.dispose();
+    return confirmed;
+  }
+
   // ── Helpers ───────────────────────────────────────────────────────────────
 
   static String _timerLabel(int seconds) {
@@ -70,12 +178,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SettingsBloc, SettingsState>(
-      listenWhen: (SettingsState p, SettingsState c) => c.errorMessage != null && c.errorMessage != p.errorMessage,
+      listenWhen: (SettingsState p, SettingsState c) {
+        final bool errChanged = c.errorMessage != null && c.errorMessage != p.errorMessage;
+        final bool dbChanged =
+            c.dbActionStatus != p.dbActionStatus && (c.dbActionStatus == DbActionStatus.success || c.dbActionStatus == DbActionStatus.failure);
+        return errChanged || dbChanged;
+      },
       listener: (BuildContext ctx, SettingsState state) {
         if (state.errorMessage != null) {
           ScaffoldMessenger.of(ctx)
             ..clearSnackBars()
             ..showSnackBar(SnackBar(content: Text(state.errorMessage!), behavior: SnackBarBehavior.floating));
+        }
+        if (state.dbActionStatus == DbActionStatus.success && state.dbActionMessage != null) {
+          ScaffoldMessenger.of(ctx)
+            ..clearSnackBars()
+            ..showSnackBar(
+              SnackBar(content: Text(state.dbActionMessage!), behavior: SnackBarBehavior.floating, backgroundColor: Colors.green.shade700),
+            );
+        }
+        if (state.dbActionStatus == DbActionStatus.failure && state.dbActionMessage != null) {
+          ScaffoldMessenger.of(ctx)
+            ..clearSnackBars()
+            ..showSnackBar(
+              SnackBar(content: Text(state.dbActionMessage!), behavior: SnackBarBehavior.floating, backgroundColor: Theme.of(ctx).colorScheme.error),
+            );
         }
       },
       builder: (BuildContext ctx, SettingsState state) {
@@ -85,12 +212,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
         final ThemeData theme = Theme.of(context);
         final bool isDark = theme.brightness == Brightness.dark;
+        // Per-action loading helpers — only the tile that triggered an action shows a spinner
+        final bool exportLoading = state.dbActionStatus == DbActionStatus.loading && state.activeDbAction == DbAction.export;
+        final bool restoreLoading = state.dbActionStatus == DbActionStatus.loading && state.activeDbAction == DbAction.restore;
+        final bool deleteLoading = state.dbActionStatus == DbActionStatus.loading && state.activeDbAction == DbAction.delete;
+        final bool anyLoading = exportLoading || restoreLoading || deleteLoading;
 
         return Scaffold(
           backgroundColor: isDark ? theme.colorScheme.surface : theme.colorScheme.surfaceContainerLowest,
           body: CustomScrollView(
             slivers: <Widget>[
-              // ── Gradient app bar ────────────────────────────────────────
+              // ── Gradient app bar ────────────────────────────────────
               SliverAppBar(
                 expandedHeight: 140,
                 pinned: true,
@@ -101,7 +233,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   titlePadding: const EdgeInsetsDirectional.fromSTEB(AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.lg),
                   title: Text(
                     'Settings',
-                    style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
+                    style: TextStyle(
+                      fontFamily: 'Plus Jakarta Sans',
                       fontWeight: FontWeight.w800,
                       fontSize: 22,
                       color: isDark ? theme.colorScheme.onSurface : Colors.white,
@@ -111,7 +244,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
               ),
 
-              // ── Body content ────────────────────────────────────────────
+              // ── Body content ────────────────────────────────────────
               SliverPadding(
                 padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.lg, AppSpacing.lg, 0),
                 sliver: SliverList(
@@ -128,6 +261,52 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           subtitle: _timerLabel(state.settings.defaultTimerSeconds),
                           trailing: const Icon(Icons.chevron_right_rounded),
                           onTap: () => _showTimerPicker(state.settings.defaultTimerSeconds),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: AppSpacing.xl),
+
+                    // ── DATA MANAGEMENT ───────────────────────────────────
+                    _SectionLabel(label: 'Data Management'),
+                    const SizedBox(height: AppSpacing.sm),
+                    _SettingsCard(
+                      children: <Widget>[
+                        // Export
+                        _SettingsTile(
+                          icon: Icons.upload_file_rounded,
+                          iconColor: const Color(0xFF6366F1),
+                          title: 'Export Data',
+                          subtitle: 'Save a backup of all your data',
+                          trailing: exportLoading
+                              ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
+                              : const Icon(Icons.ios_share_rounded, size: 18),
+                          onTap: anyLoading ? null : _onExport,
+                        ),
+                        _TileDivider(),
+                        // Restore
+                        _SettingsTile(
+                          icon: Icons.download_rounded,
+                          iconColor: const Color(0xFF10B981),
+                          title: 'Restore Data',
+                          subtitle: 'Import from a backup file',
+                          trailing: restoreLoading
+                              ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
+                              : const Icon(Icons.folder_open_outlined, size: 18),
+                          onTap: anyLoading ? null : _onRestore,
+                        ),
+                        _TileDivider(),
+                        // Delete All
+                        _SettingsTile(
+                          icon: Icons.delete_forever_rounded,
+                          iconColor: theme.colorScheme.error,
+                          title: 'Delete All Data',
+                          subtitle: 'Permanently wipe everything',
+                          trailing: deleteLoading
+                              ? SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: theme.colorScheme.error))
+                              : Icon(Icons.chevron_right_rounded, color: theme.colorScheme.error),
+                          titleColor: theme.colorScheme.error,
+                          onTap: anyLoading ? null : _onDeleteAll,
                         ),
                       ],
                     ),
@@ -300,7 +479,7 @@ class _SettingsCard extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _SettingsTile extends StatelessWidget {
-  const _SettingsTile({required this.icon, required this.iconColor, required this.title, this.subtitle, this.trailing, this.onTap});
+  const _SettingsTile({required this.icon, required this.iconColor, required this.title, this.subtitle, this.trailing, this.onTap, this.titleColor});
 
   final IconData icon;
   final Color iconColor;
@@ -308,6 +487,7 @@ class _SettingsTile extends StatelessWidget {
   final String? subtitle;
   final Widget? trailing;
   final VoidCallback? onTap;
+  final Color? titleColor;
 
   @override
   Widget build(BuildContext context) {
@@ -331,12 +511,15 @@ class _SettingsTile extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(title, style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600, fontSize: 14)),
+                  Text(
+                    title,
+                    style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600, fontSize: 14, color: titleColor),
+                  ),
                   if (subtitle != null) ...<Widget>[
                     const SizedBox(height: 2),
                     Text(
                       subtitle!,
-                      style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.primary, fontWeight: FontWeight.w500),
+                      style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant, fontWeight: FontWeight.w500),
                     ),
                   ],
                 ],
@@ -365,7 +548,7 @@ class _TileDivider extends StatelessWidget {
   Widget build(BuildContext context) {
     return Divider(
       height: 1,
-      indent: AppSpacing.lg + 36 + AppSpacing.md, // align with text
+      indent: AppSpacing.lg + 36 + AppSpacing.md,
       endIndent: 0,
       color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.5),
     );
