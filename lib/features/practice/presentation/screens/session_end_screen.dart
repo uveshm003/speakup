@@ -22,14 +22,11 @@ class SessionEndScreen extends StatelessWidget {
       body: SafeArea(
         child: BlocBuilder<SessionEndBloc, SessionEndState>(
           builder: (BuildContext context, SessionEndState state) {
-            if (state.status == SessionEndStatus.loading ||
-                state.status == SessionEndStatus.initial) {
+            if (state.status == SessionEndStatus.loading || state.status == SessionEndStatus.initial) {
               return const Center(child: CircularProgressIndicator());
             }
             if (state.status == SessionEndStatus.failure) {
-              return _FailureView(
-                message: state.errorMessage ?? 'Something went wrong',
-              );
+              return _FailureView(message: state.errorMessage ?? 'Something went wrong');
             }
             return _SuccessView(state: state);
           },
@@ -55,9 +52,7 @@ class _FailureView extends StatelessWidget {
           const SizedBox(height: AppSpacing.lg),
           FilledButton(
             onPressed: () {
-              context.read<SessionEndBloc>().add(
-                const SessionEndLoadRequested(),
-              );
+              context.read<SessionEndBloc>().add(const SessionEndLoadRequested());
             },
             child: const Text('Try again'),
           ),
@@ -76,17 +71,10 @@ class _SuccessView extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final card = state.card!;
-    final String durationLabel = formatPracticeDurationLabel(
-      state.elapsedSeconds,
-    );
+    final String durationLabel = formatPracticeDurationLabel(state.elapsedSeconds);
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(
-        AppSpacing.xxl,
-        AppSpacing.md,
-        AppSpacing.xxl,
-        AppSpacing.xxl,
-      ),
+      padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.md, AppSpacing.xxl, AppSpacing.xxl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
@@ -95,10 +83,7 @@ class _SuccessView extends StatelessWidget {
           Text(
             'Great session! 🎉',
             textAlign: TextAlign.center,
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 26,
-              fontWeight: FontWeight.w700,
-            ),
+            style: GoogleFonts.plusJakartaSans(fontSize: 26, fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: AppSpacing.xxl),
           Card(
@@ -107,12 +92,7 @@ class _SuccessView extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    card.title,
-                    style: theme.textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
+                  Text(card.title, style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700)),
                   const SizedBox(height: AppSpacing.md),
                   _SummaryRow(label: 'Duration', value: durationLabel),
                   const SizedBox(height: AppSpacing.sm),
@@ -133,52 +113,35 @@ class _SuccessView extends StatelessWidget {
                     tween: Tween<double>(begin: 0.82, end: 1),
                     duration: const Duration(milliseconds: 520),
                     curve: Curves.elasticOut,
-                    builder:
-                        (BuildContext context, double scale, Widget? child) {
-                          return Transform.scale(scale: scale, child: child);
-                        },
+                    builder: (BuildContext context, double scale, Widget? child) {
+                      return Transform.scale(scale: scale, child: child);
+                    },
                     child: Column(
                       children: <Widget>[
-                        Text(
-                          '🔥',
-                          style: GoogleFonts.plusJakartaSans(fontSize: 56),
-                        ),
+                        Text('🔥', style: GoogleFonts.plusJakartaSans(fontSize: 56)),
                         const SizedBox(height: AppSpacing.sm),
                         Text(
                           '${state.streak} day streak!',
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w700,
-                          ),
+                          style: GoogleFonts.plusJakartaSans(fontSize: 22, fontWeight: FontWeight.w700),
                         ),
                       ],
                     ),
                   )
                 : Column(
                     children: <Widget>[
-                      Text(
-                        '🔥',
-                        style: GoogleFonts.plusJakartaSans(fontSize: 56),
-                      ),
+                      Text('🔥', style: GoogleFonts.plusJakartaSans(fontSize: 56)),
                       const SizedBox(height: AppSpacing.xs),
                       Text(
                         '${state.streak}',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontFamily: 'Plus Jakarta Sans',
-                          fontSize: 36,
-                          fontWeight: FontWeight.w800,
-                        ),
+                        style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 36, fontWeight: FontWeight.w800),
                       ),
                       const SizedBox(height: AppSpacing.sm),
                       Text(
                         'Keep it up!',
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                        ),
+                        style: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),
@@ -206,17 +169,12 @@ class _SuccessView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: AppSpacing.sm),
-          TextButton(
-            onPressed: () => context.go(AppRoutes.home),
-            child: const Text('Go Home'),
-          ),
+          TextButton(onPressed: () => context.go(AppRoutes.home), child: const Text('Go Home')),
           const SizedBox(height: AppSpacing.xxl),
           Text(
             'This week: ${state.weekSessionsCount} sessions',
             textAlign: TextAlign.center,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
+            style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
           ),
         ],
       ),
@@ -238,20 +196,10 @@ class _SummaryRow extends StatelessWidget {
       children: <Widget>[
         SizedBox(
           width: 96,
-          child: Text(
-            label,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-            ),
-          ),
+          child: Text(label, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
         ),
         Expanded(
-          child: Text(
-            value,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              fontWeight: FontWeight.w600,
-            ),
-          ),
+          child: Text(value, style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
         ),
       ],
     );
@@ -266,27 +214,14 @@ class _CompletedBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final Color bg = completed
-        ? theme.colorScheme.primaryContainer
-        : theme.colorScheme.errorContainer;
-    final Color fg = completed
-        ? theme.colorScheme.onPrimaryContainer
-        : theme.colorScheme.onErrorContainer;
+    final Color bg = completed ? theme.colorScheme.primaryContainer : theme.colorScheme.errorContainer;
+    final Color fg = completed ? theme.colorScheme.onPrimaryContainer : theme.colorScheme.onErrorContainer;
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppSpacing.md,
-        vertical: AppSpacing.xs,
-      ),
-      decoration: BoxDecoration(
-        color: bg,
-        borderRadius: BorderRadius.circular(AppRadius.full),
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+      decoration: BoxDecoration(color: bg, borderRadius: BorderRadius.circular(AppRadius.full)),
       child: Text(
         completed ? 'Completed' : 'Incomplete',
-        style: theme.textTheme.labelLarge?.copyWith(
-          color: fg,
-          fontWeight: FontWeight.w700,
-        ),
+        style: theme.textTheme.labelLarge?.copyWith(color: fg, fontWeight: FontWeight.w700),
       ),
     );
   }

@@ -93,7 +93,13 @@ class ChallengeDetailScreen extends StatelessWidget {
                           const SizedBox(height: AppSpacing.sm),
                           Text(
                             def.title,
-                            style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 22, fontWeight: FontWeight.w800, color: Colors.white, height: 1.2),
+                            style: TextStyle(
+                              fontFamily: 'Plus Jakarta Sans',
+                              fontSize: 22,
+                              fontWeight: FontWeight.w800,
+                              color: Colors.white,
+                              height: 1.2,
+                            ),
                           ),
                         ],
                       ),
@@ -259,7 +265,10 @@ class _DayTimeline extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text('Day-by-Day Plan', style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w800, fontSize: 16)),
+        Text(
+          'Day-by-Day Plan',
+          style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w800, fontSize: 16),
+        ),
         const SizedBox(height: AppSpacing.md),
         ...List<Widget>.generate(def.durationDays, (int i) {
           final bool isDone = done.contains(i);

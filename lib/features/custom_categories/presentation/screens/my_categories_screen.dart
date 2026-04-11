@@ -86,7 +86,8 @@ class _MyCategoriesScreenState extends State<MyCategoriesScreen> {
                     titlePadding: const EdgeInsetsDirectional.fromSTEB(AppSpacing.xxl, 0, AppSpacing.xxl, AppSpacing.lg),
                     title: Text(
                       'My Categories',
-                      style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
+                      style: TextStyle(
+                        fontFamily: 'Plus Jakarta Sans',
                         fontWeight: FontWeight.w800,
                         fontSize: 22,
                         color: isDark ? theme.colorScheme.onSurface : Colors.white,

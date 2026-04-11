@@ -10,12 +10,7 @@ class ActivePracticeArgs {
 
 /// [GoRouter] extra for `/home/session-end`.
 class SessionEndRouteArgs {
-  const SessionEndRouteArgs({
-    required this.card,
-    required this.elapsedSeconds,
-    required this.wasCompleted,
-    this.recordingPath,
-  });
+  const SessionEndRouteArgs({required this.card, required this.elapsedSeconds, required this.wasCompleted, this.recordingPath});
 
   final TopicCard card;
   final int elapsedSeconds;

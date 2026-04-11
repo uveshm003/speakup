@@ -292,7 +292,8 @@ class _HeroAppBar extends StatelessWidget {
             children: <Widget>[
               Text(
                 greeting,
-                style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
+                style: TextStyle(
+                  fontFamily: 'Plus Jakarta Sans',
                   fontWeight: FontWeight.w800,
                   fontSize: 20,
                   color: isDark ? theme.colorScheme.onSurface : Colors.white,
@@ -447,7 +448,8 @@ class _StreakCard extends StatelessWidget {
                     children: <Widget>[
                       Text(
                         '$streak',
-                        style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
+                        style: TextStyle(
+                          fontFamily: 'Plus Jakarta Sans',
                           fontSize: 36,
                           fontWeight: FontWeight.w800,
                           height: 1,
@@ -483,7 +485,13 @@ class _StreakCard extends StatelessWidget {
               children: <Widget>[
                 Text(
                   '$todayCount',
-                  style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 28, fontWeight: FontWeight.w800, height: 1, color: theme.colorScheme.primary),
+                  style: TextStyle(
+                    fontFamily: 'Plus Jakarta Sans',
+                    fontSize: 28,
+                    fontWeight: FontWeight.w800,
+                    height: 1,
+                    color: theme.colorScheme.primary,
+                  ),
                 ),
                 const SizedBox(height: 2),
                 Text('today', style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
@@ -1026,7 +1034,10 @@ class _StreakGoalNudge extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text('Set a daily goal', style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w800, fontSize: 20)),
+              Text(
+                'Set a daily goal',
+                style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w800, fontSize: 20),
+              ),
               const SizedBox(height: AppSpacing.xs),
               Text(
                 'How many sessions do you want to do each day?',

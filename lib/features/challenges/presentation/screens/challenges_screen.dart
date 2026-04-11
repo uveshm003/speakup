@@ -192,7 +192,8 @@ class _ChallengesAppBar extends StatelessWidget {
           children: <Widget>[
             Text(
               'Challenges',
-              style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
+              style: TextStyle(
+                fontFamily: 'Plus Jakarta Sans',
                 fontWeight: FontWeight.w800,
                 fontSize: 20,
                 color: isDark ? theme.colorScheme.onSurface : Colors.white,
@@ -553,7 +554,10 @@ class _EmptyState extends StatelessWidget {
         children: <Widget>[
           const Text('🏆', style: TextStyle(fontSize: 56)),
           const SizedBox(height: AppSpacing.lg),
-          Text('No challenges yet', style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w800, fontSize: 18)),
+          Text(
+            'No challenges yet',
+            style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w800, fontSize: 18),
+          ),
           const SizedBox(height: AppSpacing.sm),
           Text(
             'Pick a challenge below and start your journey.',
@@ -603,10 +607,12 @@ class _RecentRecordingsSectionState extends State<_RecentRecordingsSection> {
           children: <Widget>[
             _SectionLabel(label: '🎙 Recent Recordings'),
             const SizedBox(height: AppSpacing.md),
-            ...recordings.map((PracticeSession s) => Padding(
-              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-              child: _RecordingListTile(session: s),
-            )),
+            ...recordings.map(
+              (PracticeSession s) => Padding(
+                padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+                child: _RecordingListTile(session: s),
+              ),
+            ),
           ],
         );
       },
@@ -663,10 +669,7 @@ class _RecordingListTile extends StatelessWidget {
                       style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w700),
                     ),
                     const SizedBox(height: 2),
-                    Text(
-                      '${session.category} · $date',
-                      style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-                    ),
+                    Text('${session.category} · $date', style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
                   ],
                 ),
               ),

@@ -46,13 +46,7 @@ class _TimerSetupBody extends StatefulWidget {
 
 class _TimerSetupBodyState extends State<_TimerSetupBody> {
   static const List<int> _presets = <int>[30, 60, 120, 180, 300];
-  static const List<String> _presetLabels = <String>[
-    '30s',
-    '1 min',
-    '2 min',
-    '3 min',
-    '5 min',
-  ];
+  static const List<String> _presetLabels = <String>['30s', '1 min', '2 min', '3 min', '5 min'];
 
   bool _customMode = false;
   final TextEditingController _customController = TextEditingController();
@@ -87,15 +81,8 @@ class _TimerSetupBodyState extends State<_TimerSetupBody> {
     final bool isDark = theme.brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark
-          ? theme.colorScheme.surface
-          : theme.colorScheme.surfaceContainerLowest,
-      appBar: AppBar(
-        title: const Text('Setup Practice'),
-        centerTitle: true,
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
+      backgroundColor: isDark ? theme.colorScheme.surface : theme.colorScheme.surfaceContainerLowest,
+      appBar: AppBar(title: const Text('Setup Practice'), centerTitle: true, backgroundColor: Colors.transparent, elevation: 0),
       body: SafeArea(
         child: BlocBuilder<TimerBloc, TimerState>(
           builder: (BuildContext context, TimerState state) {
@@ -103,9 +90,7 @@ class _TimerSetupBodyState extends State<_TimerSetupBody> {
               children: <Widget>[
                 Expanded(
                   child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppSpacing.xxl,
-                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
@@ -121,31 +106,21 @@ class _TimerSetupBodyState extends State<_TimerSetupBody> {
                             tween: Tween<double>(begin: 0, end: 1),
                             duration: const Duration(milliseconds: 600),
                             curve: Curves.easeOutBack,
-                            builder:
-                                (
-                                  BuildContext context,
-                                  double t,
-                                  Widget? child,
-                                ) {
-                                  return _TimerPreviewRing(
-                                    progress: t,
-                                    seconds: state.duration,
-                                    color: accent,
-                                    trackColor: theme.colorScheme.outlineVariant
-                                        .withValues(alpha: 0.3),
-                                  );
-                                },
+                            builder: (BuildContext context, double t, Widget? child) {
+                              return _TimerPreviewRing(
+                                progress: t,
+                                seconds: state.duration,
+                                color: accent,
+                                trackColor: theme.colorScheme.outlineVariant.withValues(alpha: 0.3),
+                              );
+                            },
                           ),
                         ),
                         const SizedBox(height: 48),
 
                         Text(
                           'Practice Duration',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w700,
-                            color: theme.colorScheme.onSurface,
-                          ),
+                          style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.w700, color: theme.colorScheme.onSurface),
                         ),
                         const SizedBox(height: AppSpacing.md),
 
@@ -154,15 +129,12 @@ class _TimerSetupBodyState extends State<_TimerSetupBody> {
                           height: 52,
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
-                            itemCount:
-                                _presets.length + 1, // +1 for "Custom" button
-                            separatorBuilder: (_, __) =>
-                                const SizedBox(width: AppSpacing.sm),
+                            itemCount: _presets.length + 1, // +1 for "Custom" button
+                            separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.sm),
                             itemBuilder: (BuildContext context, int index) {
                               if (index < _presets.length) {
                                 final int sec = _presets[index];
-                                final bool selected =
-                                    !_customMode && state.duration == sec;
+                                final bool selected = !_customMode && state.duration == sec;
                                 return _DurationPill(
                                   label: _presetLabels[index],
                                   selected: selected,
@@ -172,9 +144,7 @@ class _TimerSetupBodyState extends State<_TimerSetupBody> {
                                       _customMode = false;
                                       _customController.text = sec.toString();
                                     });
-                                    context.read<TimerBloc>().add(
-                                      TimerDurationSelected(sec),
-                                    );
+                                    context.read<TimerBloc>().add(TimerDurationSelected(sec));
                                   },
                                 );
                               }
@@ -206,28 +176,13 @@ class _TimerSetupBodyState extends State<_TimerSetupBody> {
                                     controller: _customController,
                                     keyboardType: TextInputType.number,
                                     textAlign: TextAlign.center,
-                                    style: GoogleFonts.plusJakartaSans(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 18,
-                                    ),
+                                    style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 18),
                                     decoration: InputDecoration(
                                       hintText: '0',
                                       filled: true,
-                                      fillColor: isDark
-                                          ? theme
-                                                .colorScheme
-                                                .surfaceContainerHighest
-                                          : theme.colorScheme.surfaceContainer,
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(
-                                          AppRadius.lg,
-                                        ),
-                                        borderSide: BorderSide.none,
-                                      ),
-                                      contentPadding:
-                                          const EdgeInsets.symmetric(
-                                            vertical: 14,
-                                          ),
+                                      fillColor: isDark ? theme.colorScheme.surfaceContainerHighest : theme.colorScheme.surfaceContainer,
+                                      border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadius.lg), borderSide: BorderSide.none),
+                                      contentPadding: const EdgeInsets.symmetric(vertical: 14),
                                     ),
                                     onChanged: (_) {
                                       _applyCustomFromField();
@@ -239,14 +194,8 @@ class _TimerSetupBodyState extends State<_TimerSetupBody> {
                                   flex: 3,
                                   child: SegmentedButton<bool>(
                                     segments: const <ButtonSegment<bool>>[
-                                      ButtonSegment<bool>(
-                                        value: false,
-                                        label: Text('Seconds'),
-                                      ),
-                                      ButtonSegment<bool>(
-                                        value: true,
-                                        label: Text('Minutes'),
-                                      ),
+                                      ButtonSegment<bool>(value: false, label: Text('Seconds')),
+                                      ButtonSegment<bool>(value: true, label: Text('Minutes')),
                                     ],
                                     selected: <bool>{_customMinutes},
                                     onSelectionChanged: (Set<bool> next) {
@@ -272,13 +221,7 @@ class _TimerSetupBodyState extends State<_TimerSetupBody> {
                   padding: const EdgeInsets.all(AppSpacing.xxl),
                   decoration: BoxDecoration(
                     color: theme.colorScheme.surface,
-                    boxShadow: <BoxShadow>[
-                      BoxShadow(
-                        color: Colors.black.withValues(alpha: 0.05),
-                        blurRadius: 20,
-                        offset: const Offset(0, -5),
-                      ),
-                    ],
+                    boxShadow: <BoxShadow>[BoxShadow(color: Colors.black.withValues(alpha: 0.05), blurRadius: 20, offset: const Offset(0, -5))],
                   ),
                   child: SizedBox(
                     height: 60,
@@ -289,17 +232,12 @@ class _TimerSetupBodyState extends State<_TimerSetupBody> {
                         foregroundColor: Colors.white,
                         elevation: 4,
                         shadowColor: accent.withValues(alpha: 0.5),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppRadius.xl),
-                        ),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.xl)),
                       ),
                       onPressed: () {
                         context.pushReplacement(
                           AppRoutes.activePractice,
-                          extra: ActivePracticeArgs(
-                            card: widget.card,
-                            durationSeconds: state.duration,
-                          ),
+                          extra: ActivePracticeArgs(card: widget.card, durationSeconds: state.duration),
                         );
                       },
                       child: Row(
@@ -307,13 +245,7 @@ class _TimerSetupBodyState extends State<_TimerSetupBody> {
                         children: <Widget>[
                           const Icon(Icons.play_circle_fill_rounded, size: 28),
                           const SizedBox(width: AppSpacing.md),
-                          Text(
-                            'Begin Practice',
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
+                          Text('Begin Practice', style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.w700)),
                         ],
                       ),
                     ),
@@ -329,12 +261,7 @@ class _TimerSetupBodyState extends State<_TimerSetupBody> {
 }
 
 class _DurationPill extends StatelessWidget {
-  const _DurationPill({
-    required this.label,
-    required this.selected,
-    required this.accent,
-    required this.onTap,
-  });
+  const _DurationPill({required this.label, required this.selected, required this.accent, required this.onTap});
 
   final String label;
   final bool selected;
@@ -347,20 +274,13 @@ class _DurationPill extends StatelessWidget {
     final bool isDark = theme.brightness == Brightness.dark;
 
     return Material(
-      color: selected
-          ? accent
-          : (isDark
-                ? theme.colorScheme.surfaceContainerHighest
-                : theme.colorScheme.surfaceContainer),
+      color: selected ? accent : (isDark ? theme.colorScheme.surfaceContainerHighest : theme.colorScheme.surfaceContainer),
       borderRadius: BorderRadius.circular(AppRadius.full),
       child: InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(AppRadius.full),
         child: Container(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppSpacing.xl,
-            vertical: AppSpacing.md,
-          ),
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xl, vertical: AppSpacing.md),
           alignment: Alignment.center,
           child: Text(
             label,
@@ -388,10 +308,7 @@ class _HeroCardPreview extends StatelessWidget {
       padding: const EdgeInsets.all(AppSpacing.xxl),
       decoration: BoxDecoration(
         gradient: LinearGradient(
-          colors: <Color>[
-            accent.withValues(alpha: 0.15),
-            accent.withValues(alpha: 0.05),
-          ],
+          colors: <Color>[accent.withValues(alpha: 0.15), accent.withValues(alpha: 0.05)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
@@ -402,22 +319,11 @@ class _HeroCardPreview extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: AppSpacing.md,
-              vertical: 6,
-            ),
-            decoration: BoxDecoration(
-              color: accent.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(AppRadius.full),
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: 6),
+            decoration: BoxDecoration(color: accent.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(AppRadius.full)),
             child: Text(
               card.category.toUpperCase(),
-              style: GoogleFonts.inter(
-                fontSize: 10,
-                letterSpacing: 1.2,
-                fontWeight: FontWeight.w800,
-                color: accent,
-              ),
+              style: GoogleFonts.inter(fontSize: 10, letterSpacing: 1.2, fontWeight: FontWeight.w800, color: accent),
             ),
           ),
           const SizedBox(height: AppSpacing.md),
@@ -425,7 +331,8 @@ class _HeroCardPreview extends StatelessWidget {
             card.title,
             maxLines: 3,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
+            style: TextStyle(
+              fontFamily: 'Plus Jakarta Sans',
               fontSize: 22,
               height: 1.25,
               fontWeight: FontWeight.w800,
@@ -439,12 +346,7 @@ class _HeroCardPreview extends StatelessWidget {
 }
 
 class _TimerPreviewRing extends StatelessWidget {
-  const _TimerPreviewRing({
-    required this.progress,
-    required this.seconds,
-    required this.color,
-    required this.trackColor,
-  });
+  const _TimerPreviewRing({required this.progress, required this.seconds, required this.color, required this.trackColor});
 
   final double progress;
   final int seconds;
@@ -461,11 +363,7 @@ class _TimerPreviewRing extends StatelessWidget {
         children: <Widget>[
           CustomPaint(
             size: const Size(180, 180),
-            painter: _PreviewRingPainter(
-              progress: progress,
-              color: color,
-              trackColor: trackColor,
-            ),
+            painter: _PreviewRingPainter(progress: progress, color: color, trackColor: trackColor),
           ),
           Column(
             mainAxisSize: MainAxisSize.min,
@@ -474,7 +372,8 @@ class _TimerPreviewRing extends StatelessWidget {
               const SizedBox(height: 4),
               Text(
                 formatPracticeMmSs(seconds),
-                style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
+                style: TextStyle(
+                  fontFamily: 'Plus Jakarta Sans',
                   fontSize: 40,
                   fontWeight: FontWeight.w800,
                   color: Theme.of(context).colorScheme.onSurface,
@@ -489,11 +388,7 @@ class _TimerPreviewRing extends StatelessWidget {
 }
 
 class _PreviewRingPainter extends CustomPainter {
-  _PreviewRingPainter({
-    required this.progress,
-    required this.color,
-    required this.trackColor,
-  });
+  _PreviewRingPainter({required this.progress, required this.color, required this.trackColor});
 
   final double progress;
   final Color color;
@@ -514,19 +409,11 @@ class _PreviewRingPainter extends CustomPainter {
       ..strokeWidth = 12
       ..strokeCap = StrokeCap.round;
     final double sweep = progress * 6.283185307179586;
-    canvas.drawArc(
-      Rect.fromCircle(center: c, radius: r),
-      -1.5707963267948966,
-      sweep,
-      false,
-      fill,
-    );
+    canvas.drawArc(Rect.fromCircle(center: c, radius: r), -1.5707963267948966, sweep, false, fill);
   }
 
   @override
   bool shouldRepaint(covariant _PreviewRingPainter oldDelegate) {
-    return oldDelegate.progress != progress ||
-        oldDelegate.color != color ||
-        oldDelegate.trackColor != trackColor;
+    return oldDelegate.progress != progress || oldDelegate.color != color || oldDelegate.trackColor != trackColor;
   }
 }

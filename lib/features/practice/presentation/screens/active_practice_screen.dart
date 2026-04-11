@@ -45,8 +45,7 @@ class _ActivePracticeBody extends StatefulWidget {
   State<_ActivePracticeBody> createState() => _ActivePracticeBodyState();
 }
 
-class _ActivePracticeBodyState extends State<_ActivePracticeBody>
-    with TickerProviderStateMixin, WidgetsBindingObserver {
+class _ActivePracticeBodyState extends State<_ActivePracticeBody> with TickerProviderStateMixin, WidgetsBindingObserver {
   late final TabController _tabController;
   late final RecordingService _recordingService;
   late final AnimationController _recPulseController;
@@ -61,9 +60,7 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
     WidgetsBinding.instance.addObserver(this);
     _tabController = TabController(length: 2, vsync: this);
     _recordingService = RecordingService();
-    _recPulseController =
-        AnimationController(vsync: this, duration: const Duration(milliseconds: 900))
-          ..repeat(reverse: true);
+    _recPulseController = AnimationController(vsync: this, duration: const Duration(milliseconds: 900))..repeat(reverse: true);
     _sessionId = 's_${DateTime.now().microsecondsSinceEpoch}_${widget.args.card.cardId}';
     // Auto-start recording once the frame is ready
     WidgetsBinding.instance.addPostFrameCallback((_) => _autoStartRecording());
@@ -87,10 +84,9 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
       }
     } else if (state == AppLifecycleState.resumed) {
       if (timerState.status == TimerStatus.paused) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Timer paused while you were away. Tap Resume when ready.'),
-          duration: Duration(seconds: 4),
-        ));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Timer paused while you were away. Tap Resume when ready.'), duration: Duration(seconds: 4)));
       }
     }
   }
@@ -112,11 +108,9 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
           _isRecording = false;
           _recordingPath = path;
         });
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Recording saved ✓'),
-          duration: Duration(seconds: 2),
-          behavior: SnackBarBehavior.floating,
-        ));
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Recording saved ✓'), duration: Duration(seconds: 2), behavior: SnackBarBehavior.floating));
       }
     } else {
       final bool started = await _recordingService.startRecording(_sessionId);
@@ -124,11 +118,13 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
         if (started) {
           setState(() => _isRecording = true);
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-            content: Text('Microphone permission denied. Please enable it in Settings.'),
-            duration: Duration(seconds: 4),
-            behavior: SnackBarBehavior.floating,
-          ));
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Microphone permission denied. Please enable it in Settings.'),
+              duration: Duration(seconds: 4),
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
         }
       }
     }
@@ -171,12 +167,7 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
     if (!context.mounted) return;
     context.pushReplacement(
       AppRoutes.sessionEnd,
-      extra: SessionEndRouteArgs(
-        card: widget.args.card,
-        elapsedSeconds: elapsed,
-        wasCompleted: false,
-        recordingPath: path,
-      ),
+      extra: SessionEndRouteArgs(card: widget.args.card, elapsedSeconds: elapsed, wasCompleted: false, recordingPath: path),
     );
   }
 
@@ -227,12 +218,7 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody>
           if (!context.mounted) return;
           context.pushReplacement(
             AppRoutes.sessionEnd,
-            extra: SessionEndRouteArgs(
-              card: widget.args.card,
-              elapsedSeconds: state.duration,
-              wasCompleted: true,
-              recordingPath: path,
-            ),
+            extra: SessionEndRouteArgs(card: widget.args.card, elapsedSeconds: state.duration, wasCompleted: true, recordingPath: path),
           );
         },
         child: BlocBuilder<TimerBloc, TimerState>(
@@ -351,11 +337,7 @@ class _TimerArea extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
-              IconButton(
-                icon: const Icon(Icons.close_rounded),
-                color: onBg,
-                onPressed: onClosePressed,
-              ),
+              IconButton(icon: const Icon(Icons.close_rounded), color: onBg, onPressed: onClosePressed),
               // REC / PRACTICING badge
               _RecBadge(isRecording: isRecording, recPulseController: recPulseController, theme: theme),
               const SizedBox(width: 48),
@@ -373,13 +355,7 @@ class _TimerArea extends StatelessWidget {
             textAlign: TextAlign.center,
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-              fontFamily: 'Plus Jakarta Sans',
-              fontSize: 20,
-              fontWeight: FontWeight.w700,
-              height: 1.25,
-              color: onBg,
-            ),
+            style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 20, fontWeight: FontWeight.w700, height: 1.25, color: onBg),
           ),
         ),
 
@@ -405,12 +381,7 @@ class _TimerArea extends StatelessWidget {
             _PulsingTimerLabel(
               pulse: pulse,
               text: formatPracticeMmSs(remaining),
-              style: TextStyle(
-                fontFamily: 'Plus Jakarta Sans',
-                fontSize: 46,
-                fontWeight: FontWeight.w800,
-                color: onBg,
-              ),
+              style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 46, fontWeight: FontWeight.w800, color: onBg),
             ),
             if (paused)
               ClipOval(
@@ -491,9 +462,7 @@ class _RecBadge extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(
-            color: isRecording
-                ? AppColors.error.withValues(alpha: 0.12)
-                : theme.colorScheme.surfaceContainerHighest,
+            color: isRecording ? AppColors.error.withValues(alpha: 0.12) : theme.colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(AppRadius.full),
             border: isRecording ? Border.all(color: AppColors.error.withValues(alpha: 0.35)) : null,
           ),
@@ -574,13 +543,7 @@ class _ControlBar extends StatelessWidget {
 
                 // ── Mic ──────────────────────────────────────
                 Flexible(
-                  child: _MicPill(
-                    isRecording: isRecording,
-                    isDark: isDark,
-                    onBg: onBg,
-                    pulseController: recPulseController,
-                    onTap: onMic,
-                  ),
+                  child: _MicPill(isRecording: isRecording, isDark: isDark, onBg: onBg, pulseController: recPulseController, onTap: onMic),
                 ),
 
                 const SizedBox(width: AppSpacing.xs),
@@ -611,13 +574,7 @@ class _ControlBar extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _MicPill extends StatelessWidget {
-  const _MicPill({
-    required this.isRecording,
-    required this.isDark,
-    required this.onBg,
-    required this.pulseController,
-    required this.onTap,
-  });
+  const _MicPill({required this.isRecording, required this.isDark, required this.onBg, required this.pulseController, required this.onTap});
 
   final bool isRecording;
   final bool isDark;
@@ -639,15 +596,9 @@ class _MicPill extends StatelessWidget {
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
               decoration: BoxDecoration(
-                color: isRecording
-                    ? AppColors.error.withValues(alpha: 0.15 + 0.1 * pulseController.value)
-                    : Colors.transparent,
+                color: isRecording ? AppColors.error.withValues(alpha: 0.15 + 0.1 * pulseController.value) : Colors.transparent,
                 borderRadius: BorderRadius.circular(AppRadius.full),
-                border: isRecording
-                    ? Border.all(
-                        color: AppColors.error.withValues(alpha: 0.5 + 0.3 * pulseController.value),
-                        width: 1.5)
-                    : null,
+                border: isRecording ? Border.all(color: AppColors.error.withValues(alpha: 0.5 + 0.3 * pulseController.value), width: 1.5) : null,
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -739,13 +690,7 @@ class _ControlPill extends StatelessWidget {
 // ─────────────────────────────────────────────────────────────────────────────
 
 class _BottomDrawer extends StatelessWidget {
-  const _BottomDrawer({
-    required this.scrollController,
-    required this.tabController,
-    required this.card,
-    required this.theme,
-    required this.isDark,
-  });
+  const _BottomDrawer({required this.scrollController, required this.tabController, required this.card, required this.theme, required this.isDark});
 
   final ScrollController scrollController;
   final TabController tabController;
@@ -757,17 +702,9 @@ class _BottomDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: isDark
-            ? theme.colorScheme.surfaceContainerHighest
-            : theme.colorScheme.surfaceContainerLowest,
+        color: isDark ? theme.colorScheme.surfaceContainerHighest : theme.colorScheme.surfaceContainerLowest,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(AppRadius.xl)),
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
-            blurRadius: 24,
-            offset: const Offset(0, -6),
-          ),
-        ],
+        boxShadow: <BoxShadow>[BoxShadow(color: Colors.black.withValues(alpha: 0.08), blurRadius: 24, offset: const Offset(0, -6))],
       ),
       child: Column(
         children: <Widget>[
@@ -783,10 +720,7 @@ class _BottomDrawer extends StatelessWidget {
                   child: Container(
                     width: 40,
                     height: 5,
-                    decoration: BoxDecoration(
-                      color: theme.colorScheme.outlineVariant,
-                      borderRadius: BorderRadius.circular(AppRadius.full),
-                    ),
+                    decoration: BoxDecoration(color: theme.colorScheme.outlineVariant, borderRadius: BorderRadius.circular(AppRadius.full)),
                   ),
                 ),
                 const SizedBox(height: AppSpacing.sm),
@@ -796,9 +730,7 @@ class _BottomDrawer extends StatelessWidget {
                   indicatorSize: TabBarIndicatorSize.tab,
                   indicatorPadding: const EdgeInsets.symmetric(vertical: 6, horizontal: 10),
                   indicator: BoxDecoration(
-                    color: isDark
-                        ? Colors.white.withValues(alpha: 0.1)
-                        : Colors.black.withValues(alpha: 0.05),
+                    color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(AppRadius.full),
                   ),
                   labelStyle: GoogleFonts.inter(fontWeight: FontWeight.w700),
@@ -840,10 +772,7 @@ class _BottomDrawer extends StatelessWidget {
 
 List<Widget> _guideChildren(TopicCard card, ThemeData theme) {
   if (card.guide.isEmpty) {
-    return <Widget>[
-      Text('No guide for this topic.',
-          style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant))
-    ];
+    return <Widget>[Text('No guide for this topic.', style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant))];
   }
   return card.guide
       .map(
@@ -855,8 +784,8 @@ List<Widget> _guideChildren(TopicCard card, ThemeData theme) {
               Icon(Icons.check_circle_outline_rounded, size: 20, color: theme.colorScheme.primary),
               const SizedBox(width: AppSpacing.md),
               Expanded(
-                  child: Text(line,
-                      style: GoogleFonts.inter(fontSize: 15, height: 1.5, color: theme.colorScheme.onSurface))),
+                child: Text(line, style: GoogleFonts.inter(fontSize: 15, height: 1.5, color: theme.colorScheme.onSurface)),
+              ),
             ],
           ),
         ),
@@ -866,10 +795,7 @@ List<Widget> _guideChildren(TopicCard card, ThemeData theme) {
 
 List<Widget> _vocabChildren(TopicCard card, ThemeData theme) {
   if (card.vocabBoost.isEmpty) {
-    return <Widget>[
-      Text('No vocabulary listed.',
-          style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant))
-    ];
+    return <Widget>[Text('No vocabulary listed.', style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant))];
   }
   return card.vocabBoost.map((VocabWord w) {
     return Container(
@@ -883,12 +809,12 @@ List<Widget> _vocabChildren(TopicCard card, ThemeData theme) {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(w.word,
-              style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
-                  fontSize: 16, fontWeight: FontWeight.w800, color: theme.colorScheme.primary)),
+          Text(
+            w.word,
+            style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 16, fontWeight: FontWeight.w800, color: theme.colorScheme.primary),
+          ),
           const SizedBox(height: AppSpacing.xs),
-          Text(w.meaning,
-              style: GoogleFonts.inter(fontSize: 14, color: theme.colorScheme.onSurfaceVariant)),
+          Text(w.meaning, style: GoogleFonts.inter(fontSize: 14, color: theme.colorScheme.onSurfaceVariant)),
         ],
       ),
     );
@@ -946,7 +872,10 @@ class _PulsingTimerLabelState extends State<_PulsingTimerLabel> with SingleTicke
       animation: _controller,
       builder: (BuildContext context, Widget? child) {
         final double scale = widget.pulse ? 1.0 + (_controller.value * 0.05) : 1.0;
-        return Transform.scale(scale: scale, child: Text(widget.text, style: widget.style));
+        return Transform.scale(
+          scale: scale,
+          child: Text(widget.text, style: widget.style),
+        );
       },
     );
   }
@@ -1011,8 +940,6 @@ class _CountdownRingPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _CountdownRingPainter oldDelegate) {
-    return oldDelegate.progress != progress ||
-        oldDelegate.remaining != remaining ||
-        oldDelegate.isDark != isDark;
+    return oldDelegate.progress != progress || oldDelegate.remaining != remaining || oldDelegate.isDark != isDark;
   }
 }
