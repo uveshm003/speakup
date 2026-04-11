@@ -223,4 +223,25 @@ class CardRepositoryImpl implements CardRepository {
       return Left<Failure, void>(CacheFailure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, TopicCard>> updateCardContent({required String cardId, required List<String> guide, required List<VocabWord> vocab}) async {
+    try {
+      final Query<TopicCardEntity> q = _box.query(TopicCardEntity_.cardId.equals(cardId)).build();
+      try {
+        final TopicCardEntity? e = q.findFirst();
+        if (e == null) {
+          return Left<Failure, TopicCard>(CacheFailure('Card not found: $cardId'));
+        }
+        e.guideJson = jsonEncode(guide);
+        e.vocabJson = jsonEncode(vocab.map((VocabWord v) => <String, String>{'word': v.word, 'meaning': v.meaning}).toList());
+        _box.put(e);
+        return Right<Failure, TopicCard>(topicCardFromEntity(e));
+      } finally {
+        q.close();
+      }
+    } catch (e, _) {
+      return Left<Failure, TopicCard>(CacheFailure(e.toString()));
+    }
+  }
 }

@@ -49,18 +49,24 @@ class _RecordingPlayerSheetState extends State<RecordingPlayerSheet> with Ticker
   Future<void> _initPlayer() async {
     final String? path = widget.session.recordingPath;
     if (path == null) {
-      if (mounted) setState(() { _loading = false; _fileError = true; });
+      if (mounted)
+        setState(() {
+          _loading = false;
+          _fileError = true;
+        });
       return;
     }
     final File file = File(path);
     if (!await file.exists()) {
-      if (mounted) setState(() { _loading = false; _fileError = true; });
+      if (mounted)
+        setState(() {
+          _loading = false;
+          _fileError = true;
+        });
       return;
     }
     try {
-      final Duration? dur = await _player.setAudioSource(
-        AudioSource.uri(Uri.file(file.absolute.path)),
-      );
+      final Duration? dur = await _player.setAudioSource(AudioSource.uri(Uri.file(file.absolute.path)));
       if (mounted) {
         setState(() {
           _total = dur ?? Duration.zero;
@@ -76,7 +82,11 @@ class _RecordingPlayerSheetState extends State<RecordingPlayerSheet> with Ticker
       // Auto-play once loaded
       await _player.play();
     } catch (e) {
-      if (mounted) setState(() { _loading = false; _fileError = true; });
+      if (mounted)
+        setState(() {
+          _loading = false;
+          _fileError = true;
+        });
     }
   }
 
@@ -142,10 +152,18 @@ class _RecordingPlayerSheetState extends State<RecordingPlayerSheet> with Ticker
                         widget.session.cardTitle,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w700, fontSize: 15, color: theme.colorScheme.onSurface),
+                        style: TextStyle(
+                          fontFamily: 'Plus Jakarta Sans',
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                          color: theme.colorScheme.onSurface,
+                        ),
                       ),
                       const SizedBox(height: 2),
-                      Text(widget.session.category, style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w600, color: accent)),
+                      Text(
+                        widget.session.category,
+                        style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w600, color: accent),
+                      ),
                     ],
                   ),
                 ),
@@ -153,10 +171,7 @@ class _RecordingPlayerSheetState extends State<RecordingPlayerSheet> with Ticker
             ),
             const SizedBox(height: AppSpacing.xl),
 
-            if (_loading) ...<Widget>[
-              const CircularProgressIndicator(),
-              const SizedBox(height: AppSpacing.lg),
-            ] else if (_fileError) ...<Widget>[
+            if (_loading) ...<Widget>[const CircularProgressIndicator(), const SizedBox(height: AppSpacing.lg)] else if (_fileError) ...<Widget>[
               Icon(Icons.error_outline_rounded, color: theme.colorScheme.error, size: 40),
               const SizedBox(height: AppSpacing.md),
               Text('Recording file not found.', style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.error)),
@@ -268,8 +283,30 @@ class RecordingWaveformVisualiser extends StatelessWidget {
   Widget build(BuildContext context) {
     const int barCount = 24;
     const List<double> heights = <double>[
-      0.4, 0.7, 1.0, 0.6, 0.8, 0.5, 0.9, 0.3, 0.7, 1.0, 0.6, 0.4,
-      0.8, 0.5, 0.9, 0.3, 0.7, 1.0, 0.5, 0.6, 0.9, 0.4, 0.7, 0.5,
+      0.4,
+      0.7,
+      1.0,
+      0.6,
+      0.8,
+      0.5,
+      0.9,
+      0.3,
+      0.7,
+      1.0,
+      0.6,
+      0.4,
+      0.8,
+      0.5,
+      0.9,
+      0.3,
+      0.7,
+      1.0,
+      0.5,
+      0.6,
+      0.9,
+      0.4,
+      0.7,
+      0.5,
     ];
 
     return SizedBox(
