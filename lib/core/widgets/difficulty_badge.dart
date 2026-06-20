@@ -22,18 +22,18 @@ class DifficultyBadge extends StatelessWidget {
 
     final ({Color fg, Color bg, String label}) spec = switch (difficulty) {
       SpeakUpDifficulty.beginner => (
-        fg: ext?.difficultyBeginner ?? AppColors.beginner,
-        bg: brightness == Brightness.light ? AppColors.successLight : AppColorsDark.successLight,
+        fg: ext?.difficultyBeginner ?? AppColorsNew.beginner,
+        bg: brightness == Brightness.light ? AppColorsNew.successLight : AppColorsDark.successLight,
         label: 'Beginner',
       ),
       SpeakUpDifficulty.intermediate => (
-        fg: ext?.difficultyIntermediate ?? AppColors.intermediate,
-        bg: brightness == Brightness.light ? AppColors.warningLight : AppColorsDark.warningLight,
+        fg: ext?.difficultyIntermediate ?? AppColorsNew.intermediate,
+        bg: brightness == Brightness.light ? AppColorsNew.warningLight : AppColorsDark.warningLight,
         label: 'Intermediate',
       ),
       SpeakUpDifficulty.advanced => (
-        fg: ext?.difficultyAdvanced ?? AppColors.advanced,
-        bg: brightness == Brightness.light ? AppColors.errorLight : AppColorsDark.errorLight,
+        fg: ext?.difficultyAdvanced ?? AppColorsNew.advanced,
+        bg: brightness == Brightness.light ? AppColorsNew.errorLight : AppColorsDark.errorLight,
         label: 'Advanced',
       ),
     };

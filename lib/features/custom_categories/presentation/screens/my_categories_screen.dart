@@ -25,7 +25,14 @@ List<Color> _palette(Brightness brightness) {
       AppColorsDark.error,
     ];
   }
-  return const <Color>[AppColors.primary, AppColors.warning, AppColors.success, AppColors.primaryDark, AppColors.primaryLight, AppColors.error];
+  return const <Color>[
+    AppColorsNew.primary,
+    AppColorsNew.warning,
+    AppColorsNew.success,
+    AppColorsNew.primaryDark,
+    AppColorsNew.primaryLight,
+    AppColorsNew.error,
+  ];
 }
 
 class MyCategoriesScreen extends StatefulWidget {

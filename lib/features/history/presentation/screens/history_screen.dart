@@ -485,7 +485,7 @@ class _WeekStrip extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final Color primary = theme.colorScheme.primary;
     final bool dark = theme.brightness == Brightness.dark;
-    final Color brandLight = dark ? AppColorsDark.primaryLight : AppColors.primaryLight;
+    final Color brandLight = dark ? AppColorsDark.primaryLight : AppColorsNew.primaryLight;
     final Color emptyBg = theme.colorScheme.surfaceContainerHighest.withValues(alpha: dark ? 0.5 : 0.6);
 
     final DateTime now = DateTime.now();
@@ -602,7 +602,7 @@ class _MonthGrid extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final Color primary = theme.colorScheme.primary;
     final bool dark = theme.brightness == Brightness.dark;
-    final Color brandLight = dark ? AppColorsDark.primaryLight : AppColors.primaryLight;
+    final Color brandLight = dark ? AppColorsDark.primaryLight : AppColorsNew.primaryLight;
     final Color empty = theme.colorScheme.surfaceContainerHighest.withValues(alpha: dark ? 0.4 : 0.6);
 
     final DateTime first = DateTime(month.year, month.month, 1);
@@ -954,7 +954,7 @@ class _SessionCard extends StatelessWidget {
                                 Container(
                                   width: 5,
                                   height: 5,
-                                  decoration: BoxDecoration(shape: BoxShape.circle, color: completed ? AppColors.success : AppColors.warning),
+                                  decoration: BoxDecoration(shape: BoxShape.circle, color: completed ? AppColorsNew.success : AppColorsNew.warning),
                                 ),
                                 const SizedBox(width: AppSpacing.xs),
                                 Text(
@@ -962,7 +962,7 @@ class _SessionCard extends StatelessWidget {
                                   style: GoogleFonts.inter(
                                     fontSize: 10,
                                     fontWeight: FontWeight.w600,
-                                    color: completed ? AppColors.success : AppColors.warning,
+                                    color: completed ? AppColorsNew.success : AppColorsNew.warning,
                                   ),
                                 ),
                               ],

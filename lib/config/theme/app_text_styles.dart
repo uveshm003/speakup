@@ -11,7 +11,7 @@ abstract final class AppTextStyles {
   AppTextStyles._();
 
   static TextTheme lightTextTheme() {
-    return _build(textPrimary: AppColors.textPrimary, textSecondary: AppColors.textSecondary, textMuted: AppColors.textMuted);
+    return _build(textPrimary: AppColorsNew.textPrimary, textSecondary: AppColorsNew.textSecondary, textMuted: AppColorsNew.textMuted);
   }
 
   static TextTheme darkTextTheme() {

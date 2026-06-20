@@ -24,13 +24,13 @@ class SpeakUpThemeTokens extends ThemeExtension<SpeakUpThemeTokens> {
   final Color borderStrong;
 
   static const SpeakUpThemeTokens light = SpeakUpThemeTokens(
-    difficultyBeginner: AppColors.beginner,
-    difficultyIntermediate: AppColors.intermediate,
-    difficultyAdvanced: AppColors.advanced,
-    cardBackground: AppColors.cardBackground,
-    pageBackground: AppColors.background,
-    border: AppColors.border,
-    borderStrong: AppColors.borderStrong,
+    difficultyBeginner: AppColorsNew.beginner,
+    difficultyIntermediate: AppColorsNew.intermediate,
+    difficultyAdvanced: AppColorsNew.advanced,
+    cardBackground: AppColorsNew.cardBackground,
+    pageBackground: AppColorsNew.background,
+    border: AppColorsNew.border,
+    borderStrong: AppColorsNew.borderStrong,
   );
 
   static const SpeakUpThemeTokens dark = SpeakUpThemeTokens(

@@ -131,7 +131,7 @@ UI Event  →  BLoC  →  Use Case  →  Repository Interface  →  Repository I
 lib/
 ├── config/
 │   ├── router/            # GoRouter configuration & route constants
-│   ├── theme/             # AppTheme, AppColors, AppRadius, AppSpacing
+│   ├── theme/             # AppTheme, AppColorsNew, AppRadius, AppSpacing
 │   └── app.dart           # Root App widget, MultiBlocProvider setup
 ├── core/
 │   ├── constants/         # AppStrings, AppAssets, AppConstants

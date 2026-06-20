@@ -171,9 +171,9 @@ class _DifficultyFilterRow extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     return switch (f) {
       DifficultyFilter.all => theme.colorScheme.primary,
-      DifficultyFilter.beginner => AppColors.success,
-      DifficultyFilter.intermediate => AppColors.warning,
-      DifficultyFilter.advanced => AppColors.error,
+      DifficultyFilter.beginner => AppColorsNew.success,
+      DifficultyFilter.intermediate => AppColorsNew.warning,
+      DifficultyFilter.advanced => AppColorsNew.error,
     };
   }
 
@@ -451,15 +451,15 @@ class _DifficultyBar extends StatelessWidget {
               children: <Widget>[
                 SizedBox(
                   width: w * beginner / total,
-                  child: Container(color: AppColors.success),
+                  child: Container(color: AppColorsNew.success),
                 ),
                 SizedBox(
                   width: w * intermediate / total,
-                  child: Container(color: AppColors.warning),
+                  child: Container(color: AppColorsNew.warning),
                 ),
                 SizedBox(
                   width: w * advanced / total,
-                  child: Container(color: AppColors.error),
+                  child: Container(color: AppColorsNew.error),
                 ),
               ],
             ),

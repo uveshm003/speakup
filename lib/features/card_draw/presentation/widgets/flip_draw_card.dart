@@ -207,8 +207,8 @@ class _CardFront extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     final bool dark = theme.brightness == Brightness.dark;
-    final Color start = dark ? AppColorsDark.primaryDark : AppColors.primary;
-    final Color end = dark ? AppColorsDark.primary : AppColors.primaryLight;
+    final Color start = dark ? AppColorsDark.primaryDark : AppColorsNew.primary;
+    final Color end = dark ? AppColorsDark.primary : AppColorsNew.primaryLight;
 
     return Container(
       decoration: BoxDecoration(

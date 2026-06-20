@@ -452,7 +452,7 @@ class _RecBadge extends StatelessWidget {
                 height: 8,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColors.error.withValues(alpha: 0.4 + 0.6 * recPulseController.value),
+                  color: AppColorsNew.error.withValues(alpha: 0.4 + 0.6 * recPulseController.value),
                 ),
               );
             },
@@ -462,9 +462,9 @@ class _RecBadge extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
           decoration: BoxDecoration(
-            color: isRecording ? AppColors.error.withValues(alpha: 0.12) : theme.colorScheme.surfaceContainerHighest,
+            color: isRecording ? AppColorsNew.error.withValues(alpha: 0.12) : theme.colorScheme.surfaceContainerHighest,
             borderRadius: BorderRadius.circular(AppRadius.full),
-            border: isRecording ? Border.all(color: AppColors.error.withValues(alpha: 0.35)) : null,
+            border: isRecording ? Border.all(color: AppColorsNew.error.withValues(alpha: 0.35)) : null,
           ),
           child: Text(
             isRecording ? 'REC · PRACTICING' : 'PRACTICING',
@@ -472,7 +472,7 @@ class _RecBadge extends StatelessWidget {
               fontSize: 10,
               fontWeight: FontWeight.w800,
               letterSpacing: 1.5,
-              color: isRecording ? AppColors.error : theme.colorScheme.onSurfaceVariant,
+              color: isRecording ? AppColorsNew.error : theme.colorScheme.onSurfaceVariant,
             ),
           ),
         ),
@@ -596,9 +596,9 @@ class _MicPill extends StatelessWidget {
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
               decoration: BoxDecoration(
-                color: isRecording ? AppColors.error.withValues(alpha: 0.15 + 0.1 * pulseController.value) : Colors.transparent,
+                color: isRecording ? AppColorsNew.error.withValues(alpha: 0.15 + 0.1 * pulseController.value) : Colors.transparent,
                 borderRadius: BorderRadius.circular(AppRadius.full),
-                border: isRecording ? Border.all(color: AppColors.error.withValues(alpha: 0.5 + 0.3 * pulseController.value), width: 1.5) : null,
+                border: isRecording ? Border.all(color: AppColorsNew.error.withValues(alpha: 0.5 + 0.3 * pulseController.value), width: 1.5) : null,
               ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
@@ -606,7 +606,7 @@ class _MicPill extends StatelessWidget {
                 children: <Widget>[
                   Icon(
                     isRecording ? Icons.mic_rounded : Icons.mic_none_rounded,
-                    color: isRecording ? AppColors.error : onBg.withValues(alpha: 0.75),
+                    color: isRecording ? AppColorsNew.error : onBg.withValues(alpha: 0.75),
                     size: 20,
                   ),
                   const SizedBox(width: 5),
@@ -617,7 +617,7 @@ class _MicPill extends StatelessWidget {
                       style: GoogleFonts.inter(
                         fontWeight: FontWeight.w700,
                         fontSize: 13,
-                        color: isRecording ? AppColors.error : onBg.withValues(alpha: 0.75),
+                        color: isRecording ? AppColorsNew.error : onBg.withValues(alpha: 0.75),
                       ),
                     ),
                   ),
@@ -913,9 +913,9 @@ class _CountdownRingPainter extends CustomPainter {
 
     Color baseColor;
     if (remaining <= 15) {
-      baseColor = AppColors.error;
+      baseColor = AppColorsNew.error;
     } else if (remaining <= 30) {
-      baseColor = AppColors.warning;
+      baseColor = AppColorsNew.warning;
     } else {
       baseColor = primaryColor;
     }
