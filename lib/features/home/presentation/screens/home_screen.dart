@@ -304,7 +304,6 @@ class _HeroAppBar extends StatelessWidget {
             ],
           ),
         ),
-        // background: _HeroBackground(isDark: isDark, theme: theme),
       ),
     );
   }
@@ -337,45 +336,6 @@ class _GreetingSubtitle extends StatelessWidget {
       );
     }
     return Text('Start your speaking journey today', style: TextStyle(fontSize: 11, color: subtitleColor));
-  }
-}
-
-class _HeroBackground extends StatelessWidget {
-  const _HeroBackground({required this.isDark, required this.theme});
-
-  final bool isDark;
-  final ThemeData theme;
-
-  @override
-  Widget build(BuildContext context) {
-    if (isDark) {
-      return Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: <Color>[theme.colorScheme.surfaceContainerHighest.withValues(alpha: 0.8), theme.colorScheme.surface],
-          ),
-        ),
-        child: Align(
-          alignment: Alignment.centerRight,
-          child: Opacity(opacity: 0.06, child: Icon(Icons.record_voice_over_rounded, size: 150, color: theme.colorScheme.primary)),
-        ),
-      );
-    }
-    return Container(
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: <Color>[theme.colorScheme.primary, theme.colorScheme.primary.withValues(alpha: 0.82)],
-        ),
-      ),
-      child: const Align(
-        alignment: Alignment.centerRight,
-        child: Opacity(opacity: 0.1, child: Icon(Icons.record_voice_over_rounded, size: 150, color: Colors.white)),
-      ),
-    );
   }
 }
 
@@ -797,7 +757,7 @@ class _RecentSessionsRow extends StatelessWidget {
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: sessions.length,
-        separatorBuilder: (_, int _i) => const SizedBox(width: AppSpacing.md),
+        separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.md),
         itemBuilder: (BuildContext ctx, int i) {
           final HomeRecentSession s = sessions[i];
           return GestureDetector(
@@ -959,7 +919,7 @@ class _DiscoveryStrip extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             clipBehavior: Clip.none,
             itemCount: _kSpotlights.length,
-            separatorBuilder: (_, int _i) => const SizedBox(width: AppSpacing.md),
+            separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.md),
             itemBuilder: (BuildContext ctx, int i) {
               final _SpotlightItem s = _kSpotlights[i];
               return GestureDetector(

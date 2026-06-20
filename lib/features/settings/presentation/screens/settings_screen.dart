@@ -81,85 +81,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Future<bool> _showDeleteConfirmDialog() async {
-    final ThemeData theme = Theme.of(context);
-    final TextEditingController ctrl = TextEditingController();
-    bool confirmed = false;
-
-    await showDialog<void>(
+    final bool? confirmed = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext dialogCtx) {
-        return StatefulBuilder(
-          builder: (BuildContext ctx, StateSetter setState) {
-            return AlertDialog(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.xl)),
-              icon: Container(
-                width: 56,
-                height: 56,
-                decoration: BoxDecoration(color: theme.colorScheme.errorContainer.withValues(alpha: 0.6), shape: BoxShape.circle),
-                child: Icon(Icons.delete_forever_rounded, color: theme.colorScheme.error, size: 28),
-              ),
-              title: Text(
-                'Delete All Data?',
-                style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w800),
-                textAlign: TextAlign.center,
-              ),
-              content: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: <Widget>[
-                  Text(
-                    'This will permanently delete all your custom cards, categories, practice history, and reset settings. Built-in cards will be restored on next launch.',
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant, height: 1.5),
-                  ),
-                  const SizedBox(height: AppSpacing.xl),
-                  Text('Type DELETE to confirm', style: theme.textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w700, letterSpacing: 0.5)),
-                  const SizedBox(height: AppSpacing.sm),
-                  TextField(
-                    controller: ctrl,
-                    autofocus: true,
-                    textCapitalization: TextCapitalization.characters,
-                    onChanged: (_) => setState(() {}),
-                    decoration: InputDecoration(
-                      hintText: 'DELETE',
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.md),
-                        borderSide: BorderSide(color: theme.colorScheme.error),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.md),
-                        borderSide: BorderSide(color: theme.colorScheme.error, width: 2),
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(AppRadius.md),
-                        borderSide: BorderSide(color: theme.colorScheme.outline),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              actions: <Widget>[
-                TextButton(onPressed: () => Navigator.of(dialogCtx).pop(), child: const Text('Cancel')),
-                FilledButton(
-                  style: FilledButton.styleFrom(backgroundColor: theme.colorScheme.error, foregroundColor: theme.colorScheme.onError),
-                  onPressed: ctrl.text == 'DELETE'
-                      ? () {
-                          confirmed = true;
-                          Navigator.of(dialogCtx).pop();
-                        }
-                      : null,
-                  child: const Text('Delete Everything', style: TextStyle(fontWeight: FontWeight.w700)),
-                ),
-              ],
-            );
-          },
-        );
-      },
+      builder: (BuildContext dialogCtx) => const _DeleteConfirmDialog(),
     );
-
-    ctrl.dispose();
-    return confirmed;
+    return confirmed ?? false;
   }
 
   // ── Helpers ───────────────────────────────────────────────────────────────
@@ -780,6 +707,98 @@ class _DefaultTimerSheetState extends State<_DefaultTimerSheet> {
           ),
         ],
       ),
+    );
+  }
+}
+
+/// Destructive "Delete all data" confirmation. Owns its own [TextEditingController]
+/// so the controller lives for the dialog's full lifecycle (including the dismiss
+/// animation) and is disposed exactly once. Pops `true` only after the user types
+/// DELETE and confirms.
+class _DeleteConfirmDialog extends StatefulWidget {
+  const _DeleteConfirmDialog();
+
+  @override
+  State<_DeleteConfirmDialog> createState() => _DeleteConfirmDialogState();
+}
+
+class _DeleteConfirmDialogState extends State<_DeleteConfirmDialog> {
+  final TextEditingController _ctrl = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl.addListener(_onChanged);
+  }
+
+  void _onChanged() => setState(() {});
+
+  @override
+  void dispose() {
+    _ctrl.removeListener(_onChanged);
+    _ctrl.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
+    final bool canDelete = _ctrl.text == 'DELETE';
+    return AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.xl)),
+      icon: Container(
+        width: 56,
+        height: 56,
+        decoration: BoxDecoration(color: theme.colorScheme.errorContainer.withValues(alpha: 0.6), shape: BoxShape.circle),
+        child: Icon(Icons.delete_forever_rounded, color: theme.colorScheme.error, size: 28),
+      ),
+      title: Text(
+        'Delete All Data?',
+        style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w800),
+        textAlign: TextAlign.center,
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: <Widget>[
+          Text(
+            'This will permanently delete all your custom cards, categories, practice history, and reset settings. Built-in cards will be restored on next launch.',
+            textAlign: TextAlign.center,
+            style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant, height: 1.5),
+          ),
+          const SizedBox(height: AppSpacing.xl),
+          Text('Type DELETE to confirm', style: theme.textTheme.labelMedium?.copyWith(fontWeight: FontWeight.w700, letterSpacing: 0.5)),
+          const SizedBox(height: AppSpacing.sm),
+          TextField(
+            controller: _ctrl,
+            autofocus: true,
+            textCapitalization: TextCapitalization.characters,
+            decoration: InputDecoration(
+              hintText: 'DELETE',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                borderSide: BorderSide(color: theme.colorScheme.error),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                borderSide: BorderSide(color: theme.colorScheme.error, width: 2),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(AppRadius.md),
+                borderSide: BorderSide(color: theme.colorScheme.outline),
+              ),
+            ),
+          ),
+        ],
+      ),
+      actions: <Widget>[
+        TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancel')),
+        FilledButton(
+          style: FilledButton.styleFrom(backgroundColor: theme.colorScheme.error, foregroundColor: theme.colorScheme.onError),
+          onPressed: canDelete ? () => Navigator.of(context).pop(true) : null,
+          child: const Text('Delete Everything', style: TextStyle(fontWeight: FontWeight.w700)),
+        ),
+      ],
     );
   }
 }

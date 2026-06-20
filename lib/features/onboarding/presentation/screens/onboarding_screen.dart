@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -8,7 +6,6 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:speakup/config/router/app_routes.dart';
 import 'package:speakup/config/router/router_refresh.dart';
 import 'package:speakup/config/theme/app_colors.dart';
-import 'package:speakup/core/constants/app_constants.dart';
 import 'package:speakup/core/core.dart';
 import 'package:speakup/features/settings/data/mappers/user_settings_mapper.dart';
 import 'package:speakup/features/settings/data/models/user_settings_hive.dart';

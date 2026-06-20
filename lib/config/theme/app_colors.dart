@@ -95,7 +95,7 @@ abstract class AppColorsNew {
     colors: [primary, primaryContainer],
   );
 
-  static List<BoxShadow> get ambientShadow => [BoxShadow(color: shadow.withOpacity(0.06), blurRadius: 24, spreadRadius: -4)];
+  static List<BoxShadow> get ambientShadow => [BoxShadow(color: shadow.withValues(alpha: 0.06), blurRadius: 24, spreadRadius: -4)];
 }
 
 abstract class AppSpacingNew {

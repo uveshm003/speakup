@@ -6,7 +6,6 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:speakup/config/router/app_routes.dart';
-import 'package:speakup/config/theme/app_colors.dart';
 import 'package:speakup/config/theme/app_layout.dart';
 import 'package:speakup/config/theme/app_radius.dart';
 import 'package:speakup/config/theme/app_spacing.dart';
@@ -196,7 +195,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> with TickerProviderSt
                         padding: EdgeInsets.fromLTRB(pagePad.left, 0, pagePad.right, AppSpacing.huge + 24),
                         sliver: SliverList.separated(
                           itemCount: filtered.length,
-                          separatorBuilder: (_, __) => const SizedBox(height: AppSpacing.sm),
+                          separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
                           itemBuilder: (BuildContext context, int i) {
                             return _FavoriteListCard(card: filtered[i]);
                           },

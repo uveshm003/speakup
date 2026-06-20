@@ -208,7 +208,7 @@ class AppTheme {
       navigationBarTheme: NavigationBarThemeData(
         backgroundColor: AppColorsNew.glassBackground,
         surfaceTintColor: Colors.transparent,
-        indicatorColor: AppColorsNew.primaryContainer.withOpacity(0.3),
+        indicatorColor: AppColorsNew.primaryContainer.withValues(alpha: 0.3),
         labelTextStyle: WidgetStateProperty.resolveWith((states) {
           final active = states.contains(WidgetState.selected);
           return TextStyle(

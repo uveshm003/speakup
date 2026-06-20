@@ -124,7 +124,7 @@ class ChallengeDetailScreen extends StatelessWidget {
                 const SizedBox(height: AppSpacing.xl),
 
                 // Progress section (if enrolled)
-                if (isEnrolled) ...<Widget>[_ProgressSection(def: def, progress: progress!), const SizedBox(height: AppSpacing.xl)],
+                if (isEnrolled) ...<Widget>[_ProgressSection(def: def, progress: progress), const SizedBox(height: AppSpacing.xl)],
 
                 // Day timeline
                 _DayTimeline(def: def, progress: progress),

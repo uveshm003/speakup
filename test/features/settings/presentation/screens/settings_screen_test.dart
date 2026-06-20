@@ -41,28 +41,32 @@ void main() {
       await tester.pumpWidget(buildInjectableWidget(child: const SettingsScreen()));
 
       expect(find.text('Settings'), findsOneWidget);
-      expect(find.text('Default timer'), findsOneWidget);
-      expect(find.text('Clear session history'), findsOneWidget);
-      expect(find.text('App version'), findsOneWidget);
-      expect(find.text('Privacy policy'), findsOneWidget);
-      expect(find.text('Rate the app'), findsOneWidget);
+      expect(find.text('Default Timer'), findsOneWidget);
+      expect(find.text('Delete All Data'), findsOneWidget);
+      expect(find.text('App Version'), findsOneWidget);
+      expect(find.text('Privacy Policy'), findsOneWidget);
+      expect(find.text('Rate the App'), findsOneWidget);
     });
 
-    testWidgets('taps Clear session history triggers dialog', (WidgetTester tester) async {
+    testWidgets('taps Delete All Data triggers a confirm dialog', (WidgetTester tester) async {
       when(() => mockSettingsBloc.state).thenReturn(const SettingsState(status: SettingsStatus.success, settings: UserSettings()));
 
       await tester.pumpWidget(buildInjectableWidget(child: const SettingsScreen()));
 
-      await tester.tap(find.text('Clear session history'));
+      await tester.tap(find.text('Delete All Data'));
       await tester.pumpAndSettle();
 
-      expect(find.text('Clear all session history?'), findsOneWidget);
+      expect(find.text('Delete All Data?'), findsOneWidget);
 
-      // Tap Clear all
-      await tester.tap(find.text('Clear all'));
+      // The confirm button is gated behind typing DELETE.
+      await tester.enterText(find.byType(TextField), 'DELETE');
       await tester.pumpAndSettle();
 
-      verify(() => mockSettingsBloc.add(const SessionHistoryClearRequested())).called(1);
+      // Confirm the destructive action.
+      await tester.tap(find.text('Delete Everything'));
+      await tester.pumpAndSettle();
+
+      verify(() => mockSettingsBloc.add(const DatabaseDeleteRequested())).called(1);
     });
   });
 }

@@ -49,20 +49,22 @@ class _RecordingPlayerSheetState extends State<RecordingPlayerSheet> with Ticker
   Future<void> _initPlayer() async {
     final String? path = widget.session.recordingPath;
     if (path == null) {
-      if (mounted)
+      if (mounted) {
         setState(() {
           _loading = false;
           _fileError = true;
         });
+      }
       return;
     }
     final File file = File(path);
     if (!await file.exists()) {
-      if (mounted)
+      if (mounted) {
         setState(() {
           _loading = false;
           _fileError = true;
         });
+      }
       return;
     }
     try {
@@ -82,11 +84,12 @@ class _RecordingPlayerSheetState extends State<RecordingPlayerSheet> with Ticker
       // Auto-play once loaded
       await _player.play();
     } catch (e) {
-      if (mounted)
+      if (mounted) {
         setState(() {
           _loading = false;
           _fileError = true;
         });
+      }
     }
   }
 

@@ -131,7 +131,7 @@ class _MyCategoriesScreenState extends State<MyCategoriesScreen> {
                     padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.md, AppSpacing.lg, 100),
                     sliver: SliverList.separated(
                       itemCount: state.categories.length,
-                      separatorBuilder: (_, int __) => const SizedBox(height: AppSpacing.sm),
+                      separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
                       itemBuilder: (BuildContext ctx, int index) {
                         final CustomCategory cat = state.categories[index];
                         final Color accent = palette[index % palette.length];

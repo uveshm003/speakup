@@ -161,7 +161,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                     padding: const EdgeInsets.fromLTRB(AppSpacing.lg, AppSpacing.md, AppSpacing.lg, 100),
                     sliver: SliverList.separated(
                       itemCount: state.cards.length,
-                      separatorBuilder: (_, int __) => const SizedBox(height: AppSpacing.sm),
+                      separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
                       itemBuilder: (BuildContext listCtx, int i) {
                         final TopicCard card = state.cards[i];
                         return _CardTile(

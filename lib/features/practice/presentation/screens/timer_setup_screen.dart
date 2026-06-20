@@ -130,7 +130,7 @@ class _TimerSetupBodyState extends State<_TimerSetupBody> {
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemCount: _presets.length + 1, // +1 for "Custom" button
-                            separatorBuilder: (_, __) => const SizedBox(width: AppSpacing.sm),
+                            separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.sm),
                             itemBuilder: (BuildContext context, int index) {
                               if (index < _presets.length) {
                                 final int sec = _presets[index];

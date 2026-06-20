@@ -195,7 +195,7 @@ class _CategoryEditorBodyState extends State<_CategoryEditorBody> {
                 child: ListView.separated(
                   scrollDirection: Axis.horizontal,
                   itemCount: kCategoryPresetEmojis.length,
-                  separatorBuilder: (_, int __) => const SizedBox(width: AppSpacing.sm),
+                  separatorBuilder: (_, _) => const SizedBox(width: AppSpacing.sm),
                   itemBuilder: (BuildContext ctx, int i) {
                     final String e = kCategoryPresetEmojis[i];
                     final bool selected = e == _emoji;

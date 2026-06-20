@@ -163,12 +163,18 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
               // Top spacer (asymmetric editorial breathing room)
               const Spacer(),
 
-              // Centre identity block
+              // Centre identity block. Wrapped in a scale-down FittedBox so the
+              // fixed-size logo + title never overflow on short viewports
+              // (small phones / landscape) while staying full-size on tall ones.
               Expanded(
                 flex: 2,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
+                child: Center(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
                     // Logo card
                     FadeTransition(
                       opacity: _logoOpacity,
@@ -224,7 +230,9 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                         ),
                       ),
                     ),
-                  ],
+                      ],
+                    ),
+                  ),
                 ),
               ),
 
@@ -513,7 +521,7 @@ class _LoadingDotsState extends State<_LoadingDots> with SingleTickerProviderSta
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: _ctrl,
-      builder: (_, __) {
+      builder: (_, _) {
         // Cycle which dot is "active" (higher opacity)
         final active = (_ctrl.value * 3).floor() % 3;
         return Row(
