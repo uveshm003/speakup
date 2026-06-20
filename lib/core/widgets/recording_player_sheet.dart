@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:just_audio/just_audio.dart';
 
 import 'package:speakup/config/theme/app_radius.dart';
@@ -165,7 +164,7 @@ class _RecordingPlayerSheetState extends State<RecordingPlayerSheet> with Ticker
                       const SizedBox(height: 2),
                       Text(
                         widget.session.category,
-                        style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w600, color: accent),
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 12, fontWeight: FontWeight.w600, color: accent),
                       ),
                     ],
                   ),

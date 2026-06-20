@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:speakup/config/config.dart';
 import 'package:speakup/core/utils/responsive.dart';
 import 'package:speakup/features/card_draw/domain/entities/difficulty.dart';
@@ -453,7 +452,7 @@ class _CollapsibleVocabSection extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
-                              Text(w.word, style: GoogleFonts.plusJakartaSans(fontSize: 16, fontWeight: FontWeight.w700)),
+                              Text(w.word, style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 16, fontWeight: FontWeight.w700)),
                               const SizedBox(height: 4),
                               Text(w.meaning, style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.onSurfaceVariant, fontSize: 14)),
                             ],

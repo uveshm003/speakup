@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:speakup/config/router/app_routes.dart';
 import 'package:speakup/config/theme/app_radius.dart';
@@ -83,7 +82,7 @@ class _SuccessView extends StatelessWidget {
           Text(
             'Great session! 🎉',
             textAlign: TextAlign.center,
-            style: GoogleFonts.plusJakartaSans(fontSize: 26, fontWeight: FontWeight.w700),
+            style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 26, fontWeight: FontWeight.w700),
           ),
           const SizedBox(height: AppSpacing.xxl),
           Card(
@@ -118,19 +117,19 @@ class _SuccessView extends StatelessWidget {
                     },
                     child: Column(
                       children: <Widget>[
-                        Text('🔥', style: GoogleFonts.plusJakartaSans(fontSize: 56)),
+                        Text('🔥', style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 56)),
                         const SizedBox(height: AppSpacing.sm),
                         Text(
                           '${state.streak} day streak!',
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.plusJakartaSans(fontSize: 22, fontWeight: FontWeight.w700),
+                          style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 22, fontWeight: FontWeight.w700),
                         ),
                       ],
                     ),
                   )
                 : Column(
                     children: <Widget>[
-                      Text('🔥', style: GoogleFonts.plusJakartaSans(fontSize: 56)),
+                      Text('🔥', style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 56)),
                       const SizedBox(height: AppSpacing.xs),
                       Text(
                         '${state.streak}',
@@ -141,7 +140,7 @@ class _SuccessView extends StatelessWidget {
                       Text(
                         'Keep it up!',
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.w600),
+                        style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 20, fontWeight: FontWeight.w600),
                       ),
                     ],
                   ),

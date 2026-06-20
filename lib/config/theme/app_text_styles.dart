@@ -19,9 +19,9 @@ abstract final class AppTextStyles {
   }
 
   static TextTheme _build({required Color textPrimary, required Color textSecondary, required Color textMuted}) {
-    // Use GoogleFonts.plusJakartaSans() only — Plus Jakarta Sans files are also
-    // bundled locally. Inter is referenced via TextStyle(fontFamily:'Inter') because
-    // our asset files are named Inter-400.ttf … not Inter-Regular.ttf.
+    // Both families are bundled locally (assets/fonts/, registered in pubspec.yaml)
+    // and referenced via TextStyle(fontFamily:) directly — no google_fonts runtime
+    // lookup, so the app stays fully offline.
     return TextTheme(
       displayLarge: _pjs(32, FontWeight.w700, 1.15, textPrimary),
       displayMedium: _pjs(26, FontWeight.w700, 1.20, textPrimary),

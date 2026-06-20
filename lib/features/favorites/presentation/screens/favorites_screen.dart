@@ -3,7 +3,6 @@ import 'dart:math' show Random;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:speakup/config/router/app_routes.dart';
 import 'package:speakup/config/theme/app_layout.dart';
@@ -634,7 +633,7 @@ class _FavoriteListCard extends StatelessWidget {
                                       ),
                                       child: Text(
                                         card.category,
-                                        style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w700, color: accent, letterSpacing: 0.2),
+                                        style: TextStyle(fontFamily: 'Inter', fontSize: 10, fontWeight: FontWeight.w700, color: accent, letterSpacing: 0.2),
                                       ),
                                     ),
                                     const SizedBox(width: AppSpacing.xs),
@@ -655,7 +654,7 @@ class _FavoriteListCard extends StatelessWidget {
                                           const SizedBox(width: 3),
                                           Text(
                                             _diffLabel(card.difficulty),
-                                            style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w700, color: diffColor),
+                                            style: TextStyle(fontFamily: 'Inter', fontSize: 10, fontWeight: FontWeight.w700, color: diffColor),
                                           ),
                                         ],
                                       ),
@@ -669,7 +668,7 @@ class _FavoriteListCard extends StatelessWidget {
                                   card.title,
                                   maxLines: 2,
                                   overflow: TextOverflow.ellipsis,
-                                  style: GoogleFonts.plusJakartaSans(
+                                  style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
                                     fontSize: 14,
                                     fontWeight: FontWeight.w700,
                                     height: 1.3,
@@ -757,7 +756,7 @@ class _FavoriteListCard extends StatelessWidget {
                         card.title,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 14, color: theme.colorScheme.onSurface),
+                        style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w700, fontSize: 14, color: theme.colorScheme.onSurface),
                       ),
                     ),
                   ],
@@ -901,7 +900,7 @@ class _EmptyFavoritesState extends State<_EmptyFavorites> with SingleTickerProvi
             const SizedBox(height: AppSpacing.xl),
             Text(
               'No favorites yet',
-              style: GoogleFonts.newsreader(fontSize: 22, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
+              style: TextStyle(fontFamily: 'Newsreader', fontSize: 22, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(

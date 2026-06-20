@@ -4,7 +4,6 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:speakup/config/router/app_routes.dart';
@@ -193,7 +192,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                             // "SpeakUp"
                             Text(
                               'SpeakUp',
-                              style: GoogleFonts.newsreader(
+                              style: TextStyle(fontFamily: 'Newsreader', 
                                 fontSize: size.width >= 768 ? 60 : 48,
                                 fontWeight: FontWeight.w700,
                                 color: AppColorsNew.primary,
@@ -214,7 +213,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                                   const SizedBox(width: 8),
                                   Text(
                                     'Est. MMXXIV',
-                                    style: GoogleFonts.inter(
+                                    style: TextStyle(fontFamily: 'Inter', 
                                       fontSize: 10,
                                       fontWeight: FontWeight.w500,
                                       color: AppColorsNew.secondary.withValues(alpha: 0.80),
@@ -470,7 +469,7 @@ class _TaglineSection extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 32),
               child: Text(
                 'Practice. Speak. Flourish.',
-                style: GoogleFonts.inter(
+                style: TextStyle(fontFamily: 'Inter', 
                   fontSize: 11,
                   fontWeight: FontWeight.w500,
                   color: AppColorsNew.onSurfaceVariant.withValues(alpha: 0.80),
@@ -557,7 +556,7 @@ class _SideEditorialText extends StatelessWidget {
         quarterTurns: 3, // -90°
         child: Text(
           'The Art of Eloquence',
-          style: GoogleFonts.newsreader(
+          style: TextStyle(fontFamily: 'Newsreader', 
             fontStyle: FontStyle.italic,
             fontSize: 14,
             color: AppColorsNew.onSurfaceVariant.withValues(alpha: 0.20),

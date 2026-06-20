@@ -3,7 +3,6 @@ import 'dart:math' show pi;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:speakup/config/router/app_routes.dart';
 import 'package:speakup/config/theme/app_colors.dart';
@@ -276,7 +275,7 @@ class _CardFront extends StatelessWidget {
                   const SizedBox(height: AppSpacing.xs),
                   Text(
                     'TAP TO REVEAL',
-                    style: GoogleFonts.plusJakartaSans(
+                    style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
                       color: theme.colorScheme.onPrimary.withValues(alpha: 0.5),
@@ -298,7 +297,7 @@ class _CardFront extends StatelessWidget {
                   const SizedBox(width: 4),
                   Text(
                     'Swipe to re-draw',
-                    style: GoogleFonts.plusJakartaSans(
+                    style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
                       fontSize: 11,
                       color: theme.colorScheme.onPrimary.withValues(alpha: 0.35),
                       fontWeight: FontWeight.w500,
@@ -605,7 +604,7 @@ class _Tag extends StatelessWidget {
               label,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: GoogleFonts.plusJakartaSans(fontSize: 12, fontWeight: FontWeight.w700, color: fg, letterSpacing: 0.1),
+              style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 12, fontWeight: FontWeight.w700, color: fg, letterSpacing: 0.1),
             ),
           ),
         ],
@@ -646,7 +645,7 @@ class _TeaserTile extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     label,
-                    style: GoogleFonts.plusJakartaSans(fontSize: 13, fontWeight: FontWeight.w700, color: theme.colorScheme.onSurface),
+                    style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 13, fontWeight: FontWeight.w700, color: theme.colorScheme.onSurface),
                   ),
                   Text(subtitle, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
                 ],

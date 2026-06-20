@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import 'package:speakup/config/router/app_routes.dart';
@@ -919,7 +918,7 @@ class _SessionCard extends StatelessWidget {
                                       session.category,
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
-                                      style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w600, color: accent, letterSpacing: 0.2),
+                                      style: TextStyle(fontFamily: 'Inter', fontSize: 10, fontWeight: FontWeight.w600, color: accent, letterSpacing: 0.2),
                                     ),
                                   ),
                                   const SizedBox(width: AppSpacing.xs),
@@ -944,7 +943,7 @@ class _SessionCard extends StatelessWidget {
                               ),
                               child: Text(
                                 formatPracticeMmSs(session.durationSeconds),
-                                style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w700, color: theme.colorScheme.primary),
+                                style: TextStyle(fontFamily: 'Inter', fontSize: 12, fontWeight: FontWeight.w700, color: theme.colorScheme.primary),
                               ),
                             ),
                             const SizedBox(height: AppSpacing.xs),
@@ -959,7 +958,7 @@ class _SessionCard extends StatelessWidget {
                                 const SizedBox(width: AppSpacing.xs),
                                 Text(
                                   completed ? 'Done' : 'Partial',
-                                  style: GoogleFonts.inter(
+                                  style: TextStyle(fontFamily: 'Inter', 
                                     fontSize: 10,
                                     fontWeight: FontWeight.w600,
                                     color: completed ? AppColorsNew.success : AppColorsNew.warning,
@@ -986,7 +985,7 @@ class _SessionCard extends StatelessWidget {
                                       const SizedBox(width: 2),
                                       Text(
                                         'Play',
-                                        style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w700, color: theme.colorScheme.primary),
+                                        style: TextStyle(fontFamily: 'Inter', fontSize: 10, fontWeight: FontWeight.w700, color: theme.colorScheme.primary),
                                       ),
                                     ],
                                   ),
@@ -1050,7 +1049,7 @@ class _EmptyHistory extends StatelessWidget {
             const SizedBox(height: AppSpacing.xl),
             Text(
               'No sessions yet',
-              style: GoogleFonts.newsreader(fontSize: 22, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
+              style: TextStyle(fontFamily: 'Newsreader', fontSize: 22, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(
@@ -1078,7 +1077,7 @@ class _EmptyHistory extends StatelessWidget {
                       const SizedBox(width: AppSpacing.xs),
                       Text(
                         'Go practise!',
-                        style: GoogleFonts.inter(fontSize: 13, fontWeight: FontWeight.w600, color: theme.colorScheme.primary),
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 13, fontWeight: FontWeight.w600, color: theme.colorScheme.primary),
                       ),
                     ],
                   ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:speakup/config/router/app_routes.dart';
 import 'package:speakup/config/theme/app_radius.dart';
@@ -120,7 +119,7 @@ class _TimerSetupBodyState extends State<_TimerSetupBody> {
 
                         Text(
                           'Practice Duration',
-                          style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.w700, color: theme.colorScheme.onSurface),
+                          style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 18, fontWeight: FontWeight.w700, color: theme.colorScheme.onSurface),
                         ),
                         const SizedBox(height: AppSpacing.md),
 
@@ -176,7 +175,7 @@ class _TimerSetupBodyState extends State<_TimerSetupBody> {
                                     controller: _customController,
                                     keyboardType: TextInputType.number,
                                     textAlign: TextAlign.center,
-                                    style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 18),
+                                    style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w700, fontSize: 18),
                                     decoration: InputDecoration(
                                       hintText: '0',
                                       filled: true,
@@ -245,7 +244,7 @@ class _TimerSetupBodyState extends State<_TimerSetupBody> {
                         children: <Widget>[
                           const Icon(Icons.play_circle_fill_rounded, size: 28),
                           const SizedBox(width: AppSpacing.md),
-                          Text('Begin Practice', style: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.w700)),
+                          Text('Begin Practice', style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 18, fontWeight: FontWeight.w700)),
                         ],
                       ),
                     ),
@@ -284,7 +283,7 @@ class _DurationPill extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             label,
-            style: GoogleFonts.plusJakartaSans(
+            style: TextStyle(fontFamily: 'Plus Jakarta Sans', 
               fontSize: 15,
               fontWeight: FontWeight.w700,
               color: selected ? Colors.white : theme.colorScheme.onSurface,
@@ -323,7 +322,7 @@ class _HeroCardPreview extends StatelessWidget {
             decoration: BoxDecoration(color: accent.withValues(alpha: 0.2), borderRadius: BorderRadius.circular(AppRadius.full)),
             child: Text(
               card.category.toUpperCase(),
-              style: GoogleFonts.inter(fontSize: 10, letterSpacing: 1.2, fontWeight: FontWeight.w800, color: accent),
+              style: TextStyle(fontFamily: 'Inter', fontSize: 10, letterSpacing: 1.2, fontWeight: FontWeight.w800, color: accent),
             ),
           ),
           const SizedBox(height: AppSpacing.md),

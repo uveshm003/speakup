@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:speakup/config/router/app_routes.dart';
 import 'package:speakup/config/theme/app_layout.dart';
@@ -541,7 +540,7 @@ class _QuickDrawCtaState extends State<_QuickDrawCta> with SingleTickerProviderS
               const SizedBox(width: AppSpacing.md),
               Text(
                 'Draw a Card',
-                style: GoogleFonts.plusJakartaSans(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),
+                style: TextStyle(fontFamily: 'Plus Jakarta Sans', color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),
               ),
             ],
           ),
@@ -690,7 +689,7 @@ class _CategoryTile extends StatelessWidget {
                     title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 13, height: 1.3),
+                    style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w700, fontSize: 13, height: 1.3),
                   ),
                   const SizedBox(height: AppSpacing.xs),
                   Row(
@@ -806,7 +805,7 @@ class _RecentSessionsRow extends StatelessWidget {
                       s.cardTitle,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 13, height: 1.35),
+                      style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w700, fontSize: 13, height: 1.35),
                     ),
                     const Spacer(),
                     Container(
@@ -961,7 +960,7 @@ class _DiscoveryStrip extends StatelessWidget {
                         ],
                       ),
                       const Spacer(),
-                      Text(s.label, maxLines: 2, style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 13, height: 1.2)),
+                      Text(s.label, maxLines: 2, style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w700, fontSize: 13, height: 1.2)),
                     ],
                   ),
                 ),
@@ -1063,7 +1062,7 @@ class _StreakGoalNudge extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Set a daily goal', style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 13)),
+                  Text('Set a daily goal', style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w700, fontSize: 13)),
                   Text('Stay consistent with a target', style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
                 ],
               ),

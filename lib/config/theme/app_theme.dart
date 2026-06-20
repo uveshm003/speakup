@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'app_colors.dart';
 import 'app_radius.dart';
@@ -11,10 +10,13 @@ class AppTheme {
   AppTheme._();
 
   static TextTheme _buildTextTheme() {
-    final serif = GoogleFonts.newsreader;
+    // All three families are bundled locally (assets/fonts/, registered in
+    // pubspec.yaml). We build TextStyles directly instead of via google_fonts,
+    // whose runtime lookup expects different filenames and throws offline.
+    TextStyle serif({double? fontSize, FontWeight? fontWeight, double? letterSpacing, Color? color, double? height}) {
+      return TextStyle(fontFamily: 'Newsreader', fontSize: fontSize, fontWeight: fontWeight, letterSpacing: letterSpacing, color: color, height: height);
+    }
 
-    // Use TextStyle directly: Inter files are bundled as Inter-400.ttf etc.
-    // GoogleFonts.inter would look for Inter-Regular.ttf which doesn't exist.
     TextStyle sans({double? fontSize, FontWeight? fontWeight, double? letterSpacing, Color? color, double? height}) {
       return TextStyle(fontFamily: 'Inter', fontSize: fontSize, fontWeight: fontWeight, letterSpacing: letterSpacing, color: color, height: height);
     }
@@ -254,7 +256,7 @@ class AppTheme {
         surfaceTintColor: Colors.transparent,
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
-        titleTextStyle: GoogleFonts.newsreader(fontSize: 24, fontWeight: FontWeight.w500, color: AppColorsNew.onSurface),
+        titleTextStyle: TextStyle(fontFamily: 'Newsreader', fontSize: 24, fontWeight: FontWeight.w500, color: AppColorsNew.onSurface),
         contentTextStyle: const TextStyle(fontFamily: 'Inter', fontSize: 14, color: AppColorsNew.onSurfaceVariant),
       ),
 
@@ -337,7 +339,7 @@ class AppTheme {
         foregroundColor: AppColorsDark.textPrimary,
         surfaceTintColor: Colors.transparent,
         iconTheme: const IconThemeData(color: AppColorsDark.textPrimary, size: 22),
-        titleTextStyle: GoogleFonts.plusJakartaSans(fontSize: 18, fontWeight: FontWeight.w600, color: AppColorsDark.textPrimary),
+        titleTextStyle: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 18, fontWeight: FontWeight.w600, color: AppColorsDark.textPrimary),
       ),
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         type: BottomNavigationBarType.fixed,

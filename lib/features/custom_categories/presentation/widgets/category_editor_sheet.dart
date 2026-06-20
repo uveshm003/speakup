@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:speakup/config/theme/app_radius.dart';
 import 'package:speakup/config/theme/app_spacing.dart';
@@ -166,7 +165,7 @@ class _CategoryEditorBodyState extends State<_CategoryEditorBody> {
                       children: <Widget>[
                         Text(
                           widget.editing != null ? 'Edit Category' : 'New Category',
-                          style: GoogleFonts.plusJakartaSans(fontSize: 20, fontWeight: FontWeight.w700),
+                          style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 20, fontWeight: FontWeight.w700),
                         ),
                         const SizedBox(height: 2),
                         Text(
@@ -235,7 +234,7 @@ class _CategoryEditorBodyState extends State<_CategoryEditorBody> {
                 controller: _nameController,
                 maxLength: 30,
                 textCapitalization: TextCapitalization.words,
-                style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600, fontSize: 16),
+                style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, fontSize: 16),
                 decoration: InputDecoration(
                   hintText: 'e.g. Interview Questions',
                   counterText: '',

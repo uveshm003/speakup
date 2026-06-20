@@ -2,7 +2,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import 'package:speakup/config/theme/app_radius.dart';
@@ -367,7 +366,7 @@ class _SectionLabel extends StatelessWidget {
       padding: const EdgeInsets.only(left: AppSpacing.xs, bottom: 2),
       child: Text(
         label.toUpperCase(),
-        style: GoogleFonts.plusJakartaSans(fontSize: 11, fontWeight: FontWeight.w700, letterSpacing: 0.8, color: theme.colorScheme.onSurfaceVariant),
+        style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 11, fontWeight: FontWeight.w700, letterSpacing: 0.8, color: theme.colorScheme.onSurfaceVariant),
       ),
     );
   }
@@ -440,7 +439,7 @@ class _SettingsTile extends StatelessWidget {
                 children: <Widget>[
                   Text(
                     title,
-                    style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600, fontSize: 14, color: titleColor),
+                    style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, fontSize: 14, color: titleColor),
                   ),
                   if (subtitle != null) ...<Widget>[
                     const SizedBox(height: 2),
@@ -571,7 +570,7 @@ class _DefaultTimerSheetState extends State<_DefaultTimerSheet> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('Default Practice Timer', style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 16)),
+                  Text('Default Practice Timer', style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w700, fontSize: 16)),
                   Text(
                     'Sets the starting countdown for each session',
                     style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
@@ -669,7 +668,7 @@ class _DefaultTimerSheetState extends State<_DefaultTimerSheet> {
                           controller: _customField,
                           keyboardType: TextInputType.number,
                           autofocus: true,
-                          style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600, fontSize: 16),
+                          style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, fontSize: 16),
                           decoration: InputDecoration(
                             labelText: _customMinutes ? 'Minutes' : 'Seconds',
                             border: OutlineInputBorder(borderRadius: BorderRadius.circular(AppRadius.md)),
@@ -754,7 +753,7 @@ class _DeleteConfirmDialogState extends State<_DeleteConfirmDialog> {
       ),
       title: Text(
         'Delete All Data?',
-        style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w800),
+        style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w800),
         textAlign: TextAlign.center,
       ),
       content: Column(

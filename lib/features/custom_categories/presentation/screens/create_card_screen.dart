@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:speakup/config/theme/app_radius.dart';
 import 'package:speakup/config/theme/app_spacing.dart';
@@ -316,7 +315,7 @@ class _CreateCardScreenState extends State<CreateCardScreen> {
                 minLines: 2,
                 maxLength: 150,
                 textCapitalization: TextCapitalization.sentences,
-                style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600, fontSize: 15, height: 1.5),
+                style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w600, fontSize: 15, height: 1.5),
                 decoration: _fieldDecoration(
                   context,
                   hint: 'e.g. Describe a challenge that changed your perspective…',
@@ -583,7 +582,7 @@ class _SectionHeader extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(title, style: GoogleFonts.plusJakartaSans(fontSize: 14, fontWeight: FontWeight.w700)),
+            Text(title, style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 14, fontWeight: FontWeight.w700)),
             if (subtitle != null) Text(subtitle!, style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
           ],
         ),

@@ -2,7 +2,6 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:speakup/config/router/app_routes.dart';
 import 'package:speakup/config/theme/app_colors.dart';
@@ -468,7 +467,7 @@ class _RecBadge extends StatelessWidget {
           ),
           child: Text(
             isRecording ? 'REC · PRACTICING' : 'PRACTICING',
-            style: GoogleFonts.inter(
+            style: TextStyle(fontFamily: 'Inter', 
               fontSize: 10,
               fontWeight: FontWeight.w800,
               letterSpacing: 1.5,
@@ -614,7 +613,7 @@ class _MicPill extends StatelessWidget {
                     child: Text(
                       isRecording ? 'Stop Rec' : 'Record',
                       overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.inter(
+                      style: TextStyle(fontFamily: 'Inter', 
                         fontWeight: FontWeight.w700,
                         fontSize: 13,
                         color: isRecording ? AppColorsNew.error : onBg.withValues(alpha: 0.75),
@@ -674,7 +673,7 @@ class _ControlPill extends StatelessWidget {
                 child: Text(
                   label,
                   overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.inter(fontWeight: FontWeight.w700, fontSize: 13, color: labelColor),
+                  style: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w700, fontSize: 13, color: labelColor),
                 ),
               ),
             ],
@@ -733,8 +732,8 @@ class _BottomDrawer extends StatelessWidget {
                     color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.black.withValues(alpha: 0.05),
                     borderRadius: BorderRadius.circular(AppRadius.full),
                   ),
-                  labelStyle: GoogleFonts.inter(fontWeight: FontWeight.w700),
-                  unselectedLabelStyle: GoogleFonts.inter(fontWeight: FontWeight.w500),
+                  labelStyle: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w700),
+                  unselectedLabelStyle: TextStyle(fontFamily: 'Inter', fontWeight: FontWeight.w500),
                   tabs: const <Widget>[
                     Tab(text: 'Mini Guide'),
                     Tab(text: 'Vocabulary'),
@@ -784,7 +783,7 @@ List<Widget> _guideChildren(TopicCard card, ThemeData theme) {
               Icon(Icons.check_circle_outline_rounded, size: 20, color: theme.colorScheme.primary),
               const SizedBox(width: AppSpacing.md),
               Expanded(
-                child: Text(line, style: GoogleFonts.inter(fontSize: 15, height: 1.5, color: theme.colorScheme.onSurface)),
+                child: Text(line, style: TextStyle(fontFamily: 'Inter', fontSize: 15, height: 1.5, color: theme.colorScheme.onSurface)),
               ),
             ],
           ),
@@ -814,7 +813,7 @@ List<Widget> _vocabChildren(TopicCard card, ThemeData theme) {
             style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontSize: 16, fontWeight: FontWeight.w800, color: theme.colorScheme.primary),
           ),
           const SizedBox(height: AppSpacing.xs),
-          Text(w.meaning, style: GoogleFonts.inter(fontSize: 14, color: theme.colorScheme.onSurfaceVariant)),
+          Text(w.meaning, style: TextStyle(fontFamily: 'Inter', fontSize: 14, color: theme.colorScheme.onSurfaceVariant)),
         ],
       ),
     );

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:speakup/config/router/app_routes.dart';
 import 'package:speakup/config/theme/app_colors.dart';
@@ -384,7 +383,7 @@ class _CategoryCardState extends State<_CategoryCard> with SingleTickerProviderS
                               widget.category.name,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 15),
+                              style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w700, fontSize: 15),
                             ),
                             const SizedBox(height: 2),
                             Row(

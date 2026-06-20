@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:speakup/config/router/app_routes.dart';
@@ -199,7 +198,7 @@ class _TopHeader extends StatelessWidget {
             // Brand wordmark
             Text(
               'SpeakUp',
-              style: GoogleFonts.newsreader(fontSize: 24, fontStyle: FontStyle.italic, color: AppColorsNew.primary, fontWeight: FontWeight.w400),
+              style: TextStyle(fontFamily: 'Newsreader', fontSize: 24, fontStyle: FontStyle.italic, color: AppColorsNew.primary, fontWeight: FontWeight.w400),
             ),
 
             // Streak badge
@@ -209,7 +208,7 @@ class _TopHeader extends StatelessWidget {
             //     const SizedBox(width: 4),
             //     Text(
             //       '0',
-            //       style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w700, color: AppColorsNew.primary, letterSpacing: -0.5),
+            //       style: TextStyle(fontFamily: 'Inter', fontSize: 20, fontWeight: FontWeight.w700, color: AppColorsNew.primary, letterSpacing: -0.5),
             //     ),
             //   ],
             // ),
@@ -295,7 +294,7 @@ class _BottomCard extends StatelessWidget {
                       onTap: onSkip,
                       child: Text(
                         'Skip',
-                        style: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600, color: AppColorsNew.onSurfaceVariant),
+                        style: TextStyle(fontFamily: 'Inter', fontSize: 14, fontWeight: FontWeight.w600, color: AppColorsNew.onSurfaceVariant),
                       ),
                     )
                   else
@@ -330,7 +329,7 @@ class _TypographyGroup extends StatelessWidget {
         // Headline — Newsreader bold, 36px, primary, tight tracking
         Text(
           page.title,
-          style: GoogleFonts.newsreader(fontSize: 28, fontWeight: FontWeight.w700, color: AppColorsNew.primary, letterSpacing: -0.5, height: 1.15),
+          style: TextStyle(fontFamily: 'Newsreader', fontSize: 28, fontWeight: FontWeight.w700, color: AppColorsNew.primary, letterSpacing: -0.5, height: 1.15),
         ),
 
         const SizedBox(height: 10),
@@ -338,7 +337,7 @@ class _TypographyGroup extends StatelessWidget {
         // Body — Inter regular, 18px, onSurfaceVariant, relaxed leading
         Text(
           page.body,
-          style: GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.w400, color: AppColorsNew.onSurfaceVariant, height: 1.6),
+          style: TextStyle(fontFamily: 'Inter', fontSize: 15, fontWeight: FontWeight.w400, color: AppColorsNew.onSurfaceVariant, height: 1.6),
         ),
       ],
     );
@@ -399,7 +398,7 @@ class _NextButton extends StatelessWidget {
           children: [
             Text(
               label,
-              style: GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.w600, color: AppColorsNew.onPrimary),
+              style: TextStyle(fontFamily: 'Inter', fontSize: 15, fontWeight: FontWeight.w600, color: AppColorsNew.onPrimary),
             ),
             const SizedBox(width: 8),
             const Icon(Icons.arrow_forward_rounded, color: AppColorsNew.onPrimary, size: 20),

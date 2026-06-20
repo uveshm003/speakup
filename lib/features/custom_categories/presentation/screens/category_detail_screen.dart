@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:speakup/config/router/app_routes.dart';
 import 'package:speakup/config/theme/app_radius.dart';
@@ -299,7 +298,7 @@ class _CardTileState extends State<_CardTile> with SingleTickerProviderStateMixi
                             widget.card.title,
                             maxLines: _expanded ? null : 2,
                             overflow: _expanded ? TextOverflow.visible : TextOverflow.ellipsis,
-                            style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 14, height: 1.4),
+                            style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w700, fontSize: 14, height: 1.4),
                           ),
                           const SizedBox(height: AppSpacing.xs),
                           // Difficulty badge

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 import 'package:speakup/features/card_draw/domain/repositories/card_repository.dart';
 
@@ -218,7 +217,7 @@ class _ProgressSection extends StatelessWidget {
         children: <Widget>[
           Row(
             children: <Widget>[
-              Text('Your Progress', style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 14)),
+              Text('Your Progress', style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w700, fontSize: 14)),
               const Spacer(),
               Text(
                 '$done / ${def.durationDays} days',
@@ -514,7 +513,7 @@ class _CtaSection extends StatelessWidget {
             const SizedBox(width: AppSpacing.md),
             Text(
               isEnrolled ? "Start Today's Practice" : 'Join Challenge',
-              style: GoogleFonts.plusJakartaSans(color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),
+              style: TextStyle(fontFamily: 'Plus Jakarta Sans', color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),
             ),
           ],
         ),

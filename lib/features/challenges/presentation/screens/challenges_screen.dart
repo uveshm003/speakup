@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
 import 'package:speakup/config/router/app_routes.dart';
@@ -292,7 +291,7 @@ class _ActiveChallengeCard extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(def.title, style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 14)),
+                        Text(def.title, style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w700, fontSize: 14)),
                         Text(
                           'Day ${currentDay + 1} of ${def.durationDays}',
                           style: TextStyle(fontSize: 12, color: def.accentColor, fontWeight: FontWeight.w600),
@@ -431,7 +430,7 @@ class _AvailableChallengeCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(def.title, style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 14)),
+                  Text(def.title, style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w700, fontSize: 14)),
                   const SizedBox(height: 3),
                   Text(
                     def.subtitle,
@@ -522,7 +521,7 @@ class _CompletedChallengeCard extends StatelessWidget {
               children: <Widget>[
                 Text(
                   def.title,
-                  style: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 14, color: theme.colorScheme.onSurfaceVariant),
+                  style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w700, fontSize: 14, color: theme.colorScheme.onSurfaceVariant),
                 ),
                 Text(
                   'Completed · ${def.durationDays} days',
