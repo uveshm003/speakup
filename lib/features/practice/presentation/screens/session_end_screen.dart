@@ -72,13 +72,13 @@ class _SuccessView extends StatelessWidget {
     final card = state.card!;
     final String durationLabel = formatPracticeDurationLabel(state.elapsedSeconds);
 
-    return SingleChildScrollView(
-      padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.md, AppSpacing.xxl, AppSpacing.xxl),
+    return Stack(
+      children: <Widget>[
+        SingleChildScrollView(
+      padding: const EdgeInsets.fromLTRB(AppSpacing.xxl, AppSpacing.xxl, AppSpacing.xxl, AppSpacing.xxl),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          const ConfettiBurst(),
-          const SizedBox(height: AppSpacing.md),
           Text(
             'Great session! 🎉',
             textAlign: TextAlign.center,
@@ -171,12 +171,17 @@ class _SuccessView extends StatelessWidget {
           TextButton(onPressed: () => context.go(AppRoutes.home), child: const Text('Go Home')),
           const SizedBox(height: AppSpacing.xxl),
           Text(
-            'This week: ${state.weekSessionsCount} sessions',
+            'This week: ${state.weekSessionsCount} ${state.weekSessionsCount == 1 ? 'session' : 'sessions'}',
             textAlign: TextAlign.center,
             style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
           ),
         ],
       ),
+        ),
+
+        // Celebration burst floats above the content so it costs no layout height.
+        const Positioned(top: 0, left: 0, right: 0, child: IgnorePointer(child: ConfettiBurst())),
+      ],
     );
   }
 }

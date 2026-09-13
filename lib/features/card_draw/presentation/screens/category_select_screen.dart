@@ -326,21 +326,16 @@ class _CategoryTile extends StatelessWidget {
           color: selected ? item.accentColor.withValues(alpha: 0.09) : theme.colorScheme.surfaceContainerLow,
           child: InkWell(
             onTap: onTap,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            // The accent strip is painted as a left-edge overlay so it stretches
+            // to the row height rather than dictating it with a fixed height —
+            // which used to leave dead space under every row. A Stack is used
+            // instead of IntrinsicHeight because _DifficultyBar lays out with a
+            // LayoutBuilder, which cannot report an intrinsic height.
+            child: Stack(
               children: <Widget>[
-                // ── Accent left strip ──────────────────────────────────────
-                AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  width: 4,
-                  height: 94,
-                  color: selected ? item.accentColor : Colors.transparent,
-                ),
-
                 // ── Content ────────────────────────────────────────────────
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, AppSpacing.md),
+                Padding(
+                    padding: const EdgeInsets.fromLTRB(AppSpacing.md + 4, AppSpacing.md, AppSpacing.md, AppSpacing.md),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
@@ -406,6 +401,17 @@ class _CategoryTile extends StatelessWidget {
                         Icon(Icons.chevron_right_rounded, color: theme.colorScheme.onSurfaceVariant, size: 18),
                       ],
                     ),
+                  ),
+
+                // ── Accent left strip ──────────────────────────────────────
+                Positioned(
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    width: 4,
+                    color: selected ? item.accentColor : Colors.transparent,
                   ),
                 ),
               ],

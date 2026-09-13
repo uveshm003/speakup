@@ -147,9 +147,12 @@ class _ActivePracticeBodyState extends State<_ActivePracticeBody> with TickerPro
           content: const Text('Your session will be saved as incomplete.'),
           actions: <Widget>[
             TextButton(onPressed: () => Navigator.of(context).pop(false), child: const Text('Cancel')),
-            FilledButton.tonal(
+            FilledButton(
               onPressed: () => Navigator.of(context).pop(true),
-              style: FilledButton.styleFrom(foregroundColor: Theme.of(context).colorScheme.error),
+              style: FilledButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.errorContainer,
+                foregroundColor: Theme.of(context).colorScheme.onErrorContainer,
+              ),
               child: const Text('Stop'),
             ),
           ],

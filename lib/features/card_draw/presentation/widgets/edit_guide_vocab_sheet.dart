@@ -364,7 +364,7 @@ class _EditGuideVocabSheetState extends State<EditGuideVocabSheet> {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.lg)),
                       ),
                       child: _saving
-                          ? const SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                          ? SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2, color: Theme.of(context).colorScheme.onPrimary))
                           : const Text('Save Changes', style: TextStyle(fontWeight: FontWeight.w700)),
                     ),
                   ],

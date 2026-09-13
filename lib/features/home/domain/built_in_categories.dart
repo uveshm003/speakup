@@ -11,7 +11,7 @@ class BuiltInCategoryDef {
 
 /// Ordered list for browse grid and category selection.
 const List<BuiltInCategoryDef> kBuiltInBrowseCategories = <BuiltInCategoryDef>[
-  BuiltInCategoryDef(name: 'Opinion & Debate', emoji: '💬', accentColor: Color(0xFF6366F1)),
+  BuiltInCategoryDef(name: 'Opinion & Debate', emoji: '💬', accentColor: Color(0xFF047857)),
   BuiltInCategoryDef(name: 'Current Affairs', emoji: '📰', accentColor: Color(0xFF2563EB)),
   BuiltInCategoryDef(name: 'Personal Growth', emoji: '🌱', accentColor: Color(0xFF16A34A)),
   BuiltInCategoryDef(name: 'Technology', emoji: '💻', accentColor: Color(0xFF0891B2)),

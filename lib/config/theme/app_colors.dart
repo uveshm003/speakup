@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 
-/// Dark appearance tokens (rich, non-harsh; base #0F0F1A).
+/// Dark appearance tokens — the dark-mode rendition of the same jewel-green
+/// brand as [AppColorsNew] (base #0C1210; primary is the light scheme's
+/// `inversePrimary`, so both themes read as one palette).
 abstract final class AppColorsDark {
   AppColorsDark._();
 
-  static const Color primary = Color(0xFF7C6DFF);
-  static const Color primaryLight = Color(0xFF2A2848);
-  static const Color primaryDark = Color(0xFF4F46E5);
-  static const Color surface = Color(0xFF16161F);
-  static const Color background = Color(0xFF0F0F1A);
-  static const Color cardBackground = Color(0xFF1C1C26);
-  static const Color textPrimary = Color(0xFFF4F4F8);
-  static const Color textSecondary = Color(0xFFA1A1AA);
-  static const Color textMuted = Color(0xFF71717A);
-  static const Color border = Color(0xFF2E2E38);
-  static const Color borderStrong = Color(0xFF3F3F4D);
-  static const Color success = Color(0xFF34D399);
+  static const Color primary = Color(0xFF62DBC4);
+  static const Color onPrimary = Color(0xFF00382E);
+  static const Color primaryLight = Color(0xFF16342C);
+  static const Color primaryDark = Color(0xFF17876F);
+  static const Color surface = Color(0xFF121A17);
+  static const Color background = Color(0xFF0C1210);
+  static const Color cardBackground = Color(0xFF18211D);
+  static const Color textPrimary = Color(0xFFF0F4F1);
+  static const Color textSecondary = Color(0xFFA3AEA7);
+  static const Color textMuted = Color(0xFF75817A);
+  static const Color border = Color(0xFF263029);
+  static const Color borderStrong = Color(0xFF36423B);
+  static const Color success = Color(0xFF6EE7A8);
   static const Color successLight = Color(0xFF14532D);
   static const Color warning = Color(0xFFFBBF24);
   static const Color warningLight = Color(0xFF78350F);

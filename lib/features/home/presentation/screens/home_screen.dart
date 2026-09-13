@@ -536,11 +536,11 @@ class _QuickDrawCtaState extends State<_QuickDrawCta> with SingleTickerProviderS
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Icon(Icons.shuffle_rounded, color: Colors.white, size: 22),
+              Icon(Icons.shuffle_rounded, color: theme.colorScheme.onPrimary, size: 22),
               const SizedBox(width: AppSpacing.md),
               Text(
                 'Draw a Card',
-                style: TextStyle(fontFamily: 'Plus Jakarta Sans', color: Colors.white, fontWeight: FontWeight.w700, fontSize: 16),
+                style: TextStyle(fontFamily: 'Plus Jakarta Sans', color: theme.colorScheme.onPrimary, fontWeight: FontWeight.w700, fontSize: 16),
               ),
             ],
           ),
@@ -592,7 +592,7 @@ class _CategoryGrid extends StatelessWidget {
         emoji: '✏️',
         title: 'My Cards',
         count: customCardsCount,
-        accentColor: const Color(0xFF8B5CF6),
+        accentColor: const Color(0xFF0F766E),
         isRecent: false,
         onTap: () => context.push(AppRoutes.customCategories),
       ),
@@ -655,6 +655,7 @@ class _CategoryTile extends StatelessWidget {
                 height: 60,
                 decoration: BoxDecoration(
                   gradient: RadialGradient(
+                    center: Alignment.topLeft,
                     colors: <Color>[
                       accentColor.withValues(alpha: isDark ? 0.18 : 0.12),
                       Colors.transparent,
@@ -689,7 +690,15 @@ class _CategoryTile extends StatelessWidget {
                     title,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
-                    style: TextStyle(fontFamily: 'Plus Jakarta Sans', fontWeight: FontWeight.w700, fontSize: 13, height: 1.3),
+                    // Explicit onSurface: inheriting bodyMedium made these dim in
+                    // dark mode, where bodyMedium is the muted secondary colour.
+                    style: TextStyle(
+                      fontFamily: 'Plus Jakarta Sans',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 13,
+                      height: 1.3,
+                      color: theme.colorScheme.onSurface,
+                    ),
                   ),
                   const SizedBox(height: AppSpacing.xs),
                   Row(
@@ -893,7 +902,7 @@ class _SpotlightItem {
 }
 
 const List<_SpotlightItem> _kSpotlights = <_SpotlightItem>[
-  _SpotlightItem(label: 'AI & Ethics', emoji: '🤖', subtitle: 'Trending topic', accentColor: Color(0xFF6366F1), category: 'Technology'),
+  _SpotlightItem(label: 'AI & Ethics', emoji: '🤖', subtitle: 'Trending topic', accentColor: Color(0xFF047857), category: 'Technology'),
   _SpotlightItem(label: 'Influence Others', emoji: '💡', subtitle: "Today's pick", accentColor: Color(0xFF16A34A), category: 'Personal Growth'),
   _SpotlightItem(label: 'Debate Corner', emoji: '🗣️', subtitle: 'Hot debate', accentColor: Color(0xFFDB2777), category: 'Opinion & Debate'),
 ];

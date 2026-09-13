@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart' show CupertinoPageTransitionsBuilder;
 import 'package:flutter/material.dart';
 
 import 'app_colors.dart';
@@ -313,13 +314,13 @@ class AppTheme {
       surface: AppColorsDark.surface,
       onSurface: AppColorsDark.textPrimary,
       primary: AppColorsDark.primary,
-      onPrimary: const Color(0xFF0F0F1A),
+      onPrimary: AppColorsDark.onPrimary,
       primaryContainer: AppColorsDark.primaryLight,
       onPrimaryContainer: AppColorsDark.textPrimary,
       secondary: AppColorsDark.primaryDark,
       onSecondary: Colors.white,
       error: AppColorsDark.error,
-      onError: const Color(0xFF0F0F1A),
+      onError: AppColorsDark.background,
       outline: AppColorsDark.border,
       outlineVariant: AppColorsDark.borderStrong,
     );
@@ -385,7 +386,7 @@ class AppTheme {
           elevation: 0,
           shadowColor: Colors.transparent,
           backgroundColor: AppColorsDark.primary,
-          foregroundColor: const Color(0xFF0F0F1A),
+          foregroundColor: AppColorsDark.onPrimary,
           disabledBackgroundColor: AppColorsDark.borderStrong,
           disabledForegroundColor: AppColorsDark.textMuted,
           minimumSize: const Size(0, 48),

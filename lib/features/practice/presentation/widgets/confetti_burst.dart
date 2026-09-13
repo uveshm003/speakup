@@ -44,14 +44,14 @@ class _ConfettiPainter extends CustomPainter {
   final double progress;
 
   static const List<Color> _colors = <Color>[
-    Color(0xFF5C4EFA), // brand primary
-    Color(0xFFEEF0FF), // brand primaryLight
+    Color(0xFF00352C), // brand primary
+    Color(0xFF62DBC4), // brand mint
     Color(0xFFF59E0B), // amber
     Color(0xFF22C55E), // green
     Color(0xFFEF4444), // red
     Color(0xFF3B82F6), // blue
     Color(0xFFEC4899), // pink
-    Color(0xFF8B5CF6), // purple
+    Color(0xFF14B8A6), // teal
   ];
 
   static const int _kDots = 30;

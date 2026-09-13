@@ -480,12 +480,12 @@ class _TaglineSection extends StatelessWidget {
           ],
         ),
 
-        const SizedBox(height: 48),
+        const Flexible(child: SizedBox(height: 48)),
 
         // Loading indicator — three dots, third one more opaque
         const _LoadingDots(),
 
-        const SizedBox(height: 64),
+        const Flexible(child: SizedBox(height: 64)),
       ],
     );
   }

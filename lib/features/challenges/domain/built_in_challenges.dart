@@ -12,7 +12,7 @@ const List<ChallengeDef> kBuiltInChallenges = <ChallengeDef>[
     emoji: '💬',
     durationDays: 7,
     tasksPerDay: 1,
-    accentColor: Color(0xFF6366F1),
+    accentColor: Color(0xFF047857),
     category: 'Opinion & Debate',
   ),
   ChallengeDef(

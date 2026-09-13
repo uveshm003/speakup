@@ -541,7 +541,7 @@ class _WeekStrip extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                       fontSize: 11,
                       color: n > 0 && !isFuture
-                          ? (n >= 2 ? Colors.white : primary)
+                          ? (n >= 3 ? theme.colorScheme.onPrimary : (n == 2 ? Colors.white : primary))
                           : theme.colorScheme.onSurfaceVariant.withValues(alpha: isFuture ? 0.28 : 0.5),
                     ),
                   ),
@@ -666,7 +666,7 @@ class _MonthGrid extends StatelessWidget {
                         '${cell.day}',
                         style: theme.textTheme.labelSmall?.copyWith(
                           fontWeight: FontWeight.w700,
-                          color: n > 0 ? (n >= 2 ? Colors.white : primary) : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.55),
+                          color: n > 0 ? (n >= 3 ? theme.colorScheme.onPrimary : (n == 2 ? Colors.white : primary)) : theme.colorScheme.onSurfaceVariant.withValues(alpha: 0.55),
                         ),
                       ),
                     )

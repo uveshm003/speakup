@@ -201,7 +201,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         // Export
                         _SettingsTile(
                           icon: Icons.upload_file_rounded,
-                          iconColor: const Color(0xFF6366F1),
+                          iconColor: const Color(0xFF14B8A6),
                           title: 'Export Data',
                           subtitle: 'Save a backup of all your data',
                           trailing: exportLoading
@@ -246,7 +246,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       children: <Widget>[
                         _SettingsTile(
                           icon: Icons.privacy_tip_outlined,
-                          iconColor: const Color(0xFF6366F1),
+                          iconColor: const Color(0xFF14B8A6),
                           title: 'Privacy Policy',
                           trailing: const Icon(Icons.open_in_new_rounded, size: 18),
                           onTap: () {

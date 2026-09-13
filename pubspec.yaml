@@ -55,8 +55,17 @@ flutter_launcher_icons:
   ios: true
   remove_alpha_ios: true
   image_path: "assets/icon/speakup_icon.png"
-  adaptive_icon_background: "#4F46E5"
+  adaptive_icon_background: "#008E72"
   adaptive_icon_foreground: "assets/icon/speakup_icon_fg.png"
+  web:
+    generate: true
+    background_color: "#008E72"
+    theme_color: "#008E72"
+  macos:
+    generate: true
+  windows:
+    generate: true
+    icon_size: 256
 
 flutter:
   uses-material-design: true
